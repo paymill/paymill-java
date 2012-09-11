@@ -1,12 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.chipmunk.services</groupId>
-	<artifactId>chipmunk-services</artifactId>
+	<groupId>de.paymill</groupId>
+	<artifactId>paymill-java</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>chipmunk-services</name>
-	<url>http://maven.apache.org</url>
+	<name>paymill-java</name>
+	<url>http://www.paymill.de</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -46,4 +45,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<version>0.9</version>
+	<organization>
+		<name>Paymill GmbH</name>
+		<url>http://www.paymill.de</url>
+	</organization>
 </project>

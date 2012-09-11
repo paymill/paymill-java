@@ -129,6 +129,15 @@ public class AbstractService<T> {
 		client.delete(resource, getModelId(obj));
 	}
 
+	/**
+	 * Deletes the object object by the given id.
+	 * 
+	 * @param id
+	 */
+	public void delete(String id) {
+		client.delete(resource, id);
+	}
+
 	protected String getModelId(T obj) {
 		try {
 			Method method = obj.getClass().getMethod("getId");
