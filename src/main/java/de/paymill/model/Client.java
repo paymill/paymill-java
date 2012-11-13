@@ -9,7 +9,7 @@ public class Client {
 	private String email;
 	private Date createdAt;
 	private Date updatedAt;
-	private Payment creditcard;
+	private List<Payment> payments;
 	private List<Subscription> subscription;
 
 	/**
@@ -88,18 +88,18 @@ public class Client {
 	}
 
 	/**
-	 * @return the creditcard
+	 * @return the payments
 	 */
-	public Payment getCreditcard() {
-		return creditcard;
+	public List<Payment> getPayments() {
+		return payments;
 	}
 
 	/**
-	 * @param creditcard
-	 *            the creditcard to set
+	 * @param payments
+	 *            the payments to set
 	 */
-	public void setCreditcard(Payment creditcard) {
-		this.creditcard = creditcard;
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
 	}
 
 	/**
