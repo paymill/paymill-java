@@ -5,7 +5,7 @@ import java.util.Date;
 public class Refund {
 
 	public enum Status {
-		OPEN, CLOSED, FAILED
+		OPEN, REFUNDED, FAILED
 	}
 
 	private String id;

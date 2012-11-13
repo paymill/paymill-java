@@ -36,18 +36,18 @@
 				<version>2.12.3</version>
 				<configuration>
 					<systemPropertyVariables>
-						<tokenUrl>https://test-token.chipmunk.local/token</tokenUrl>
-						<apiUrl>http://api.chipmunk.local/v1/</apiUrl>
-						<apiKey>70bb0b01f701e070f2dedee29cbbc74a</apiKey>
-						<publicApiKey>93037295706d0601f454148c1c475e25</publicApiKey>
+						<tokenUrl>https://test-token.chipmunk.dev/</tokenUrl>
+						<apiUrl>http://api.chipmunk.dev/v2/</apiUrl>
+						<apiKey>d54a3bb94b65c4ab7b28cfee35dee741</apiKey>
+						<publicApiKey>58172705739c9054cf90c9380a3ed71b</publicApiKey>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<version>0.9</version>
+	<version>2.0</version>
 	<organization>
 		<name>Paymill GmbH</name>
-		<url>http://www.paymill.de</url>
+		<url>http://www.paymill.com</url>
 	</organization>
 </project>

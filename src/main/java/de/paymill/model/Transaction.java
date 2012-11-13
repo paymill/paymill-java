@@ -22,7 +22,7 @@ public class Transaction {
 	private Date createdAt;
 	private Date updatedAt;
 	private Client customer;
-	private Card creditcard;
+	private Payment payment;
 	private String token;
 	private List<Refund> refunds;
 
@@ -192,18 +192,18 @@ public class Transaction {
 	}
 
 	/**
-	 * @return the creditcard
+	 * @return the payment
 	 */
-	public Card getCreditcard() {
-		return creditcard;
+	public Payment getPayment() {
+		return payment;
 	}
 
 	/**
-	 * @param creditcard
-	 *            the creditcard to set
+	 * @param payment
+	 *            the payment to set
 	 */
-	public void setCreditcard(Card creditcard) {
-		this.creditcard = creditcard;
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 }

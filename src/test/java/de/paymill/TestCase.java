@@ -5,7 +5,6 @@ package de.paymill;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
@@ -18,7 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import de.paymill.net.JsonEncoder;
+import de.paymill.net.UrlEncoder;
 
 /**
  * @author jk
@@ -32,7 +31,6 @@ public class TestCase {
 
 	protected String getToken() {
 		Calendar date = Calendar.getInstance();
-		JsonEncoder encoder = new JsonEncoder();
 		String url = System.getProperty("tokenUrl",
 				"https://test-token.paymill.de");
 		String apiKey = System.getProperty("publicApiKey");
@@ -49,24 +47,21 @@ public class TestCase {
 			expMonthStr = Integer.toString(expMonth);
 		}
 
-		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("number", "4111111111111111");
-		card.put("exp_month", expMonthStr);
-		card.put("exp_year", date.get(Calendar.YEAR) + 1);
-		card.put("cvc", "123");
-
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("requesttype", "create_token");
-		data.put("merchantkey", apiKey);
-		data.put("card", card);
+		data.put("channel.id", apiKey);
+		data.put("account.number", "4111111111111111");
+		data.put("account.expiry.month", expMonthStr);
+		data.put("account.expiry.year", date.get(Calendar.YEAR) + 1);
+		data.put("account.verification", "123");
+		data.put("jsonPFunction", "callback");
+		UrlEncoder encoder = new UrlEncoder();
+		encoder.setDecodeCamelCase(false);
+		String query = encoder.encode(data);
 
 		try {
 			SSLHelper.setTrustAllConnections();
-			HttpURLConnection connection = (HttpURLConnection) (new URL(url)
-					.openConnection());
-			connection.setDoOutput(true);
-			OutputStream out = connection.getOutputStream();
-			out.write(encoder.encode(data).getBytes());
+			HttpURLConnection connection = (HttpURLConnection) (new URL(url
+					+ '?' + query).openConnection());
 			InputStream stream = connection.getInputStream();
 			String body = new Scanner(stream, "UTF-8").useDelimiter("\\A")
 					.next();
@@ -78,9 +73,16 @@ public class TestCase {
 			}
 
 			JsonParser parser = new JsonParser();
-			JsonObject root = parser.parse(body).getAsJsonObject();
-			JsonElement token = root.get("token");
-			if (token == null) {
+			JsonObject root = parser
+					.parse(body.substring(9, body.length() - 1))
+					.getAsJsonObject();
+			JsonObject curr = root.getAsJsonObject("transaction");
+			JsonElement token = null;
+			if (curr != null)
+				curr = curr.getAsJsonObject("identification");
+			if (curr != null)
+				token = curr.get("uniqueId");
+			if (curr == null || token == null) {
 				throw new PaymillException(
 						"Token api returned no token, response = " + body);
 			}

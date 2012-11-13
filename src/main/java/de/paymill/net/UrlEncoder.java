@@ -23,9 +23,11 @@ import de.paymill.PaymillException;
 public class UrlEncoder implements IEncoder {
 	
 	protected String charset;
+	private boolean decodeCamelCase;
 	
 	public UrlEncoder() {
 		charset = "UTF-8";
+		setDecodeCamelCase(true);
 	}
 	
 	/*
@@ -123,8 +125,10 @@ public class UrlEncoder implements IEncoder {
 			if (builder.length() > 0) {
 				builder.append('&');
 			}
-			key = key.replaceAll("([a-z])([A-Z])", "$1_$2");
-			key = key.toLowerCase();
+			if (decodeCamelCase) {
+				key = key.replaceAll("([a-z])([A-Z])", "$1_$2");
+				key = key.toLowerCase();
+			}
 			if (value instanceof Enum) {
 				Enum<?> e = (Enum<?>)value;
 				value = e.toString().toLowerCase();
@@ -142,4 +146,11 @@ public class UrlEncoder implements IEncoder {
 		}
 	}
 
+	public boolean isDecodeCamelCase() {
+		return decodeCamelCase;
+	}
+
+	public void setDecodeCamelCase(boolean decodeCamelCase) {
+		this.decodeCamelCase = decodeCamelCase;
+	}
 }

@@ -24,8 +24,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
-import de.paymill.model.Card;
-import de.paymill.model.Card0;
+import de.paymill.model.Payment;
+import de.paymill.model.Payment0;
 
 /**
  * Base class for gson encoder/decoder.
@@ -55,9 +55,9 @@ public class GsonAdapter {
 				return json == null ? null : new Date(json.getAsInt() * 1000);
 			}
 		};
-		JsonDeserializer<Card> cardDeserializer = new JsonDeserializer<Card>() {
+		JsonDeserializer<Payment> cardDeserializer = new JsonDeserializer<Payment>() {
 			@Override
-			public Card deserialize(JsonElement json, Type type,
+			public Payment deserialize(JsonElement json, Type type,
 					JsonDeserializationContext context)
 					throws JsonParseException {
 				if (json == null) {
@@ -65,10 +65,10 @@ public class GsonAdapter {
 				}
 
 				if (json.isJsonObject()) {
-					return context.deserialize(json, Card0.class);
+					return context.deserialize(json, Payment0.class);
 				}
 
-				Card card = new Card();
+				Payment card = new Payment();
 				card.setId(json.getAsString());
 				return card;
 			}
@@ -116,7 +116,7 @@ public class GsonAdapter {
 		return new GsonBuilder()
 				.registerTypeAdapter(Date.class, serializer)
 				.registerTypeAdapter(Date.class, deserializer)
-				.registerTypeAdapter(Card.class, cardDeserializer)
+				.registerTypeAdapter(Payment.class, cardDeserializer)
 				.registerTypeAdapterFactory(enumFactory)
 				.setFieldNamingPolicy(
 						FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();

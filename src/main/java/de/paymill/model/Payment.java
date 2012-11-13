@@ -2,16 +2,24 @@ package de.paymill.model;
 
 import java.util.Date;
 
-public class Card {
+public class Payment {
 	private String id;
+	private Type type;
 	private String cardType;
 	private String country;
 	private Integer expireMonth;
 	private Integer expireYear;
 	private String cardHolder;
 	private String last4;
+	private String code;
+	private String holder;
+	private String account;
 	private Date createdAt;
 	private Date updatedAt;
+
+	enum Type {
+		CREDITCARD, DEBIT;
+	}
 
 	/**
 	 * @return the id
@@ -26,6 +34,21 @@ public class Card {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	/**
@@ -116,6 +139,51 @@ public class Card {
 	 */
 	public void setLast4(String last4) {
 		this.last4 = last4;
+	}
+
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
+	}
+
+	/**
+	 * @param code
+	 *            the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	/**
+	 * @return the holder
+	 */
+	public String getHolder() {
+		return holder;
+	}
+
+	/**
+	 * @param holder
+	 *            the holder to set
+	 */
+	public void setHolder(String holder) {
+		this.holder = holder;
+	}
+
+	/**
+	 * @return the account
+	 */
+	public String getAccount() {
+		return account;
+	}
+
+	/**
+	 * @param account
+	 *            the account to set
+	 */
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	/**

@@ -44,8 +44,8 @@ public class TransactionServiceTest extends TestCase {
 		assertNotNull(transaction.getId());
 		assertNull(transaction.getToken());
 		assertEquals(399, (int) transaction.getAmount());
-		assertNotNull(transaction.getCreditcard());
-		assertNotNull(transaction.getCreditcard().getId());
+		assertNotNull(transaction.getPayment());
+		assertNotNull(transaction.getPayment().getId());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class TransactionServiceTest extends TestCase {
 		Refund refund = srv.refund(tx, 50);
 
 		assertNotNull(refund);
-		assertEquals(Status.OPEN, refund.getStatus());
+		assertEquals(Status.REFUNDED, refund.getStatus());
 		assertEquals(50, (int) refund.getAmount());
 		assertNotNull(refund.getId());
 
