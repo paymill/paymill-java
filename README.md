@@ -12,7 +12,7 @@ You may provide the api key and api url through command line args by using the
 
 	java -DapiKey=<YOUR_API_KEY> -DapiUrl=<API_URL>
 
-The api url defaults to https://api.paymill.de/v1
+The api url defaults to https://api.paymill.de/v2
 
 Using services
 --------------
@@ -85,4 +85,4 @@ You may delete objects by calling the service's delete() method with an object i
 Further info
 ------------
 
-See our api reference for more examples: [http://paymill.de/doumentation/referenz/api-referenz/]()
+See our api reference for more examples: [https://www.paymill.com/en-gb/documentation-3/reference/api-reference/index.html]()
