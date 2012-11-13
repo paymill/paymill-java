@@ -17,7 +17,7 @@ public class Payment {
 	private Date createdAt;
 	private Date updatedAt;
 
-	enum Type {
+	public enum Type {
 		CREDITCARD, DEBIT;
 	}
 
