@@ -2,7 +2,6 @@ package de.paymill.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -12,11 +11,10 @@ import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Client;
 import de.paymill.model.Offer;
-import de.paymill.model.Payment;
-import de.paymill.model.Subscription;
 import de.paymill.model.Offer.Interval;
+import de.paymill.model.Payment;
 import de.paymill.model.Payment.Type;
-import de.paymill.net.ApiException;
+import de.paymill.model.Subscription;
 
 public class OfferServiceTest extends TestCase {
 
