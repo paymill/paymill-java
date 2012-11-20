@@ -8,6 +8,7 @@ import java.util.Map;
 
 import de.paymill.model.Client;
 import de.paymill.model.Offer;
+import de.paymill.model.Payment;
 import de.paymill.model.Subscription;
 import de.paymill.net.HttpClient;
 
@@ -27,12 +28,14 @@ public class OfferService extends AbstractService<Offer> {
 	 * 
 	 * @param offer
 	 * @param client
+	 * @param payment
 	 * @return
 	 */
-	public Subscription subscribe(Offer offer, Client client) {
+	public Subscription subscribe(Offer offer, Client client, Payment payment) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("offer", offer.getId());
 		params.put("client", client.getId());
+		params.put("payment", payment.getId());
 
 		return this.client.post("subscriptions", params, Subscription.class);
 	}

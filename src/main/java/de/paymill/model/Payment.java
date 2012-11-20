@@ -5,6 +5,7 @@ import java.util.Date;
 public class Payment {
 	private String id;
 	private Type type;
+	private String client;
 	private String cardType;
 	private String country;
 	private Integer expireMonth;
@@ -214,5 +215,19 @@ public class Payment {
 	 */
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	/**
+	 * @return the client
+	 */
+	public String getClient() {
+		return client;
+	}
+
+	/**
+	 * @param client the client to set
+	 */
+	public void setClient(String client) {
+		this.client = client;
 	}
 }

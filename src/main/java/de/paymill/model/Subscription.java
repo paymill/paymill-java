@@ -5,7 +5,8 @@ import java.util.Date;
 public class Subscription {
 	private String id;
 	private Offer offer;
-	private Client customer;
+	private Client client;
+	private Payment payment;
 	private Boolean cancelAtPeriodEnd;
 	private Date trialStart;
 	private Date trialEnd;
@@ -134,18 +135,32 @@ public class Subscription {
 	}
 
 	/**
-	 * @return the customer
+	 * @return the client
 	 */
-	public Client getCustomer() {
-		return customer;
+	public Client getClient() {
+		return client;
 	}
 
 	/**
-	 * @param customer
-	 *            the customer to set
+	 * @param client
+	 *            the client to set
 	 */
-	public void setCustomer(Client customer) {
-		this.customer = customer;
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	/**
+	 * @return the payment
+	 */
+	public Payment getPayment() {
+		return payment;
+	}
+
+	/**
+	 * @param payment the payment to set
+	 */
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 }
