@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  */
-public class Transaction {
+public class Transaction implements IPaymillObject {
 	public enum Status {
 		PARTIAL_REFUNDED, REFUNDED, CLOSED, FAILED, PENDING;
 	}
