@@ -21,7 +21,7 @@ public class Transaction {
 	private Status status;
 	private Date createdAt;
 	private Date updatedAt;
-	private Client customer;
+	private Client client;
 	private Payment payment;
 	private String token;
 	private List<Refund> refunds;
@@ -131,19 +131,19 @@ public class Transaction {
 		this.updatedAt = updatedAt;
 	}
 
+
 	/**
-	 * @return the customer
+	 * @return the client
 	 */
-	public Client getCustomer() {
-		return customer;
+	public Client getClient() {
+		return client;
 	}
 
 	/**
-	 * @param customer
-	 *            the customer to set
+	 * @param client the client to set
 	 */
-	public void setCustomer(Client customer) {
-		this.customer = customer;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	/**
