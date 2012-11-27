@@ -3,13 +3,13 @@ package de.paymill.model;
 import java.util.Date;
 import java.util.List;
 
-public class Client {
+public class Client implements IPaymillObject {
 	private String id;
 	private String description;
 	private String email;
 	private Date createdAt;
 	private Date updatedAt;
-	private List<Payment> payments;
+	private List<Payment> payment;
 	private List<Subscription> subscription;
 
 	/**
@@ -90,16 +90,16 @@ public class Client {
 	/**
 	 * @return the payments
 	 */
-	public List<Payment> getPayments() {
-		return payments;
+	public List<Payment> getPayment() {
+		return payment;
 	}
 
 	/**
 	 * @param payments
 	 *            the payments to set
 	 */
-	public void setPayments(List<Payment> payments) {
-		this.payments = payments;
+	public void setPayment(List<Payment> payments) {
+		this.payment = payments;
 	}
 
 	/**
