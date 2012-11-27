@@ -134,8 +134,7 @@ public class UrlEncoder implements IEncoder {
 				Enum<?> e = (Enum<?>)value;
 				value = e.toString().toLowerCase();
 			}
-			if(value instanceof IPaymillObject)
-			{
+			if (value instanceof IPaymillObject) {
 				value = ((IPaymillObject) value).getId();
 			}
 			builder.append(
