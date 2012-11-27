@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import de.paymill.PaymillException;
+import de.paymill.model.IPaymillObject;
 
 /**
  * Encoder implementation which returns url encoded query strings when encoding
@@ -132,6 +133,10 @@ public class UrlEncoder implements IEncoder {
 			if (value instanceof Enum) {
 				Enum<?> e = (Enum<?>)value;
 				value = e.toString().toLowerCase();
+			}
+			if(value instanceof IPaymillObject)
+			{
+				value = ((IPaymillObject) value).getId();
 			}
 			builder.append(
 				String.format("%s=%s",
