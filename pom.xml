@@ -36,10 +36,8 @@
 				<version>2.12.3</version>
 				<configuration>
 					<systemPropertyVariables>
-						<tokenUrl>https://test-token.chipmunk.dev/</tokenUrl>
-						<apiUrl>http://api.chipmunk.dev/v2/</apiUrl>
-						<apiKey>d54a3bb94b65c4ab7b28cfee35dee741</apiKey>
-						<publicApiKey>58172705739c9054cf90c9380a3ed71b</publicApiKey>
+						<apiUrl>https://api.paymill.de/v2/</apiUrl>
+						<apiKey>3fb33577bb16c8d08a36a064bdb10299</apiKey>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
