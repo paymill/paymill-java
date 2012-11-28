@@ -36,7 +36,7 @@
 				<version>2.12.3</version>
 				<configuration>
 					<systemPropertyVariables>
-						<apiUrl>https://api.paymill.de/v2/</apiUrl>
+						<apiUrl>https://api.paymill.com/v2/</apiUrl>
 						<apiKey>3fb33577bb16c8d08a36a064bdb10299</apiKey>
 					</systemPropertyVariables>
 				</configuration>
