@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import de.paymill.Paymill;
 import de.paymill.TestCase;
+import de.paymill.model.Payment;
 import de.paymill.model.Refund;
 import de.paymill.model.Refund.Status;
 import de.paymill.model.Transaction;
@@ -94,5 +95,24 @@ public class TransactionServiceTest extends TestCase {
 		tx = srv.get(tx.getId());
 		assertEquals(Transaction.Status.REFUNDED, tx.getStatus());
 		assertEquals(0, (int) tx.getAmount());
+	}
+	
+	@Test
+	public void testCreateWithPayment() {
+		PaymentService srvPayment = Paymill.getService(PaymentService.class); 
+		Payment payment = srvPayment.create(getToken());
+
+		TransactionService svrTx = Paymill.getService(TransactionService.class); 
+		Transaction transactionParams = new Transaction(); 
+		transactionParams.setPayment(payment); 
+		transactionParams.setAmount(100); 
+		transactionParams.setCurrency("EUR"); 
+		Transaction tx = svrTx.create(transactionParams);
+		
+		assertNotNull(tx);
+		assertNotNull(tx.getId());
+		assertEquals((int)tx.getAmount(), 100);
+		assertNotNull(tx.getPayment());
+		assertEquals(payment.getId(), tx.getPayment().getId());
 	}
 }
