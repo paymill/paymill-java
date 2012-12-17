@@ -138,11 +138,14 @@ public class HttpClient {
 			Type resultType) {
 		URL url = getResourceUrl(path);
 		HttpURLConnection connection = createConnection(url, params, method);
-		
+
 		try {
 			int code = connection.getResponseCode();
 			if (code >= 200 && code < 300) {
 				String body = readResponseBody(connection.getInputStream());
+				if (resultType == null) {
+					return null;
+				}
 				return jsonDecoder.decode(body, resultType);
 			} else {
 				String body = readResponseBody(connection.getErrorStream());

@@ -30,14 +30,11 @@ public class PaymentService extends AbstractService<Payment> {
 		return client.post(resource, params, modelClass);
 	}
 
-	// Documented here, but missing
-	// https://www.paymill.com/it-it/documentation-3/reference/api-reference/index.html#create-new-credit-card-payment-with
-	// Not having this method, will cause problem during subscription management (eg, duplicate clients).
-    public Payment create(String token, Client client) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("token", token);
-        params.put("client", client.getId());
-        return this.client.post(resource, params, modelClass);
-    }
+	public Payment create(String token, Client client) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("token", token);
+		params.put("client", client.getId());
+		return this.client.post(resource, params, modelClass);
+	}
 
 }

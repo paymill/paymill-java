@@ -56,7 +56,7 @@ public class PaymentServiceTest extends TestCase {
             srv.delete(payment);
         } catch (NullPointerException e) {
             fail("Deletion should be successful");
-            e.printStackTrace(); // Null Pointer Exception
+            e.printStackTrace();
         }
     }
 
