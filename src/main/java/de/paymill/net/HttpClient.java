@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
+
 import de.paymill.PaymillException;
 
 /**
@@ -216,9 +217,7 @@ public class HttpClient {
 
 	protected void setAuthentication(HttpURLConnection connection) {
 		String authInfo = apiKey + ":";
-		// TODO remove proprietary base64 encoder
-		BASE64Encoder encoder = new BASE64Encoder();
-		String encodedAuth = encoder.encode(authInfo.getBytes());
+		String encodedAuth = Base64.encodeBase64String(authInfo.getBytes());
 		connection.setRequestProperty("Authorization", "Basic " + encodedAuth);
 	}
 
