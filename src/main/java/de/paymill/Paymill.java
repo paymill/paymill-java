@@ -43,7 +43,7 @@ public class Paymill {
 	 * @return
 	 */
 	public static String getApiUrl() {
-		return System.getProperty("apiUrl", "https://api.paymill.de/v2");
+		return System.getProperty("apiUrl", "https://api.paymill.com/v2");
 	}
 
 	/**
