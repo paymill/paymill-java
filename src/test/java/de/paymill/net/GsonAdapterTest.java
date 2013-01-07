@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
+import de.paymill.model.Client;
 import de.paymill.model.Offer;
 import de.paymill.model.Offer.Interval;
 
@@ -47,6 +48,16 @@ public class GsonAdapterTest {
 		
 		String json = gson.toJson(offer);
 		assertEquals("{\"name\":\"Superabo\",\"amount\":199,\"interval\":\"week\",\"trial_period_days\":15}", json);
+	}
+	
+	@Test
+	public void testIdToObjectConversion() {
+		GsonAdapter adapter = new GsonAdapter();
+		Gson gson = adapter.createGson();
+		String json = "\"client_12345\"";
+		
+		Client client = gson.fromJson(json, Client.class);
+		assertEquals("client_12345", client.getId());
 	}
 
 	class TestObj {

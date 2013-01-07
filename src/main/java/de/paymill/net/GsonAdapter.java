@@ -24,8 +24,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import de.paymill.PaymillException;
+import de.paymill.model.Client;
+import de.paymill.model.IPaymillObject;
+import de.paymill.model.Offer;
 import de.paymill.model.Payment;
-import de.paymill.model.Payment0;
+import de.paymill.model.Refund;
+import de.paymill.model.Subscription;
+import de.paymill.model.Transaction;
 
 /**
  * Base class for gson encoder/decoder.
@@ -53,24 +59,6 @@ public class GsonAdapter {
 					JsonDeserializationContext context)
 					throws JsonParseException {
 				return json == null ? null : new Date(json.getAsInt() * 1000);
-			}
-		};
-		JsonDeserializer<Payment> cardDeserializer = new JsonDeserializer<Payment>() {
-			@Override
-			public Payment deserialize(JsonElement json, Type type,
-					JsonDeserializationContext context)
-					throws JsonParseException {
-				if (json == null) {
-					return null;
-				}
-
-				if (json.isJsonObject()) {
-					return context.deserialize(json, Payment0.class);
-				}
-
-				Payment card = new Payment();
-				card.setId(json.getAsString());
-				return card;
 			}
 		};
 
@@ -112,13 +100,58 @@ public class GsonAdapter {
 				return o.toString().toLowerCase(Locale.US);
 			}
 		};
-
+		
 		return new GsonBuilder()
 				.registerTypeAdapter(Date.class, serializer)
 				.registerTypeAdapter(Date.class, deserializer)
-				.registerTypeAdapter(Payment.class, cardDeserializer)
+				.registerTypeAdapter(Client.class,       new PaymillObjectDeserializer(Client.class,       Client0.class))
+				.registerTypeAdapter(Offer.class,        new PaymillObjectDeserializer(Offer.class,        Offer0.class))
+				.registerTypeAdapter(Payment.class,      new PaymillObjectDeserializer(Payment.class,      Payment0.class))
+				.registerTypeAdapter(Refund.class,       new PaymillObjectDeserializer(Refund.class,       Refund0.class))
+				.registerTypeAdapter(Subscription.class, new PaymillObjectDeserializer(Subscription.class, Subscription0.class))
+				.registerTypeAdapter(Transaction.class,  new PaymillObjectDeserializer(Transaction.class,  Transaction0.class))
 				.registerTypeAdapterFactory(enumFactory)
 				.setFieldNamingPolicy(
 						FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 	}
+	
+	class PaymillObjectDeserializer implements JsonDeserializer<IPaymillObject> {
+
+		private Class<?> targetClass;
+		private Class<?> dummyClass;
+
+		public PaymillObjectDeserializer(Class<?> targetClass,
+				Class<?> dummyClass) {
+			this.targetClass = targetClass;
+			this.dummyClass = dummyClass;
+		}
+
+		@Override
+		public IPaymillObject deserialize(JsonElement json, Type type,
+				JsonDeserializationContext context) throws JsonParseException {
+			if (json == null) {
+				return null;
+			}
+
+			if (json.isJsonObject()) {
+				return context.deserialize(json, dummyClass);
+			}
+
+			try {
+				String id = json.getAsString();
+				IPaymillObject instance = (IPaymillObject)targetClass.newInstance();
+				instance.setId(id);
+				return instance;
+			} catch (Exception e) {
+				throw new PaymillException("Error instantiating " + targetClass, e);
+			}
+		}
+	};
+	
+	public class Client0 extends Client {}
+	public class Offer0 extends Offer {}
+	public class Payment0 extends Payment {}
+	public class Refund0 extends Refund {}
+	public class Subscription0 extends Subscription {}
+	public class Transaction0 extends Transaction {}
 }

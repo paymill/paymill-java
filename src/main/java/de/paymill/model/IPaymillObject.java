@@ -2,5 +2,6 @@ package de.paymill.model;
 
 public interface IPaymillObject {
 	
-	String getId();
+	public String getId();
+	public void setId(String id);
 }
