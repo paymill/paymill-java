@@ -37,7 +37,7 @@ public class JsonDecoder extends GsonAdapter implements IDecoder {
 			JsonElement dataElement = root.get("data");
 			return gson.fromJson(dataElement, type);
 		} catch (JsonSyntaxException e) {
-			throw new PaymillException("Error decoding string.", e);
+			throw new PaymillException("Error decoding string: %s.", e, data);
 		}
 	}
 
