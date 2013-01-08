@@ -148,10 +148,10 @@ public class GsonAdapter {
 		}
 	};
 	
-	public class Client0 extends Client {}
-	public class Offer0 extends Offer {}
-	public class Payment0 extends Payment {}
-	public class Refund0 extends Refund {}
-	public class Subscription0 extends Subscription {}
-	public class Transaction0 extends Transaction {}
+	public class Client0 extends Client { public Client0() { super(); } }
+	public class Offer0 extends Offer { public Offer0() { super(); } }
+	public class Payment0 extends Payment { public Payment0() { super(); } }
+	public class Refund0 extends Refund { public Refund0() { super(); } }
+	public class Subscription0 extends Subscription { public Subscription0() { super(); } }
+	public class Transaction0 extends Transaction { public Transaction0() { super(); } }
 }
