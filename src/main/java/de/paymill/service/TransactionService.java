@@ -1,5 +1,6 @@
 package de.paymill.service;
 
+import de.paymill.Paymill;
 import de.paymill.model.Refund;
 import de.paymill.model.Transaction;
 import de.paymill.net.HttpClient;
@@ -7,7 +8,7 @@ import de.paymill.net.HttpClient;
 public class TransactionService extends AbstractService<Transaction> {
 
 	public TransactionService() {
-		super("transactions", Transaction.class);
+		this(Paymill.getClient());
 	}
 
 	public TransactionService(HttpClient client) {

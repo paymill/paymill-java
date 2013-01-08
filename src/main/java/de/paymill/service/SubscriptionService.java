@@ -3,6 +3,7 @@ package de.paymill.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.paymill.Paymill;
 import de.paymill.model.Client;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
@@ -12,11 +13,13 @@ import de.paymill.net.HttpClient;
 public class SubscriptionService extends AbstractService<Subscription> {
 
 	public SubscriptionService() {
-		super("Subscriptions", Subscription.class);
+		this(Paymill.getClient());
 	}
 
 	public SubscriptionService(HttpClient client) {
 		super("Subscriptions", Subscription.class, client);
+		this.updateableProperties.add("offer");
+		this.updateableProperties.add("cancel_at_period_end");
 	}
 
 	/**

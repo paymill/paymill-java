@@ -1,11 +1,16 @@
 package de.paymill.service;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.paymill.Paymill;
 import de.paymill.PaymillException;
@@ -23,6 +28,7 @@ public class AbstractService<T> {
 	protected Class<T> modelClass;
 	protected ListType listType;
 	protected HttpClient client;
+	protected Set<String> updateableProperties;
 
 	public AbstractService(String resource, Class<T> modelClass) {
 		this(resource, modelClass, Paymill.getClient());
@@ -34,6 +40,7 @@ public class AbstractService<T> {
 		this.listType = new ListType(modelClass);
 		this.resource = resource;
 		this.client = client;
+		this.updateableProperties = new HashSet<String>();
 	}
 
 	/**
@@ -117,7 +124,7 @@ public class AbstractService<T> {
 	 * @return
 	 */
 	public T update(T obj) {
-		return client.put(resource, getModelId(obj), obj, modelClass);
+		return client.put(resource, getModelId(obj), getParamMap(obj), modelClass);
 	}
 
 	/**
@@ -136,6 +143,22 @@ public class AbstractService<T> {
 	 */
 	public void delete(String id) {
 		client.delete(resource, id);
+	}
+	
+	protected Map<String, Object> getParamMap(T obj) {
+		try {
+			BeanInfo info = Introspector.getBeanInfo(obj.getClass());
+			Map<String, Object> params = new HashMap<String, Object>();
+			for (PropertyDescriptor d : info.getPropertyDescriptors()) {
+				String name = d.getName();
+				if (updateableProperties.contains(name)) {
+					params.put(name, d.getReadMethod().invoke(obj));
+				}
+			}
+			return params;
+		} catch (Exception e) {
+			throw new PaymillException("Error loading properties", e);
+		}
 	}
 
 	protected String getModelId(T obj) {

@@ -3,6 +3,7 @@ package de.paymill.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.paymill.Paymill;
 import de.paymill.model.Refund;
 import de.paymill.model.Transaction;
 import de.paymill.net.HttpClient;
@@ -10,7 +11,7 @@ import de.paymill.net.HttpClient;
 public class RefundService extends AbstractService<Refund> {
 
 	public RefundService() {
-		super("refunds", Refund.class);
+		this(Paymill.getClient());
 	}
 
 	public RefundService(HttpClient client) {

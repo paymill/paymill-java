@@ -6,6 +6,7 @@ package de.paymill.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.paymill.Paymill;
 import de.paymill.model.Client;
 import de.paymill.model.Payment;
 import de.paymill.net.HttpClient;
@@ -17,7 +18,7 @@ import de.paymill.net.HttpClient;
 public class PaymentService extends AbstractService<Payment> {
 
 	public PaymentService() {
-		super("payments", Payment.class);
+		this(Paymill.getClient());
 	}
 
 	public PaymentService(HttpClient client) {

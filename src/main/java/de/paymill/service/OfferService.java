@@ -6,6 +6,7 @@ package de.paymill.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.paymill.Paymill;
 import de.paymill.model.Client;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
@@ -15,11 +16,15 @@ import de.paymill.net.HttpClient;
 public class OfferService extends AbstractService<Offer> {
 
 	public OfferService() {
-		super("offers", Offer.class);
+		this(Paymill.getClient());
 	}
 
 	public OfferService(HttpClient client) {
 		super("offers", Offer.class, client);
+		this.updateableProperties.add("name");
+		this.updateableProperties.add("amount");
+		this.updateableProperties.add("interval");
+		this.updateableProperties.add("trial_period_days");
 	}
 
 	/**

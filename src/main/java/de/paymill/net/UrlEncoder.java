@@ -46,7 +46,7 @@ public class UrlEncoder implements IEncoder {
 	 */
 	@Override
 	public String encode(Object o) {
-		if ("de.paymill.model".equals(o.getClass().getPackage().getName())) {
+		if (o instanceof IPaymillObject) {
 			return encodeBean(o);
 		} else if (o instanceof Map) {
 			return encodeMap((Map<?, ?>)o);

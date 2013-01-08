@@ -2,6 +2,7 @@ package de.paymill.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -44,5 +45,21 @@ public class ClientServiceTest extends TestCase {
 
 		assertNotNull(clients);
 		assertEquals(5, clients.size());
+	}
+	
+	@Test
+	public void testUpdateClient() {
+		ClientService srv = Paymill.getService(ClientService.class);
+		String email = getRandomEmail();
+		Client params = new Client();
+		params.setEmail(email);
+
+		Client client = srv.create(params);
+		assertNull(client.getDescription());
+		
+		client.setDescription("Description");
+		client = srv.update(client);
+		
+		assertEquals("Description", client.getDescription());
 	}
 }
