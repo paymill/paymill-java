@@ -3,6 +3,8 @@
  */
 package de.paymill;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 
 /**
@@ -17,5 +19,13 @@ public class TestCase {
 
 	protected String getToken() {
 		return "098f6bcd4621d373cade4e832627b4f6";
+	}
+
+	protected URL getWebhookUrl() {
+		try {
+			return new URL("http://www.paymill.de");
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 }
