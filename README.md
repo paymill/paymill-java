@@ -1,8 +1,6 @@
 Paymill-Java
 ============
 
-[![Build Status](https://secure.travis-ci.org/Paymill/Paymill-Java.png)](http://travis-ci.org/Paymill/Paymill-Java)
-
 Initialize the library by setting your api key:
 
 	Paymill.setApiKey("<YOUR API KEY>");
