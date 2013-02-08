@@ -97,7 +97,8 @@ public class GsonAdapter {
 			}
 
 			private String toLowercase(Object o) {
-				return o.toString().toLowerCase(Locale.US);
+				String normalized = o.toString().toLowerCase(Locale.US);
+				return normalized.replace('_', '.');
 			}
 		};
 		

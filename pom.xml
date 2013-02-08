@@ -42,7 +42,7 @@
 				<configuration>
 					<systemPropertyVariables>
 						<apiUrl>https://api.paymill.com/v2/</apiUrl>
-						<apiKey>3fb33577bb16c8d08a36a064bdb10299</apiKey>
+						<apiKey>7e385a6008d2bcaa2239b022d7c0530a</apiKey>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

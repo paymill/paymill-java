@@ -23,7 +23,7 @@ public class TestCase {
 
 	protected URL getWebhookUrl() {
 		try {
-			return new URL("http://www.paymill.de");
+			return new URL("http://floreysoftsandbox.appspot.com/dummyCallback");
 		} catch (MalformedURLException e) {
 			return null;
 		}

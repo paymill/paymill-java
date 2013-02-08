@@ -39,7 +39,7 @@ public interface IDecoder {
 	 * @return The decoded error object.
 	 * @throws PaymillException
 	 */
-	public ApiException decodeError(String data);
+	public ApiException decodeError(int code, String data);
 
 	/**
 	 * Set the character set of the encoded string.
