@@ -4,16 +4,7 @@
 		"event_resource" : {
 			"subscription" : {
 				"id" : "sub_f3f78037889f4d74f0fe",
-				"offer" : {
-					"id" : "offer_96b7d102595756697537",
-					"name" : "ultradoxPersonal",
-					"amount" : 594,
-					"currency" : "EUR",
-					"interval" : "month",
-					"trial_period_days" : 0,
-					"created_at" : 1359642761,
-					"updated_at" : 1359642761
-				},
+				"offer" : [],
 				"livemode" : true,
 				"cancel_at_period_end" : false,
 				"trial_start" : null,

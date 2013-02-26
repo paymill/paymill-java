@@ -25,8 +25,20 @@ public class WebhookServiceTest extends TestCase {
 	}
 
 	@Test
+	public void bugParseEvent() {
+		try {
+			Paymill.setApiKey("dummy");
+			WebhookService srv = Paymill.getService(WebhookService.class);
+			Event event = srv.parse(new FileInputStream(new File("test/offerbug.js")));
+			assertNotNull(event);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	@Test
 	public void testParseEvent() {
 		try {
+			Paymill.setApiKey("dummy");
 			WebhookService srv = Paymill.getService(WebhookService.class);
 			Event event = srv.parse(new FileInputStream(new File("test/failed.js")));
 			assertNotNull(event);
