@@ -10,9 +10,11 @@ import java.util.Map;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
@@ -109,11 +111,48 @@ public class GsonAdapter {
 				.registerTypeAdapter(Offer.class,        new PaymillObjectDeserializer(Offer.class,        Offer0.class))
 				.registerTypeAdapter(Payment.class,      new PaymillObjectDeserializer(Payment.class,      Payment0.class))
 				.registerTypeAdapter(Refund.class,       new PaymillObjectDeserializer(Refund.class,       Refund0.class))
-				.registerTypeAdapter(Subscription.class, new PaymillObjectDeserializer(Subscription.class, Subscription0.class))
+				.registerTypeAdapter(Subscription.class, new SubscriptionDeserializer())
 				.registerTypeAdapter(Transaction.class,  new PaymillObjectDeserializer(Transaction.class,  Transaction0.class))
 				.registerTypeAdapterFactory(enumFactory)
 				.setFieldNamingPolicy(
 						FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+	}
+	
+	private static class SubscriptionDeserializer implements
+			JsonDeserializer<IPaymillObject> {
+
+		@Override
+		public IPaymillObject deserialize(JsonElement json, Type type,
+				JsonDeserializationContext context) throws JsonParseException {
+			if (json == null) {
+				return null;
+			}
+
+			if (json.isJsonObject()) {
+				JsonObject jsonObject = json.getAsJsonObject();
+				JsonElement offerElement = jsonObject.get("offer");
+				if (offerElement != null && offerElement.isJsonArray()) {
+					JsonArray jsonArray = offerElement.getAsJsonArray();
+					if (jsonArray.size() == 0) {
+						jsonObject.remove("offer");
+					} else {
+						throw new IllegalArgumentException(
+								"Received non empty offer array " + jsonArray);
+					}
+				}
+
+				return context.deserialize(json, Subscription0.class);
+			}
+			try {
+				String id = json.getAsString();
+				IPaymillObject instance = new Subscription();
+				instance.setId(id);
+				return instance;
+			} catch (Exception e) {
+				throw new PaymillException("Error instantiating subscription ",
+						e);
+			}
+		}
 	}
 	
 	class PaymillObjectDeserializer implements JsonDeserializer<IPaymillObject> {

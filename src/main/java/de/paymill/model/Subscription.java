@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Subscription implements IPaymillObject {
 	private String id;
-	private Offer[] offer;
+	private Offer offer;
 	private Client client;
 	private Payment payment;
 	private Boolean cancelAtPeriodEnd;
@@ -33,22 +33,15 @@ public class Subscription implements IPaymillObject {
 	 * @return the offer
 	 */
 	public Offer getOffer() {
-		return (offer == null || offer.length == 0 ) ? null : offer[0];
+		return offer;
 	}
+
 
 	/**
 	 * @param offer
 	 *            the offer to set
 	 */
 	public void setOffer(Offer offer) {
-		this.offer = new Offer[] { offer };
-	}
-
-	/**
-	 * @param offer
-	 *            the offer to set
-	 */
-	public void setOffer(Offer[] offer) {
 		this.offer = offer;
 	}
 	
