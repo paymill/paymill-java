@@ -13,6 +13,7 @@ public class Subscription implements IPaymillObject {
 	private Date canceledAt;
 	private Date createdAt;
 	private Date updatedAt;
+	private Date nextCaptureAt;	
 
 	/**
 	 * @return the id
@@ -133,6 +134,14 @@ public class Subscription implements IPaymillObject {
 	 */
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public Date getNextCaptureAt() {
+		return nextCaptureAt;
+	}
+
+	public void setNextCaptureAt(Date nextCaptureAt) {
+		this.nextCaptureAt = nextCaptureAt;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.Date;
 import de.paymill.model.Webhook.EventType;
 
 public class Event {
-	public static class EventResource {
+	public static class EventResource extends Transaction {
 		private Subscription subscription;
 		private Transaction transaction;
 		
