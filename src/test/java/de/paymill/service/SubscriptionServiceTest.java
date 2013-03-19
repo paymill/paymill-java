@@ -8,8 +8,8 @@ import org.junit.Test;
 import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Client;
+import de.paymill.model.Interval;
 import de.paymill.model.Offer;
-import de.paymill.model.Offer.Interval;
 import de.paymill.model.Payment;
 import de.paymill.model.Payment.Type;
 import de.paymill.model.Subscription;
@@ -23,9 +23,12 @@ public class SubscriptionServiceTest extends TestCase {
 		PaymentService srvPayment = Paymill.getService(PaymentService.class);
 		SubscriptionService srvSubs = Paymill.getService(SubscriptionService.class);
 
+		Interval interval = new Interval();
+		interval.setInterval(1);
+		interval.setUnit(Interval.Unit.WEEK);
 		Offer offer = new Offer();
 		offer.setAmount(199);
-		offer.setInterval(Interval.WEEK);
+		offer.setInterval(interval);
 		offer.setName("testabo");
 		offer.setTrialPeriodDays(15);
 		offer.setCurrency("eur");

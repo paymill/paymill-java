@@ -3,10 +3,6 @@ package de.paymill.model;
 import java.util.Date;
 
 public class Offer implements IPaymillObject {
-	public enum Interval {
-		WEEK, MONTH, YEAR
-	}
-
 	private String id;
 	private String name;
 	private Integer amount;

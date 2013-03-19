@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import de.paymill.model.Client;
+import de.paymill.model.Interval;
 import de.paymill.model.Offer;
-import de.paymill.model.Offer.Interval;
 
 public class UrlEncoderTest {
 
@@ -23,10 +23,13 @@ public class UrlEncoderTest {
 	public void testEnumCase() {
 		UrlEncoder encoder = new UrlEncoder();
 		
+		Interval interval = new Interval();
+		interval.setInterval(1);
+		interval.setUnit(Interval.Unit.WEEK);
 		Offer offer = new Offer();
-		offer.setInterval(Interval.WEEK);
+		offer.setInterval(interval);
 		
-		assertEquals("interval=week", encoder.encode(offer));
+		assertEquals("interval=1+WEEK", encoder.encode(offer));
 	}
 	
 	@Test

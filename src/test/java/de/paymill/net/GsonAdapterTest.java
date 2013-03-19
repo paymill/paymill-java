@@ -9,8 +9,8 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import de.paymill.model.Client;
+import de.paymill.model.Interval;
 import de.paymill.model.Offer;
-import de.paymill.model.Offer.Interval;
 
 public class GsonAdapterTest {
 
@@ -40,14 +40,17 @@ public class GsonAdapterTest {
 		GsonAdapter adapter = new GsonAdapter();
 		Gson gson = adapter.createGson();
 		
+		Interval interval = new Interval();
+		interval.setInterval(1);
+		interval.setUnit(Interval.Unit.WEEK);
 		Offer offer = new Offer();
 		offer.setAmount(199);
-		offer.setInterval(Interval.WEEK);
+		offer.setInterval(interval);
 		offer.setName("Superabo");
 		offer.setTrialPeriodDays(15);
 		
 		String json = gson.toJson(offer);
-		assertEquals("{\"name\":\"Superabo\",\"amount\":199,\"interval\":\"week\",\"trial_period_days\":15}", json);
+		assertEquals("{\"name\":\"Superabo\",\"amount\":199,\"interval\":\"1 WEEK\",\"trial_period_days\":15}", json);
 	}
 	
 	@Test

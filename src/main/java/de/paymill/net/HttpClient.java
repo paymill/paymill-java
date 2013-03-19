@@ -142,20 +142,24 @@ public class HttpClient {
 		try {
 			int code = connection.getResponseCode();
 			if (code >= 200 && code < 300) {
-				String body = readResponseBody(connection.getInputStream());
-				if (resultType == null) {
-					return null;
-				}
-				return jsonDecoder.decode(body, resultType);
+				return decode(connection.getInputStream(), resultType);
 			} else {
 				String body = readResponseBody(connection.getErrorStream());
-				throw jsonDecoder.decodeError(body);
+				throw jsonDecoder.decodeError(code, body);
 			}
 		} catch (IOException ex) {
 			throw new PaymillException("Error connecting to the api", ex);
 		}
 	}
 
+	public <T> T decode(InputStream inputStream, Type resultType) throws IOException {
+		String body = readResponseBody(inputStream);
+		if (resultType == null) {
+			return null;
+		}
+		return jsonDecoder.decode(body, resultType);
+	}
+	
 	/**
 	 * Append the identifier to an resource and only add single slash between
 	 * them
@@ -245,8 +249,7 @@ public class HttpClient {
 	}
 
 	protected String readResponseBody(InputStream stream) throws IOException {
-		String body = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
-		stream.close();
-		return body;
+		Scanner s = new Scanner(stream, "UTF-8").useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
 	}
 }

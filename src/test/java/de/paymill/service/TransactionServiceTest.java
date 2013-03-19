@@ -87,8 +87,8 @@ public class TransactionServiceTest extends TestCase {
 
 		int amount = tx.getAmount();
 		tx = srv.get(tx.getId());
-		assertEquals(Transaction.Status.PARTIAL_REFUNDED, tx.getStatus());
 		assertEquals(amount - 50, (int) tx.getAmount());
+		assertEquals(Transaction.Status.PARTIAL_REFUNDED, tx.getStatus());
 
 		srv.refund(tx, tx.getAmount());
 

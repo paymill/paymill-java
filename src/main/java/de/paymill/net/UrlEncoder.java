@@ -108,7 +108,14 @@ public class UrlEncoder implements IEncoder {
 			Object key = entry.getKey();
 			Object value = entry.getValue();
 			if (key != null && value != null) {
-				addKeyValuePair(builder, key.toString(), value);
+				if ( value instanceof Object[]) {
+					Object[] array = (Object[]) value;
+					for (Object o : array) {
+						addKeyValuePair(builder, key.toString()+"[]", o);
+					}
+				} else {
+					addKeyValuePair(builder, key.toString(), value);
+				}
 			}
 		}
 		return builder.toString();
@@ -133,6 +140,7 @@ public class UrlEncoder implements IEncoder {
 			if (value instanceof Enum) {
 				Enum<?> e = (Enum<?>)value;
 				value = e.toString().toLowerCase();
+				value = ((String)value).replace('_', '.');
 			}
 			if (value instanceof IPaymillObject) {
 				value = ((IPaymillObject) value).getId();

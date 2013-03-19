@@ -8,6 +8,14 @@ import java.util.List;
 
 /**
  */
+/**
+ * @author Daniel Florey
+ *
+ */
+/**
+ * @author Daniel Florey
+ *
+ */
 public class Transaction implements IPaymillObject {
 	public enum Status {
 		PARTIAL_REFUNDED, REFUNDED, CLOSED, FAILED, PENDING;
@@ -19,6 +27,7 @@ public class Transaction implements IPaymillObject {
 	private Integer originAmount;
 	private String currency;
 	private Status status;
+	private String responseCode;
 	private Date createdAt;
 	private Date updatedAt;
 	private Client client;
@@ -99,6 +108,14 @@ public class Transaction implements IPaymillObject {
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return response code 
+	 * 			sett documentation for a list of available response codes
+	 */
+	public String getResponseCode() {
+		return responseCode;
 	}
 
 	/**
