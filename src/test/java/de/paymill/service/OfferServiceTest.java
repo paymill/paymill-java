@@ -29,7 +29,7 @@ public class OfferServiceTest extends TestCase {
 		params.setInterval(interval);
 		params.setName("Superabo");
 		params.setTrialPeriodDays(15);
-		params.setCurrency("EUR");
+		params.setCurrency("eur");
 		
 		Offer offer = srv.create(params);
 		assertEquals("Superabo", offer.getName());
@@ -47,7 +47,7 @@ public class OfferServiceTest extends TestCase {
 		params.setInterval(interval);
 		params.setName("Superabo");
 		params.setTrialPeriodDays(15);
-		params.setCurrency("EUR");
+		params.setCurrency("eur");
 		
 		Offer offer1 = srv.create(params);
 		Offer offer2 = srv.get(offer1.getId());
@@ -79,7 +79,7 @@ public class OfferServiceTest extends TestCase {
 		offer.setInterval(interval);
 		offer.setName("testabo");
 		offer.setTrialPeriodDays(15);
-		offer.setCurrency("EUR");
+		offer.setCurrency("eur");
 		offer = srvOffer.create(offer);
 		
 		Client client = new Client();

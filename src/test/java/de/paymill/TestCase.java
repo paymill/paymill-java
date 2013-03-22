@@ -28,8 +28,4 @@ public class TestCase {
 			return null;
 		}
 	}
-
-	protected String getWebhookEmail() {
-		return "dummy@paymill.com";
-	}
 }

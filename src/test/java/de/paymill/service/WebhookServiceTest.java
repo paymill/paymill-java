@@ -11,98 +11,18 @@ import org.junit.Test;
 import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Event;
-import de.paymill.model.Preauthorization;
 import de.paymill.model.Webhook;
 import de.paymill.model.Webhook.EventType;
-import de.paymill.net.ApiException;
-import de.paymill.net.Filter;
-import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 public class WebhookServiceTest extends TestCase {
 	@Test
-	public void testCreateUrlWebhook() {
+	public void testCreateWebhook() {
 		WebhookService srv = Paymill.getService(WebhookService.class);
 		URL url = getWebhookUrl();
-		Webhook webhook = srv.createUrl(
-                   url, 
-                   EventType.SUBSCRIPTION_SUCCEEDED, 
-		   EventType.SUBSCRIPTION_FAILED);
+		Webhook webhook = srv.create(url, EventType.SUBSCRIPTION_SUCCEEDED,
+				EventType.SUBSCRIPTION_FAILED);
 		assertNotNull(webhook);
 	}
-
-	@Test
-	public void testCreateEmailWebhook() {
-            EventType[] eventTypes = { EventType.SUBSCRIPTION_SUCCEEDED, EventType.SUBSCRIPTION_FAILED }; 
-            WebhookService srv = Paymill.getService(WebhookService.class);
-            Webhook webhook = new Webhook();
-            webhook.setEmail(getWebhookEmail());
-            webhook.setEventTypes(eventTypes);
-            try {
-                webhook = srv.create(webhook);
-                assertNotNull(webhook);
-            } catch(Exception e) {
-                fail("Create e-mail webhook failed!");
-            }
-	}
-
-	@Test
-	public void testWebhookDetails() {
-            WebhookService srv = Paymill.getService(WebhookService.class);
-            URL url = getWebhookUrl();
-            Webhook webhook = srv.createUrl(
-               url, 
-               EventType.SUBSCRIPTION_SUCCEEDED, 
-               EventType.SUBSCRIPTION_FAILED);
-            
-            String id = webhook.getId();
-            
-            webhook = srv.get(id);
-
-            assertNotNull(webhook);
-            assertNotNull(webhook.getId());
-	}
-
-	@Test
-	public void testUpdateWebhook() {
-            String email = getWebhookEmail();
-            WebhookService srv = Paymill.getService(WebhookService.class);
-            List<Webhook> list = srv.list(0, 1, "created_at_desc");
-            Webhook webhook = list.get(0);
-            
-            try {
-                webhook.setEmail(email);
-                webhook.setUrl(null);
-                webhook = srv.update(webhook);
-                assertNotNull(webhook);
-                assertNotNull(webhook.getId());
-                assertEquals(email, webhook.getEmail());
-            } catch(Exception e) {
-                e.printStackTrace();
-                fail("Update failed!");
-            }
-	}
-
-	@Test
-	public void testRemoveWebhook() {
-		WebhookService srv = Paymill.getService(WebhookService.class);
-                
-                Filter urlFilter = new Filter();
-                urlFilter.add("url", getWebhookUrl().toString());                
-		List<Webhook> urlList = srv.list(urlFilter);
-                for(Webhook webhook: urlList) {
-                    srv.delete(webhook.getId());
-                }
-                
-                Filter emailFilter = new Filter();
-                emailFilter.add("email", getWebhookEmail());
- 		List<Webhook> emailList = srv.list(emailFilter);
-                for(Webhook webhook: emailList) {
-                    srv.delete(webhook.getId());
-                }
- 	}
 
 	@Test
 	public void bugParseEvent() {

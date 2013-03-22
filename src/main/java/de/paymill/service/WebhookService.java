@@ -29,13 +29,8 @@ public class WebhookService extends AbstractService<Webhook> {
 		super("webhooks", Webhook.class, client);
 	}
 
-        @Override
-        public Webhook create(Webhook obj) {
-            if(obj.getUrl()==null) {
-		return createEmail(obj.getEmail(), obj.getEventTypes());
-            } 
-            
-            return createUrl(obj.getUrl(), obj.getEventTypes());
+	public Webhook create(Webhook obj) {
+		return create(obj.getUrl(), obj.getEventTypes());
 	}
 
 	/**
@@ -43,7 +38,7 @@ public class WebhookService extends AbstractService<Webhook> {
 	 * @param eventTypes the event types to subscribe 
 	 * @return the generated webhook
 	 */
-	public Webhook createUrl(URL url, EventType... eventTypes) {
+	public Webhook create(URL url, EventType... eventTypes) {
 		if (url == null)
 			throw new NullPointerException("url");
 		if (eventTypes == null)
@@ -52,32 +47,6 @@ public class WebhookService extends AbstractService<Webhook> {
 		params.put("url", url.toString());
 		params.put("event_types", eventTypes);
 		return client.post(resource, params, modelClass);
-	}
-
-	/**
-	 * @param email the callback url that this webhook will call
-	 * @param eventTypes the event types to subscribe 
-	 * @return the generated webhook
-	 */
-	public Webhook createEmail(String email, EventType... eventTypes) {
-		if (email == null)
-			throw new NullPointerException("email");
-		if (eventTypes == null)
-			throw new NullPointerException("eventTypes");
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("email", email);
-		params.put("event_types", eventTypes);
-		return client.post(resource, params, modelClass);
-	}
-
-        @Override
-        public Webhook update(Webhook obj) {
-		Map<String, Object> params = new HashMap<String, Object>();
-                String url = obj.getUrl()==null ? null : obj.getUrl().toString();
-		params.put("url", null);
-		params.put("email", "test@test.de");
-		params.put("event_types", obj.getEventTypes());
-		return client.put(resource, obj.getId(), params, modelClass);
 	}
 	
 	public Event parse(InputStream inputStream) {
