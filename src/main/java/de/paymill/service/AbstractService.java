@@ -80,6 +80,22 @@ public class AbstractService<T> {
 	}
 
 	/**
+	 * Same as {@link #list(int, int)} with an order option.
+	 * 
+	 * @param offset
+	 * @param limit
+	 * @param order
+	 * @return
+	 */
+	public List<T> list(int offset, int limit, String order) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("count", Integer.toString(limit));
+		params.put("offset", Integer.toString(offset));
+		params.put("order", order);
+		return client.getList(resource, params, listType);
+	}
+
+	/**
 	 * Same as {@link #list(int, int)} but querying for a filtered list.
 	 * 
 	 * @param offset
