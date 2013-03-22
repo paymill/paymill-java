@@ -70,14 +70,14 @@ public class TransactionServiceTest extends TestCase {
 
 	@Test
 	public void testRefund() {
+		String token = getToken();
 		TransactionService srv = Paymill.getService(TransactionService.class);
-		Filter filter = new Filter();
-		filter.add("amount", ">100");
-		List<Transaction> list = srv.list(0, 1, filter);
-
-		assertEquals(1, list.size());
-
-		Transaction tx = list.get(0);
+		Transaction params = new Transaction();
+		params.setToken(token);
+		params.setAmount(399);
+		params.setCurrency("EUR");
+		Transaction tx = srv.create(params);
+                
 		Refund refund = srv.refund(tx, 50);
 
 		assertNotNull(refund);
