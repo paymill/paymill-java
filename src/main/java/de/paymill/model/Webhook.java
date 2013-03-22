@@ -10,6 +10,7 @@ public class Webhook implements IPaymillObject {
 
 	private String id;
 	private URL url;
+	private String email;
 	private Date createdAt;
 	private Date updatedAt;
 	private EventType[] eventTypes;
@@ -42,6 +43,21 @@ public class Webhook implements IPaymillObject {
 	 */
 	public void setUrl(URL url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the callback-email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email
+	 *            the callback-email
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**
