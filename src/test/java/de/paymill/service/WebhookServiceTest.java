@@ -1,25 +1,22 @@
 package de.paymill.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.Test;
 
 import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Event;
-import de.paymill.model.Preauthorization;
 import de.paymill.model.Webhook;
 import de.paymill.model.Webhook.EventType;
-import de.paymill.net.ApiException;
 import de.paymill.net.Filter;
-import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 public class WebhookServiceTest extends TestCase {
 	@Test
@@ -80,7 +77,6 @@ public class WebhookServiceTest extends TestCase {
                 assertNotNull(webhook.getId());
                 assertEquals(email, webhook.getEmail());
             } catch(Exception e) {
-                e.printStackTrace();
                 fail("Update failed!");
             }
 	}

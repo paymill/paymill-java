@@ -35,6 +35,7 @@ import de.paymill.model.Payment;
 import de.paymill.model.Refund;
 import de.paymill.model.Subscription;
 import de.paymill.model.Transaction;
+import de.paymill.model.Webhook;
 
 /**
  * Base class for gson encoder/decoder.
@@ -72,7 +73,7 @@ public class GsonAdapter {
 		TypeAdapterFactory enumFactory = new TypeAdapterFactory() {
 			public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
 				@SuppressWarnings("unchecked")
-				Class<T> rawType = (Class<T>) type.getRawType();
+				final Class<T> rawType = (Class<T>) type.getRawType();
 				if (!rawType.isEnum()) {
 					return null;
 				}
@@ -88,7 +89,11 @@ public class GsonAdapter {
 						if (value == null) {
 							out.nullValue();
 						} else {
-							out.value(toLowercase(value));
+							if (rawType.isAssignableFrom(Webhook.EventType.class)) {
+								out.value(toLowercase(value).replace('_', '.'));
+							} else {
+								out.value(toLowercase(value));
+							}
 						}
 					}
 
@@ -97,7 +102,11 @@ public class GsonAdapter {
 							reader.nextNull();
 							return null;
 						} else {
-							return lowercaseToConstant.get(reader.nextString());
+							String val = reader.nextString();
+							if (rawType.isAssignableFrom(Webhook.EventType.class)) {
+								val = val.replace('.', '_');
+							}
+							return lowercaseToConstant.get(val);
 						}
 					}
 				};

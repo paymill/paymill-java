@@ -148,7 +148,7 @@ public class UrlEncoder implements IEncoder {
 			builder.append(
 				String.format("%s=%s",
 					URLEncoder.encode(key, charset),
-					URLEncoder.encode(value.toString(), charset)
+					URLEncoder.encode(value == null ? "" : value.toString(), charset)
 				)
 			);
 		} catch (UnsupportedEncodingException e) {
