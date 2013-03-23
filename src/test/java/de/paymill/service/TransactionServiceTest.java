@@ -13,11 +13,11 @@ import org.junit.Test;
 import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Payment;
+import de.paymill.model.Preauthorization;
 import de.paymill.model.Refund;
 import de.paymill.model.Refund.Status;
 import de.paymill.model.Transaction;
 import de.paymill.net.ApiException;
-import de.paymill.net.Filter;
 
 public class TransactionServiceTest extends TestCase {
 
@@ -77,7 +77,7 @@ public class TransactionServiceTest extends TestCase {
 		params.setAmount(399);
 		params.setCurrency("EUR");
 		Transaction tx = srv.create(params);
-                
+
 		Refund refund = srv.refund(tx, 50);
 
 		assertNotNull(refund);
@@ -96,23 +96,48 @@ public class TransactionServiceTest extends TestCase {
 		assertEquals(Transaction.Status.REFUNDED, tx.getStatus());
 		assertEquals(0, (int) tx.getAmount());
 	}
-	
+
 	@Test
 	public void testCreateWithPayment() {
-		PaymentService srvPayment = Paymill.getService(PaymentService.class); 
+		PaymentService srvPayment = Paymill.getService(PaymentService.class);
 		Payment payment = srvPayment.create(getToken());
 
-		TransactionService svrTx = Paymill.getService(TransactionService.class); 
-		Transaction transactionParams = new Transaction(); 
-		transactionParams.setPayment(payment); 
-		transactionParams.setAmount(100); 
-		transactionParams.setCurrency("EUR"); 
+		TransactionService svrTx = Paymill.getService(TransactionService.class);
+		Transaction transactionParams = new Transaction();
+		transactionParams.setPayment(payment);
+		transactionParams.setAmount(100);
+		transactionParams.setCurrency("EUR");
 		Transaction tx = svrTx.create(transactionParams);
-		
+
 		assertNotNull(tx);
 		assertNotNull(tx.getId());
-		assertEquals((int)tx.getAmount(), 100);
+		assertEquals((int) tx.getAmount(), 100);
 		assertNotNull(tx.getPayment());
 		assertEquals(payment.getId(), tx.getPayment().getId());
+	}
+
+	@Test
+	public void testCreateWithPreauthorization() {
+		PreauthorizationService srvPreauthorization = Paymill
+				.getService(PreauthorizationService.class);
+		Preauthorization params = new Preauthorization();
+		params.setToken(getToken());
+		params.setAmount(100);
+		params.setCurrency("EUR");
+		Preauthorization preauthorization = srvPreauthorization.create(params);
+
+		TransactionService svrTx = Paymill.getService(TransactionService.class);
+		Transaction transactionParams = new Transaction();
+		transactionParams.setPreauthorization(preauthorization);
+		transactionParams.setAmount(100);
+		transactionParams.setCurrency("EUR");
+		transactionParams.setDescription("Preauth TRX test");
+		Transaction tx = svrTx.create(transactionParams);
+
+		assertNotNull(tx);
+		assertNotNull(tx.getId());
+		assertEquals((int) tx.getAmount(), 100);
+		assertNotNull(tx.getPayment());
+		assertEquals(preauthorization.getId(), tx.getPreauthorization().getId());
 	}
 }

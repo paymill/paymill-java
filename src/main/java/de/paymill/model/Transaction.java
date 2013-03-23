@@ -34,6 +34,7 @@ public class Transaction implements IPaymillObject {
 	private Payment payment;
 	private String token;
 	private List<Refund> refunds;
+	private Preauthorization preauthorization;
 
 	/**
 	 * @return the id
@@ -221,6 +222,20 @@ public class Transaction implements IPaymillObject {
 	 */
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	/**
+	 * @return the preauthorization
+	 */
+	public Preauthorization getPreauthorization() {
+		return preauthorization;
+	}
+
+	/**
+	 * @param preauthorization the preauthorization to set
+	 */
+	public void setPreauthorization(Preauthorization preauthorization) {
+		this.preauthorization = preauthorization;
 	}
 
 }
