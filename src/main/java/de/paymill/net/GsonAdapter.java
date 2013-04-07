@@ -66,7 +66,7 @@ public class GsonAdapter {
 				if ("false".equals(json.getAsString())) {
 					return null;
 				}
-				return json == null ? null : new Date(json.getAsInt() * 1000);
+				return json == null ? null : new Date(json.getAsLong() * 1000);
 			}
 		};
 
