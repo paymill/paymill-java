@@ -30,6 +30,6 @@ public class TestCase {
 	}
 
 	protected String getWebhookEmail() {
-		return "dummy@paymill.com";
+		return "test@test.de";
 	}
 }
