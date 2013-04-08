@@ -18,7 +18,7 @@ public class TestCase {
 	}
 
 	protected String getToken() {
-		return "098f6bcd4621d373cade4e832627b4f6";
+		return "be269469d9a933174bc40a7842bd1cbc";
 	}
 
 	protected URL getWebhookUrl() {

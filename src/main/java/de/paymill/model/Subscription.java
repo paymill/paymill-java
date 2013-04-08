@@ -13,7 +13,7 @@ public class Subscription implements IPaymillObject {
 	private Date canceledAt;
 	private Date createdAt;
 	private Date updatedAt;
-	private Date nextCaptureAt;	
+	private String nextCaptureAt;
 
 	/**
 	 * @return the id
@@ -37,7 +37,6 @@ public class Subscription implements IPaymillObject {
 		return offer;
 	}
 
-
 	/**
 	 * @param offer
 	 *            the offer to set
@@ -45,7 +44,7 @@ public class Subscription implements IPaymillObject {
 	public void setOffer(Offer offer) {
 		this.offer = offer;
 	}
-	
+
 	/**
 	 * @return the cancelAtPeriodEnd
 	 */
@@ -136,11 +135,11 @@ public class Subscription implements IPaymillObject {
 		this.updatedAt = updatedAt;
 	}
 
-	public Date getNextCaptureAt() {
+	public String getNextCaptureAt() {
 		return nextCaptureAt;
 	}
 
-	public void setNextCaptureAt(Date nextCaptureAt) {
+	public void setNextCaptureAt(String nextCaptureAt) {
 		this.nextCaptureAt = nextCaptureAt;
 	}
 
@@ -167,7 +166,8 @@ public class Subscription implements IPaymillObject {
 	}
 
 	/**
-	 * @param payment the payment to set
+	 * @param payment
+	 *            the payment to set
 	 */
 	public void setPayment(Payment payment) {
 		this.payment = payment;

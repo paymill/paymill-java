@@ -30,7 +30,13 @@ public class WebhookService extends AbstractService<Webhook> {
 	}
 
 	public Webhook create(Webhook obj) {
-		return create(obj.getUrl(), obj.getEventTypes());
+		if ( obj.getUrl() != null ) {
+			return create(obj.getUrl(), obj.getEventTypes());
+		} else if ( obj.getEmail() != null ) {
+			return create(obj.getEmail(), obj.getEventTypes());
+		} else {
+			throw new NullPointerException("url and email not set!");
+		}
 	}
 
 	/**
@@ -45,6 +51,22 @@ public class WebhookService extends AbstractService<Webhook> {
 			throw new NullPointerException("eventTypes");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("url", url.toString());
+		params.put("event_types", eventTypes);
+		return client.post(resource, params, modelClass);
+	}
+
+	/**
+	 * @param email the callback email that this webhook will call
+	 * @param eventTypes the event types to subscribe 
+	 * @return the generated webhook
+	 */
+	public Webhook create(String email, EventType... eventTypes) {
+		if (email == null)
+			throw new NullPointerException("email");
+		if (eventTypes == null)
+			throw new NullPointerException("eventTypes");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("email", email);
 		params.put("event_types", eventTypes);
 		return client.post(resource, params, modelClass);
 	}

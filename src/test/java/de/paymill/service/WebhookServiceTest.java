@@ -16,10 +16,21 @@ import de.paymill.model.Webhook.EventType;
 
 public class WebhookServiceTest extends TestCase {
 	@Test
-	public void testCreateWebhook() {
+	public void testCreateURLWebhook() {
+		Paymill.setApiKey(getToken());
 		WebhookService srv = Paymill.getService(WebhookService.class);
 		URL url = getWebhookUrl();
 		Webhook webhook = srv.create(url, EventType.SUBSCRIPTION_SUCCEEDED,
+				EventType.SUBSCRIPTION_FAILED);
+		assertNotNull(webhook);
+	}
+
+	@Test
+	public void testCreateEmailWebhook() {
+		Paymill.setApiKey(getToken());		
+		WebhookService srv = Paymill.getService(WebhookService.class);
+		String email = getRandomEmail();
+		Webhook webhook = srv.create(email, EventType.SUBSCRIPTION_SUCCEEDED,
 				EventType.SUBSCRIPTION_FAILED);
 		assertNotNull(webhook);
 	}

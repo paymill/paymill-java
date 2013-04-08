@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Webhook implements IPaymillObject {
 	public enum EventType {
-		CHARGEBACK_EXECUTED, REFUND_SUCCEEDED, REFUND_FAILED, SUBSCRIPTION_SUCCEEDED, SUBSCRIPTION_FAILED, TRANSACTION_SUCCEEDED, TRANSACTION_FAILED;
+		CHARGEBACK_EXECUTED, REFUND_CREATED, REFUND_SUCCEEDED, REFUND_FAILED, SUBSCRIPTION_CREATED, SUBSCRIPTION_DELETED, SUBSCRIPTION_UPDATED, SUBSCRIPTION_SUCCEEDED, SUBSCRIPTION_FAILED, TRANSACTION_CREATED, TRANSACTION_SUCCEEDED, TRANSACTION_FAILED;
 	}
 
-	private String id;
+	private String id, email;
 	private URL url;
 	private Date createdAt;
 	private Date updatedAt;
@@ -42,6 +42,21 @@ public class Webhook implements IPaymillObject {
 	 */
 	public void setUrl(URL url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the callback email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email
+	 *            the callback email
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**
