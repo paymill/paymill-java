@@ -34,11 +34,15 @@ public class JsonDecoder extends GsonAdapter implements IDecoder {
 	public <T> T decode(String data, Type type) {
 		try {
 			JsonObject root = parser.parse(data).getAsJsonObject();
-			JsonElement dataElement = root.get("data");
-			if (dataElement == null) {
-				dataElement = root.get("event");
+			if (root.has("data")) {
+				return gson.fromJson(root.get("data"), type);
+			} else if (root.has("event")) {
+				return gson.fromJson(root.get("event"), type);
+			} else if (root.has("error")) {
+				throw decodeError(root);
+			} else {
+				throw new ApiException("Unknown response received: " + data);
 			}
-			return gson.fromJson(dataElement, type);
 		} catch (JsonSyntaxException e) {
 			throw new PaymillException("Error decoding string: %s.", e, data);
 		}
@@ -49,16 +53,12 @@ public class JsonDecoder extends GsonAdapter implements IDecoder {
 	 * 
 	 * @see de.paymill.net.IDecoder#decodeError(java.lang.String)
 	 */
-	@Override
-	public ApiException decodeError(int code, String data) {
+	protected ApiException decodeError(JsonObject root) {
 		String errorMessage = null;
 		String errorCode = null;
 		String errorField = null;
-		JsonElement element = parser.parse(data);
 		try {
-			JsonObject object = element.getAsJsonObject();
-
-			JsonElement errorRoot = object.get("error");
+			JsonElement errorRoot = root.get("error");
 
 			if (errorRoot.isJsonObject()) {
 				JsonObject errorSub = errorRoot.getAsJsonObject();
@@ -74,11 +74,11 @@ public class JsonDecoder extends GsonAdapter implements IDecoder {
 				}
 			} else {
 				errorMessage = errorRoot.getAsString();
-				errorCode = object.get("exception").getAsString();
+				errorCode = root.get("exception").getAsString();
 				errorMessage += " (" + errorCode + ")";
 			}
 		} catch ( IllegalStateException e ) {
-			errorMessage ="Internal API error, response code="+code+", data="+data;
+			errorMessage ="Internal API error, response data=" + root;
 		}
 		ApiException ex = new ApiException(errorMessage);
 		ex.setCode(errorCode);

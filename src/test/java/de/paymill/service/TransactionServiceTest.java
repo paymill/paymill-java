@@ -140,4 +140,20 @@ public class TransactionServiceTest extends TestCase {
 		assertNotNull(tx.getPayment());
 		assertEquals(preauthorization.getId(), tx.getPreauthorization().getId());
 	}
+	
+	@Test
+	public void testFailedTransaction()
+	{
+		String token = getToken("5555555555554444", "123", "12", "2016");
+		TransactionService srv = Paymill.getService(TransactionService.class);
+		
+		Transaction params = new Transaction();
+		params.setToken(token);
+		params.setAmount(199);
+		params.setCurrency("EUR");
+		
+		Transaction transaction = srv.create(params);
+		assertEquals(Transaction.Status.FAILED, transaction.getStatus());
+		assertEquals(199, (int)transaction.getAmount());
+	}
 }

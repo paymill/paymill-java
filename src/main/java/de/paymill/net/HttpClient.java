@@ -144,8 +144,7 @@ public class HttpClient {
 			if (code >= 200 && code < 300) {
 				return decode(connection.getInputStream(), resultType);
 			} else {
-				String body = readResponseBody(connection.getErrorStream());
-				throw jsonDecoder.decodeError(code, body);
+				return decode(connection.getErrorStream(), resultType);
 			}
 		} catch (IOException ex) {
 			throw new PaymillException("Error connecting to the api", ex);
