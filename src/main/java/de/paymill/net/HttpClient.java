@@ -79,6 +79,9 @@ public class HttpClient {
 	 *             if the object doesn't exist.
 	 */
 	public <T> T get(String resource, String id, Class<T> resultClass) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id parameter must not be null.");
+		}
 		return request(appendId(resource, id), null, Method.GET, resultClass);
 	}
 

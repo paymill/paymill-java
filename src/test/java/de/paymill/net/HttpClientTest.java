@@ -64,4 +64,16 @@ public class HttpClientTest extends TestCase {
 			assertEquals("invalidkey (Api_Exception_InvalidParameter)", ex.getMessage());
 		}
 	}
+	
+	@Test
+	public void testGetThrowsErrorOnNullId()
+	{
+		HttpClient client = Paymill.getClient();
+		try {
+			client.get("foo", null, Client.class);
+			fail("No exception caught");
+		} catch(IllegalArgumentException ex) {
+			assertEquals("Id parameter must not be null.", ex.getMessage());
+		}
+	}
 }
