@@ -12,6 +12,17 @@ public class Client implements IPaymillObject {
 	private List<Payment> payment;
 	private List<Subscription> subscription;
 
+	public Client() {
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public Client(String id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the id
 	 */
