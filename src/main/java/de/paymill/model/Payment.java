@@ -22,6 +22,17 @@ public class Payment implements IPaymillObject {
 		CREDITCARD, DEBIT;
 	}
 
+	public Payment() {
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public Payment(String id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the id
 	 */
