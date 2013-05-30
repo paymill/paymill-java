@@ -1,7 +1,8 @@
-Paymill-Java
+paymill-java
 ============
+Java wrapper for Paymill API
 
-[![Build Status](https://travis-ci.org/Paymill/Paymill-Java.png?branch=master)](https://travis-ci.org/Paymill/Paymill-Java)
+[![Build Status](https://travis-ci.org/paymill/paymill-java.png?branch=master)](https://travis-ci.org/paymill/paymill-java)
 
 Initialize the library by setting your api key:
 
