@@ -1,2 +1,13 @@
+--- 
 language: java
+env: 
+  global: 
+  - secure: |-
+      GlHqx5Gkbk3EhhNhvTYxOYx46PThkqycMPEvv1klBjxZnHRZzqC1H7FkVBTs
+      2vf4kiChKgsjZ81MJ/RhD0OlVQmbZNoj+xg96QA1ShPFW1G/MplLAEttfaVP
+      RGgq88Zjnwlz7cY4jxa/+1tLU6bKvq2wY4jMkFwPtcmlCjDmd4w=
+  - secure: |-
+      ayeJeqwZWg+H0tHGLrQIXuV663Vx4/hZKO2pS15JAkXmaxEhcrlnskbwxBuZ
+      ebshMoI1EPjcg45yXoxr9xmu4hIddjwuX1wYk83zWul5tmW/9kkBZf4x/XpJ
+      z9PJWSJF2YGGzij4qw2fmYgDoBcb4MALBD7xwLkv5UuLk721ghw=
 script: mvn test
