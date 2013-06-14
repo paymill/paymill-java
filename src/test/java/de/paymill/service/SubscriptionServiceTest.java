@@ -3,6 +3,8 @@ package de.paymill.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import de.paymill.Paymill;
@@ -12,9 +14,7 @@ import de.paymill.model.Interval;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
 import de.paymill.model.Payment.Type;
-import de.paymill.model.Preauthorization;
 import de.paymill.model.Subscription;
-import java.util.List;
 
 public class SubscriptionServiceTest extends TestCase {
 
