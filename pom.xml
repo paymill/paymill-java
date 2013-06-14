@@ -1,11 +1,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<groupId>de.paymill</groupId>
 	<artifactId>paymill-java</artifactId>
 	<packaging>jar</packaging>
+	<version>2.6.SNAPSHOT</version>
+
 	<name>paymill-java</name>
 	<url>http://www.paymill.de</url>
+	<description>Java wrapper for PAYMILL API</description>
+	<organization>
+		<name>Paymill GmbH</name>
+		<url>http://www.paymill.com</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>MIT license</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/paymill/paymill-java/</url>
+		<connection>scm:git:git@github.com:paymill/paymill-java.git</connection>
+		<developerConnection>scm:git:git@github.com:paymill/paymill-java.git</developerConnection>
+		<tag>4.3.1</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Johannes Klose</name>
+			<email>post@calitrix.de</email>
+			<id>extronics</id>
+		</developer>
+	</developers>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -19,9 +56,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		  <groupId>commons-codec</groupId>
-		  <artifactId>commons-codec</artifactId>
-		  <version>1.7</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -48,9 +85,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>2.6.SNAPSHOT</version>
-	<organization>
-		<name>Paymill GmbH</name>
-		<url>http://www.paymill.com</url>
-	</organization>
 </project>
