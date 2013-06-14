@@ -29,18 +29,20 @@ public class WebhookService extends AbstractService<Webhook> {
 		super("webhooks", Webhook.class, client);
 	}
 
-        @Override
-        public Webhook create(Webhook obj) {
-            if(obj.getUrl()==null) {
-		return createEmail(obj.getEmail(), obj.getEventTypes());
-            } 
-            
-            return createUrl(obj.getUrl(), obj.getEventTypes());
+	@Override
+	public Webhook create(Webhook obj) {
+		if (obj.getUrl() == null) {
+			return createEmail(obj.getEmail(), obj.getEventTypes());
+		}
+
+		return createUrl(obj.getUrl(), obj.getEventTypes());
 	}
 
 	/**
-	 * @param url the callback url that this webhook will call
-	 * @param eventTypes the event types to subscribe 
+	 * @param url
+	 *            the callback url that this webhook will call
+	 * @param eventTypes
+	 *            the event types to subscribe
 	 * @return the generated webhook
 	 */
 	public Webhook createUrl(URL url, EventType... eventTypes) {
@@ -55,8 +57,10 @@ public class WebhookService extends AbstractService<Webhook> {
 	}
 
 	/**
-	 * @param email the callback url that this webhook will call
-	 * @param eventTypes the event types to subscribe 
+	 * @param email
+	 *            the callback url that this webhook will call
+	 * @param eventTypes
+	 *            the event types to subscribe
 	 * @return the generated webhook
 	 */
 	public Webhook createEmail(String email, EventType... eventTypes) {
@@ -70,21 +74,27 @@ public class WebhookService extends AbstractService<Webhook> {
 		return client.post(resource, params, modelClass);
 	}
 
-        @Override
-        public Webhook update(Webhook obj) {
+	@Override
+	public Webhook update(Webhook obj) {
 		Map<String, Object> params = new HashMap<String, Object>();
-                String url = obj.getUrl()==null ? null : obj.getUrl().toString();
-		params.put("url", null);
-		params.put("email", "test@test.de");
+		String url = obj.getUrl() == null ? null : obj.getUrl().toString();
+		String email = obj.getEmail() == null ? null : obj.getEmail();
+		if (url != null) {
+			params.put("url", url);
+		}
+		if (email != null) {
+			params.put("email", email);
+		}
 		params.put("event_types", obj.getEventTypes());
 		return client.put(resource, obj.getId(), params, modelClass);
 	}
-	
+
 	public Event parse(InputStream inputStream) {
 		try {
 			return client.decode(inputStream, Event.class);
 		} catch (IOException e) {
-			throw new PaymillException("Failed to decode webhook event object from callback");
+			throw new PaymillException(
+					"Failed to decode webhook event object from callback");
 		}
 	}
 }
