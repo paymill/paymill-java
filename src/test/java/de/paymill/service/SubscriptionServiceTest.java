@@ -3,8 +3,6 @@ package de.paymill.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
-
 import org.junit.Test;
 
 import de.paymill.Paymill;
@@ -17,9 +15,9 @@ import de.paymill.model.Payment.Type;
 import de.paymill.model.Subscription;
 
 public class SubscriptionServiceTest extends TestCase {
-
-	@Test
-	public void testCreateSubscription() {
+	
+	protected Subscription createSubscription()
+	{
 		OfferService srvOffer = Paymill.getService(OfferService.class);
 		ClientService srvClient = Paymill.getService(ClientService.class);
 		PaymentService srvPayment = Paymill.getService(PaymentService.class);
@@ -52,13 +50,18 @@ public class SubscriptionServiceTest extends TestCase {
 		subs.setOffer(offer);
 		subs.setClient(client);
 		subs.setPayment(payment);
-		subs = srvSubs.create(subs);
+		return srvSubs.create(subs);
+	}
+
+	@Test
+	public void testCreateSubscription() {
+		Subscription subs = createSubscription();
 
 		assertNotNull(subs);
 		assertNotNull(subs.getId());
-		assertEquals(subs.getClient().getId(), client.getId());
-		assertEquals(subs.getOffer().getId(), offer.getId());
-		assertEquals(subs.getPayment().getId(), payment.getId());
+		assertNotNull(subs.getClient().getId());
+		assertNotNull(subs.getOffer().getId());
+		assertNotNull(subs.getPayment().getId());
 	}
 
 	@Test
@@ -67,9 +70,7 @@ public class SubscriptionServiceTest extends TestCase {
 		PaymentService srvPayment = Paymill.getService(PaymentService.class);
 		SubscriptionService srvSubs = Paymill.getService(SubscriptionService.class);
 
-		List<Subscription> list = srvSubs.list(0, 1);
-                
-                Subscription subs = list.get(0);
+        Subscription subs = createSubscription();
             
 		Interval interval = new Interval();
 		interval.setInterval(2);
@@ -90,15 +91,14 @@ public class SubscriptionServiceTest extends TestCase {
 		payment.setClient(subs.getClient().getId());
 		payment = srvPayment.create(payment);
                 
-                subs.setOffer(offer);
-                subs.setPayment(payment);
-                subs.setCancelAtPeriodEnd(true);
-                srvSubs.update(subs);
+		subs.setOffer(offer);
+		subs.setPayment(payment);
+		subs.setCancelAtPeriodEnd(true);
+		srvSubs.update(subs);
 
 		assertNotNull(subs);
 		assertNotNull(subs.getId());
 		assertEquals(subs.getOffer().getId(), offer.getId());
 		assertEquals(subs.getPayment().getId(), payment.getId());
-       }
-        
+	}
 }
