@@ -26,7 +26,7 @@ public class PreauthorizationServiceTest extends TestCase {
 			srv.get("idontexist");
 			fail("Expected exception");
 		} catch (ApiException ex) {
-			assertEquals("not_found_transaction_preauthorize", ex.getCode());
+			assertEquals("preauthorization_not_found", ex.getCode());
 		}
 	}
 
@@ -78,7 +78,7 @@ public class PreauthorizationServiceTest extends TestCase {
                     srv.get(id);
             } catch (ApiException ex) {
                     //ex.printStackTrace();
-                    assertEquals("not_found_transaction_preauthorize", ex.getCode());
+                    assertEquals("preauthorization_not_found", ex.getCode());
             }
 	}
 	
