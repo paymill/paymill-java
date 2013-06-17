@@ -1,0 +1,53 @@
+{
+    "data":{
+        "id":"tran_166174a508fe007864a508fe0078",
+        "amount":"100",
+        "origin_amount":100,
+        "status":"closed",
+        "description":null,
+        "livemode":false,
+        "refunds":null,
+        "currency":"EUR",
+        "created_at":1371476549,
+        "updated_at":1371476549,
+        "response_code":20000,
+        "short_id":null,
+        "invoices":[
+
+        ],
+        "fees":[
+            {
+                "type":"application",
+                "application":"app_166174a508fe0078605b83f88545f1c5da430d430",
+                "payment":"pay_166174a508fe007864a508fe0075",
+                "amount":10
+            }
+        ],
+        "payment":{
+            "id":"pay_166174a508fe007864a508fe0076",
+            "type":"creditcard",
+            "client":"client_166174a508fe007864a508fe0077",
+            "card_type":"visa",
+            "country":null,
+            "expire_month":"12",
+            "expire_year":2014,
+            "card_holder":null,
+            "last4":"1111",
+            "created_at":1371476549,
+            "updated_at":1371476549
+        },
+        "client":{
+            "id":"client_166174a508fe007864a508fe0079",
+            "email":null,
+            "description":null,
+            "created_at":1371476549,
+            "updated_at":1371476549,
+            "payment":[
+
+            ],
+            "subscription":null
+        },
+        "preauthorization":null
+    },
+    "mode":"test"
+}

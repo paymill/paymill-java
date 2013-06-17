@@ -6,18 +6,23 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Test;
 
 import de.paymill.Paymill;
 import de.paymill.TestCase;
+import de.paymill.model.Fee;
 import de.paymill.model.Payment;
 import de.paymill.model.Preauthorization;
 import de.paymill.model.Refund;
 import de.paymill.model.Refund.Status;
 import de.paymill.model.Transaction;
 import de.paymill.net.ApiException;
+import de.paymill.net.HttpClient;
 
 public class TransactionServiceTest extends TestCase {
 
@@ -155,5 +160,22 @@ public class TransactionServiceTest extends TestCase {
 		Transaction transaction = srv.create(params);
 		assertEquals(Transaction.Status.FAILED, transaction.getStatus());
 		assertEquals(199, (int)transaction.getAmount());
+	}
+	
+	@Test
+	public void testGetTransactionWithFees() throws Exception
+	{
+		HttpClient client = Paymill.getClient();
+		InputStream stream = new FileInputStream(new File("test/fee.json"));
+		Transaction tx = client.decode(stream, Transaction.class);
+		List<Fee> fees = tx.getFees();
+		
+		assertNotNull(fees);
+		Fee fee = fees.get(0);
+		assertNotNull(fee);
+		
+		assertEquals(Fee.Type.APPLICATION, fee.getType());
+		assertEquals("app_166174a508fe0078605b83f88545f1c5da430d430", fee.getApplication());
+		assertEquals(Integer.valueOf(10), fee.getAmount());
 	}
 }
