@@ -6,9 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Test;
@@ -22,7 +19,6 @@ import de.paymill.model.Refund;
 import de.paymill.model.Refund.Status;
 import de.paymill.model.Transaction;
 import de.paymill.net.ApiException;
-import de.paymill.net.HttpClient;
 
 public class TransactionServiceTest extends TestCase {
 
@@ -145,37 +141,52 @@ public class TransactionServiceTest extends TestCase {
 		assertNotNull(tx.getPayment());
 		assertEquals(preauthorization.getId(), tx.getPreauthorization().getId());
 	}
-	
+
 	@Test
-	public void testFailedTransaction()
-	{
+	public void testFailedTransaction() {
 		String token = getToken("5555555555554444", "123", "12", "2016");
 		TransactionService srv = Paymill.getService(TransactionService.class);
-		
+
 		Transaction params = new Transaction();
 		params.setToken(token);
 		params.setAmount(199);
 		params.setCurrency("EUR");
-		
+
 		Transaction transaction = srv.create(params);
 		assertEquals(Transaction.Status.FAILED, transaction.getStatus());
-		assertEquals(199, (int)transaction.getAmount());
+		assertEquals(199, (int) transaction.getAmount());
 	}
-	
+
 	@Test
-	public void testGetTransactionWithFees() throws Exception
-	{
-		HttpClient client = Paymill.getClient();
-		InputStream stream = new FileInputStream(new File("test/fee.json"));
-		Transaction tx = client.decode(stream, Transaction.class);
-		List<Fee> fees = tx.getFees();
-		
-		assertNotNull(fees);
-		Fee fee = fees.get(0);
-		assertNotNull(fee);
-		
-		assertEquals(Fee.Type.APPLICATION, fee.getType());
-		assertEquals("app_166174a508fe0078605b83f88545f1c5da430d430", fee.getApplication());
-		assertEquals(Integer.valueOf(10), fee.getAmount());
+	public void testTransactionFee() {
+		if (System.getProperty("applicationKey") == null || System.getProperty("merchantKey") == null) {
+			return;
+		}
+		String merchantKey = Paymill.getApiKey();
+		try {
+			Paymill.setApiKey(System.getProperty("applicationKey"));
+			PaymentService srvPayment = Paymill
+					.getService(PaymentService.class);
+			Payment feePayment = srvPayment.create(getToken());
+
+			Paymill.setApiKey(System.getProperty("merchantKey"));
+			TransactionService srvTx = Paymill
+					.getService(TransactionService.class);
+			Transaction tx = new Transaction();
+			tx.setToken(getToken());
+			tx.setAmount(399);
+			tx.setCurrency("EUR");
+			Fee fee = new Fee();
+			fee.setType(Fee.Type.APPLICATION);
+			fee.setAmount(39);
+			fee.setPayment(feePayment.getId());
+			tx = srvTx.create(tx, fee);
+
+			assertEquals(1, tx.getFees().size());
+			assertEquals(Fee.Type.APPLICATION, tx.getFees().get(0).getType());
+			assertEquals(39, (int) tx.getFees().get(0).getAmount());
+		} finally {
+			Paymill.setApiKey(merchantKey);
+		}
 	}
 }
