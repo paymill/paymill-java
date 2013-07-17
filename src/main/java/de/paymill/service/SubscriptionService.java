@@ -19,7 +19,7 @@ public class SubscriptionService extends AbstractService<Subscription> {
 	public SubscriptionService(HttpClient client) {
 		super("Subscriptions", Subscription.class, client);
 		this.updateableProperties.add("offer");
-		this.updateableProperties.add("cancel_at_period_end");
+		this.updateableProperties.add("cancelAtPeriodEnd");
 	}
 
 	/**
