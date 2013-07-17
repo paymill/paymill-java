@@ -94,7 +94,7 @@ public class SubscriptionServiceTest extends TestCase {
 		subs.setOffer(offer);
 		subs.setPayment(payment);
 		subs.setCancelAtPeriodEnd(true);
-		srvSubs.update(subs);
+		subs = srvSubs.update(subs);
 
 		assertNotNull(subs);
 		assertNotNull(subs.getId());
