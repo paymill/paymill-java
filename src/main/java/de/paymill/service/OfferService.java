@@ -24,7 +24,7 @@ public class OfferService extends AbstractService<Offer> {
 		this.updateableProperties.add("name");
 		this.updateableProperties.add("amount");
 		this.updateableProperties.add("interval");
-		this.updateableProperties.add("trial_period_days");
+		this.updateableProperties.add("trialPeriodDays");
 	}
 
 	/**
