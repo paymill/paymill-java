@@ -2,7 +2,7 @@ paymill-java
 ============
 Java wrapper for Paymill API
 
-[![Build Status](https://travis-ci.org/paymill/paymill-java.png?branch=master)](https://travis-ci.org/paymill/paymill-java)
+[![Build Status](https://travis-ci.org/paymill/paymill-java.png?branch=master)](https://travis-ci.org/paymill/paymill-java) [![Dependency Status](https://www.versioneye.com/user/projects/51f106fa632bac3e2b036ded/badge.png)](https://www.versioneye.com/user/projects/51f106fa632bac3e2b036ded)
 
 Initialize the library by setting your api key:
 
