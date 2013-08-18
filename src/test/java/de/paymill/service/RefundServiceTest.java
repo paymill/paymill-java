@@ -31,11 +31,18 @@ public class RefundServiceTest extends TestCase {
 		}
 	}
 	@Test
-	public void testGetRefundList() {
+	public void testGetRefundList() {	
+		int limit=5;
 		RefundService srv = Paymill.getService(RefundService.class);
-		List<Refund> refunds = srv.list(0, 5);
-
-		assertNotNull(refunds);
-		assertEquals(5, refunds.size());
+		List<Refund> firstRefunds = srv.list(0,limit);
+		int firstSize = firstRefunds.size();
+		assertNotNull(firstRefunds);
+		assertTrue(firstSize <= limit);
+		testCreateRefund();
+		List<Refund> secondRefunds = srv.list(0, limit);
+		int secondSize = secondRefunds.size();
+		assertNotNull(secondRefunds);
+		assertTrue(secondSize > 0 && secondSize <= limit);
+		assertTrue(secondSize == limit || secondSize == firstSize + 1);
 	}
 }
