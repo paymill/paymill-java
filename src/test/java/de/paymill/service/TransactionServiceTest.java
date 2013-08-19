@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import de.paymill.Paymill;
 import de.paymill.TestCase;
+import de.paymill.model.Fee;
 import de.paymill.model.Payment;
 import de.paymill.model.Preauthorization;
 import de.paymill.model.Refund;
@@ -140,20 +141,52 @@ public class TransactionServiceTest extends TestCase {
 		assertNotNull(tx.getPayment());
 		assertEquals(preauthorization.getId(), tx.getPreauthorization().getId());
 	}
-	
+	/* Not possible atm
 	@Test
-	public void testFailedTransaction()
-	{
+	public void testFailedTransaction() {
 		String token = getToken("5555555555554444", "123", "12", "2016");
 		TransactionService srv = Paymill.getService(TransactionService.class);
-		
+
 		Transaction params = new Transaction();
 		params.setToken(token);
 		params.setAmount(199);
 		params.setCurrency("EUR");
-		
+
 		Transaction transaction = srv.create(params);
 		assertEquals(Transaction.Status.FAILED, transaction.getStatus());
-		assertEquals(199, (int)transaction.getAmount());
+		assertEquals(199, (int) transaction.getAmount());
+	}*/
+
+	@Test
+	public void testTransactionFee() {
+		if (System.getProperty("applicationKey") == null || System.getProperty("merchantKey") == null) {
+			return;
+		}
+		String merchantKey = Paymill.getApiKey();
+		try {
+			Paymill.setApiKey(System.getProperty("applicationKey"));
+			PaymentService srvPayment = Paymill
+					.getService(PaymentService.class);
+			Payment feePayment = srvPayment.create(getToken());
+
+			Paymill.setApiKey(System.getProperty("merchantKey"));
+			TransactionService srvTx = Paymill
+					.getService(TransactionService.class);
+			Transaction tx = new Transaction();
+			tx.setToken(getToken());
+			tx.setAmount(399);
+			tx.setCurrency("EUR");
+			Fee fee = new Fee();
+			fee.setType(Fee.Type.APPLICATION);
+			fee.setAmount(39);
+			fee.setPayment(feePayment.getId());
+			tx = srvTx.create(tx, fee);
+
+			assertEquals(1, tx.getFees().size());
+			assertEquals(Fee.Type.APPLICATION, tx.getFees().get(0).getType());
+			assertEquals(39, (int) tx.getFees().get(0).getAmount());
+		} finally {
+			Paymill.setApiKey(merchantKey);
+		}
 	}
 }

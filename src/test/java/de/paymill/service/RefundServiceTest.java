@@ -27,7 +27,7 @@ public class RefundServiceTest extends TestCase {
 			srv.create(params);
 			fail("Expected exception");
 		} catch (ApiException ex) {
-			assertEquals("refund_not_found", ex.getCode());
+			assertEquals("transaction_not_found", ex.getCode());
 		}
 	}
 	@Test

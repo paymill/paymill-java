@@ -7,14 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- */
-/**
  * @author Daniel Florey
- *
- */
-/**
- * @author Daniel Florey
- *
+ * 
  */
 public class Transaction implements IPaymillObject {
 	public enum Status {
@@ -35,6 +29,7 @@ public class Transaction implements IPaymillObject {
 	private String token;
 	private List<Refund> refunds;
 	private Preauthorization preauthorization;
+	private List<Fee> fees;
 
 	/**
 	 * @return the id
@@ -112,8 +107,8 @@ public class Transaction implements IPaymillObject {
 	}
 
 	/**
-	 * @return response code 
-	 * 			sett documentation for a list of available response codes
+	 * @return response code sett documentation for a list of available response
+	 *         codes
 	 */
 	public String getResponseCode() {
 		return responseCode;
@@ -149,7 +144,6 @@ public class Transaction implements IPaymillObject {
 		this.updatedAt = updatedAt;
 	}
 
-
 	/**
 	 * @return the client
 	 */
@@ -158,7 +152,8 @@ public class Transaction implements IPaymillObject {
 	}
 
 	/**
-	 * @param client the client to set
+	 * @param client
+	 *            the client to set
 	 */
 	public void setClient(Client client) {
 		this.client = client;
@@ -232,10 +227,26 @@ public class Transaction implements IPaymillObject {
 	}
 
 	/**
-	 * @param preauthorization the preauthorization to set
+	 * @param preauthorization
+	 *            the preauthorization to set
 	 */
 	public void setPreauthorization(Preauthorization preauthorization) {
 		this.preauthorization = preauthorization;
+	}
+
+	/**
+	 * @return the fees
+	 */
+	public List<Fee> getFees() {
+		return fees;
+	}
+
+	/**
+	 * @param fees
+	 *            the fees to set
+	 */
+	public void setFees(List<Fee> fees) {
+		this.fees = fees;
 	}
 
 }
