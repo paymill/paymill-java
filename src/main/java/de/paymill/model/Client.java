@@ -3,7 +3,7 @@ package de.paymill.model;
 import java.util.Date;
 import java.util.List;
 
-public class Client implements IPaymillObject {
+public class Client extends IPaymillObject {
 	private String id;
 	private String description;
 	private String email;

@@ -11,7 +11,6 @@ import de.paymill.model.Client;
 import de.paymill.model.Interval;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
-import de.paymill.model.Payment.Type;
 import de.paymill.model.Subscription;
 
 public class SubscriptionServiceTest extends TestCase {
@@ -38,13 +37,7 @@ public class SubscriptionServiceTest extends TestCase {
 		client.setEmail(getRandomEmail());
 		client = srvClient.create(client);
 
-		Payment payment = new Payment();
-		payment.setType(Type.DEBIT);
-		payment.setAccount("123456");
-		payment.setCode("12345678");
-		payment.setHolder("jon doe");
-		payment.setClient(client.getId());
-		payment = srvPayment.create(payment);
+		Payment payment = srvPayment.create(getToken(), client);
 
 		Subscription subs = new Subscription();
 		subs.setOffer(offer);
@@ -83,13 +76,7 @@ public class SubscriptionServiceTest extends TestCase {
 		offer.setCurrency("EUR");
 		offer = srvOffer.create(offer);
  
-		Payment payment = new Payment();
-		payment.setType(Type.DEBIT);
-		payment.setAccount("654321");
-		payment.setCode("87654321");
-		payment.setHolder("jon doe");
-		payment.setClient(subs.getClient().getId());
-		payment = srvPayment.create(payment);
+		Payment payment = srvPayment.create(getToken(), subs.getClient());
                 
 		subs.setOffer(offer);
 		subs.setPayment(payment);
