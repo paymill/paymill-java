@@ -3,7 +3,7 @@ package de.paymill.model;
 import java.net.URL;
 import java.util.Date;
 
-public class Webhook implements IPaymillObject {
+public class Webhook extends IPaymillObject {
 	public enum EventType {
 		CHARGEBACK_EXECUTED, REFUND_SUCCEEDED, REFUND_FAILED, SUBSCRIPTION_SUCCEEDED, SUBSCRIPTION_FAILED, TRANSACTION_SUCCEEDED, TRANSACTION_FAILED;
 	}
