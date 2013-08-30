@@ -2,6 +2,7 @@ package de.paymill.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -13,7 +14,6 @@ import de.paymill.model.Client;
 import de.paymill.model.Interval;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
-import de.paymill.model.Payment.Type;
 import de.paymill.model.Subscription;
 
 public class OfferServiceTest extends TestCase {
@@ -30,7 +30,7 @@ public class OfferServiceTest extends TestCase {
 		params.setName("Superabo");
 		params.setTrialPeriodDays(15);
 		params.setCurrency("EUR");
-		
+
 		Offer offer = srv.create(params);
 		assertEquals("Superabo", offer.getName());
 		assertNotNull(offer.getId());
@@ -48,7 +48,7 @@ public class OfferServiceTest extends TestCase {
 		params.setName("Superabo");
 		params.setTrialPeriodDays(15);
 		params.setCurrency("EUR");
-		
+
 		Offer offer1 = srv.create(params);
 		Offer offer2 = srv.get(offer1.getId());
 
@@ -58,19 +58,26 @@ public class OfferServiceTest extends TestCase {
 
 	@Test
 	public void testGetOfferList() {
+		int limit=5;
 		OfferService srv = Paymill.getService(OfferService.class);
-		List<Offer> offers = srv.list(0, 5);
-
-		assertNotNull(offers);
-		assertEquals(5, offers.size());
+		List<Offer> firstOffers = srv.list(0, limit);
+		int firstSize = firstOffers.size();
+		assertNotNull(firstOffers);
+		assertTrue(firstSize <= limit);
+		testCreateOffer();
+		List<Offer> secondOffers = srv.list(0, limit);
+		int secondSize = secondOffers.size();
+		assertNotNull(secondOffers);
+		assertTrue(secondSize > 0 && secondSize <= limit);
+		assertTrue(secondSize == limit || secondSize == firstSize + 1);
 	}
-	
+
 	@Test
 	public void testSubscribeOffer() {
 		OfferService srvOffer = Paymill.getService(OfferService.class);
 		ClientService srvClient = Paymill.getService(ClientService.class);
 		PaymentService srvPayment = Paymill.getService(PaymentService.class);
-		
+
 		Interval interval = new Interval();
 		interval.setInterval(1);
 		interval.setUnit(Interval.Unit.WEEK);
@@ -81,19 +88,13 @@ public class OfferServiceTest extends TestCase {
 		offer.setTrialPeriodDays(15);
 		offer.setCurrency("EUR");
 		offer = srvOffer.create(offer);
-		
+
 		Client client = new Client();
 		client.setEmail(getRandomEmail());
 		client = srvClient.create(client);
-		
-		Payment payment = new Payment();
-		payment.setType(Type.DEBIT);
-		payment.setAccount("123456");
-		payment.setCode("12345678");
-		payment.setHolder("jon doe");
-		payment.setClient(client.getId());
-		payment = srvPayment.create(payment);
-		
+
+		Payment payment = srvPayment.create(getToken(), client);
+
 		Subscription subs = srvOffer.subscribe(offer, client, payment);
 		assertNotNull(subs);
 		assertNotNull(subs.getId());

@@ -24,7 +24,11 @@ public class PaymentService extends AbstractService<Payment> {
 	public PaymentService(HttpClient client) {
 		super("payments", Payment.class, client);
 	}
-
+	@Override
+	public Payment create(Payment obj) {
+		// payments cannot be created directly, only with token
+		throw new IllegalArgumentException("Payments can be created only with a token");
+	}
 	public Payment create(String token) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("token", token);
