@@ -14,15 +14,21 @@ public class Filter {
 	public Filter() {
 		data = new HashMap<String, Object>();
 	}
+	
+	public Filter(Map<String, Object> data) {
+		data = new HashMap<String, Object>(data);
+	}
 
 	/**
 	 * Adds a new filter criteria.
 	 * 
 	 * @param key
 	 * @param filter
+	 * @return this filter. Allows for method chaining.
 	 */
-	public void add(String key, Object filter) {
+	public Filter add(String key, Object filter) {
 		data.put(key, filter);
+		return this;
 	}
 
 	public Map<String, Object> toMap() {
