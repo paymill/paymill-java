@@ -2,7 +2,7 @@ package de.paymill.model;
 
 import java.util.Date;
 
-public class Subscription implements IPaymillObject {
+public class Subscription extends IPaymillObject {
 	private String id;
 	private Offer offer;
 	private Client client;
