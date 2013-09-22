@@ -64,11 +64,12 @@ public class TransactionService extends AbstractService<Transaction> {
 
 		if (tx.getPayment() != null) {
 			params.put("payment", tx.getPayment().getId());
-			params.put("client", tx.getClient().getId());
 		} else {
 			params.put("token", tx.getToken());
 		}
-		
+		if (tx.getClient()!=null && tx.getClient().getId()!=null && !tx.getClient().getId().isEmpty()) {
+			params.put("client", tx.getClient().getId());
+		}
 		return client.post(resource, params, Transaction.class);
 	}
 }

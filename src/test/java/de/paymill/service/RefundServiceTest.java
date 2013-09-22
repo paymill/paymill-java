@@ -1,6 +1,9 @@
 package de.paymill.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -38,7 +41,9 @@ public class RefundServiceTest extends TestCase {
 		int firstSize = firstRefunds.size();
 		assertNotNull(firstRefunds);
 		assertTrue(firstSize <= limit);
-		testCreateRefund();
+		Transaction transaction= createTransaction();
+		TransactionService transactionService=Paymill.getService(TransactionService.class);
+		transactionService.refund(transaction, 1);
 		List<Refund> secondRefunds = srv.list(0, limit);
 		int secondSize = secondRefunds.size();
 		assertNotNull(secondRefunds);
