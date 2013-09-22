@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import de.paymill.PaymillException;
-import de.paymill.model.IPaymillObject;
+import de.paymill.model.PaymillObject;
 
 /**
  * Encoder implementation which returns url encoded query strings when encoding
@@ -46,7 +46,7 @@ public class UrlEncoder implements IEncoder {
 	 */
 	@Override
 	public String encode(Object o) {
-		if (o instanceof IPaymillObject) {
+		if (o instanceof PaymillObject) {
 			return encodeBean(o);
 		} else if (o instanceof Map) {
 			return encodeMap((Map<?, ?>)o);
@@ -142,8 +142,8 @@ public class UrlEncoder implements IEncoder {
 				value = e.toString().toLowerCase();
 				value = ((String)value).replace('_', '.');
 			}
-			if (value instanceof IPaymillObject) {
-				value = ((IPaymillObject) value).getId();
+			if (value instanceof PaymillObject) {
+				value = ((PaymillObject) value).getId();
 			}
 			builder.append(
 				String.format("%s=%s",

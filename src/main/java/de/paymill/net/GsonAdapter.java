@@ -28,7 +28,7 @@ import com.google.gson.stream.JsonWriter;
 
 import de.paymill.PaymillException;
 import de.paymill.model.Client;
-import de.paymill.model.IPaymillObject;
+import de.paymill.model.PaymillObject;
 import de.paymill.model.Interval;
 import de.paymill.model.Offer;
 import de.paymill.model.Payment;
@@ -161,10 +161,10 @@ public class GsonAdapter {
 	}
 	
 	private static class SubscriptionDeserializer implements
-			JsonDeserializer<IPaymillObject> {
+			JsonDeserializer<PaymillObject> {
 
 		@Override
-		public IPaymillObject deserialize(JsonElement json, Type type,
+		public PaymillObject deserialize(JsonElement json, Type type,
 				JsonDeserializationContext context) throws JsonParseException {
 			if (json == null) {
 				return null;
@@ -187,7 +187,7 @@ public class GsonAdapter {
 			}
 			try {
 				String id = json.getAsString();
-				IPaymillObject instance = new Subscription();
+				PaymillObject instance = new Subscription();
 				instance.setId(id);
 				return instance;
 			} catch (Exception e) {
@@ -197,7 +197,7 @@ public class GsonAdapter {
 		}
 	}
 	
-	class PaymillObjectDeserializer implements JsonDeserializer<IPaymillObject> {
+	class PaymillObjectDeserializer implements JsonDeserializer<PaymillObject> {
 
 		private Class<?> targetClass;
 		private Class<?> dummyClass;
@@ -209,7 +209,7 @@ public class GsonAdapter {
 		}
 
 		@Override
-		public IPaymillObject deserialize(JsonElement json, Type type,
+		public PaymillObject deserialize(JsonElement json, Type type,
 				JsonDeserializationContext context) throws JsonParseException {
 			if (json == null) {
 				return null;
@@ -221,7 +221,7 @@ public class GsonAdapter {
 
 			try {
 				String id = json.getAsString();
-				IPaymillObject instance = (IPaymillObject)targetClass.newInstance();
+				PaymillObject instance = (PaymillObject)targetClass.newInstance();
 				instance.setId(id);
 				return instance;
 			} catch (Exception e) {

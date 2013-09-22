@@ -10,7 +10,7 @@ import java.util.List;
  * @author Daniel Florey
  * 
  */
-public class Transaction extends IPaymillObject {
+public class Transaction extends PaymillObject {
 	public enum Status {
 		PARTIAL_REFUNDED, REFUNDED, CLOSED, FAILED, PENDING;
 	}

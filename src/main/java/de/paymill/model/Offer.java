@@ -2,7 +2,7 @@ package de.paymill.model;
 
 import java.util.Date;
 
-public class Offer extends IPaymillObject {
+public class Offer extends PaymillObject {
 	private String id;
 	private String name;
 	private Integer amount;
