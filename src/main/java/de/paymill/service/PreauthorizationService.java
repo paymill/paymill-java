@@ -19,6 +19,9 @@ public class PreauthorizationService extends AbstractService<Preauthorization> {
 	}
 	
 	public Preauthorization create(Preauthorization preauth) {
+		return createTransaction(preauth).getPreauthorization();
+	}
+	public Transaction createTransaction(Preauthorization preauth) {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("amount", preauth.getAmount());
 		params.put("currency", preauth.getCurrency());
@@ -32,6 +35,6 @@ public class PreauthorizationService extends AbstractService<Preauthorization> {
 			params.put("client", preauth.getClient().getId());
 		}
 		Transaction tx = client.post(resource, params, Transaction.class);
-		return tx.getPreauthorization();
+		return tx;
 	}
 }
