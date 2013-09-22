@@ -3,10 +3,14 @@
  */
 package de.paymill;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,7 +22,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import de.paymill.model.Transaction;
 import de.paymill.net.UrlEncoder;
+import de.paymill.service.TransactionService;
 
 /**
  * @author jk
@@ -31,7 +37,8 @@ public class TestCase {
 	}
 
 	protected String getToken() {
-		return "098f6bcd4621d373cade4e832627b4f6";
+		Calendar now=Calendar.getInstance();
+		return getToken("4111111111111111", "123", "12",Integer.toString(now.get(Calendar.YEAR)+1));
 	}
 	
 	protected String getToken(String number, String cvc, String expMonth, String expYear) {
@@ -100,5 +107,19 @@ public class TestCase {
 
 	protected String getWebhookEmail() {
 		return "test@test.de";
+	}
+
+	protected Transaction createTransaction() {
+		TransactionService transactionService = Paymill.getService(TransactionService.class);
+		Transaction transactionParams = new Transaction();
+		transactionParams.setToken(getToken());
+		transactionParams.setAmount(100);
+		transactionParams.setCurrency("EUR");
+		Transaction transaction = transactionService.create(transactionParams);
+		assertNotNull(transaction);
+		assertNotNull(transaction.getId());
+		assertEquals((int) transaction.getAmount(), 100);
+		assertNotNull(transaction.getPayment());
+		return transaction;
 	}
 }
