@@ -2,7 +2,7 @@ package de.paymill.model;
 
 import java.util.Date;
 
-public class Refund extends IPaymillObject {
+public class Refund extends PaymillObject {
 
 	public enum Status {
 		OPEN, REFUNDED, FAILED
