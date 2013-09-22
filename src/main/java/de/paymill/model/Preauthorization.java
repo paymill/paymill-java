@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  */
-public class Preauthorization extends IPaymillObject {
+public class Preauthorization extends PaymillObject {
 	public enum Status {
 		PREAUTH, OPEN, CLOSED, DELETED, FAILED, PENDING;
 	}
