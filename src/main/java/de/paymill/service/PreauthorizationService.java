@@ -28,7 +28,9 @@ public class PreauthorizationService extends AbstractService<Preauthorization> {
 		} else {
 			params.put("token", preauth.getToken());
 		}
-		
+		if (preauth.getClient()!=null && preauth.getClient().getId()!=null && !preauth.getClient().getId().isEmpty()) {
+			params.put("client", preauth.getClient().getId());
+		}
 		Transaction tx = client.post(resource, params, Transaction.class);
 		return tx.getPreauthorization();
 	}
