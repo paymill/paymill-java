@@ -14,6 +14,8 @@ import de.paymill.Paymill;
 import de.paymill.TestCase;
 import de.paymill.model.Payment;
 import de.paymill.model.Preauthorization;
+import de.paymill.model.Transaction;
+import de.paymill.model.Transaction.Status;
 import de.paymill.net.ApiException;
 
 public class PreauthorizationServiceTest extends TestCase {
@@ -45,7 +47,28 @@ public class PreauthorizationServiceTest extends TestCase {
 		assertNotNull(preauthorization.getPayment());
 		assertNotNull(preauthorization.getPayment().getId());
 	}
-
+	@Test
+	public void testCreatePreauthorizationTransaction() {
+		String token = getToken();
+		PreauthorizationService srv = Paymill.getService(PreauthorizationService.class);
+		Preauthorization params = new Preauthorization();
+		params.setToken(token);
+		params.setAmount(399);
+		params.setCurrency("EUR");
+		Transaction transaction = srv.createTransaction(params);
+		assertNotNull(transaction.getId());
+		assertNull(transaction.getToken());
+		assertEquals(399, (int) transaction.getAmount());
+		assertNotNull(transaction.getPayment());
+		assertNotNull(transaction.getPayment().getId());
+		Preauthorization preauthorization = transaction.getPreauthorization();
+		assertNotNull(preauthorization);
+		assertNotNull(preauthorization.getId());
+		assertNull(preauthorization.getToken());
+		assertEquals(399, (int) preauthorization.getAmount());
+		assertNotNull(preauthorization.getPayment());
+		assertNotNull(preauthorization.getPayment().getId());
+	}
 	@Test
 	public void testListPreauthorizations() {
 		PreauthorizationService srv = Paymill.getService(PreauthorizationService.class);
