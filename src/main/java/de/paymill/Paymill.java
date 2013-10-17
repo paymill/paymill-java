@@ -46,13 +46,21 @@ public class Paymill {
 		return System.getProperty("apiUrl", "https://api.paymill.com/v2");
 	}
 
+    /**
+     * Creates a new http client for accessing the api.
+     *
+     * @return
+     */
+    public static HttpClient getClient() {
+        return getClient(getApiKey());
+    }
+
 	/**
-	 * Creates a new http client for accessing the api.
+	 * Creates a new http client for accessing the api with a specific api key.
 	 * 
 	 * @return
 	 */
-	public static HttpClient getClient() {
-		String apiKey = getApiKey();
+	public static HttpClient getClient(String apiKey) {
 		if (apiKey == null) {
 			throw new PaymillException(
 					"You need to set an api key before instantiating an HttpClient");
@@ -68,13 +76,24 @@ public class Paymill {
 	 */
 	public static <T extends AbstractService<?>> T getService(
 			Class<T> serviceClass) {
-		try {
-			Constructor<T> c = serviceClass.getConstructor(HttpClient.class);
-			return c.newInstance(getClient());
-		} catch (Exception ex) {
-			throw new PaymillException(
-					"Error creating a new instance of service " + serviceClass,
-					ex);
-		}
+		return getService(serviceClass, getApiKey());
 	}
+
+    /**
+     * Creates a new api service object instance with a special apiKey.
+     *
+     * @param serviceClass
+     * @return
+     */
+    public static <T extends AbstractService<?>> T getService(
+            Class<T> serviceClass, String apiKey) {
+        try {
+            Constructor<T> c = serviceClass.getConstructor(HttpClient.class);
+            return c.newInstance(getClient(apiKey));
+        } catch (Exception ex) {
+            throw new PaymillException(
+                    "Error creating a new instance of service " + serviceClass,
+                    ex);
+        }
+    }
 }
