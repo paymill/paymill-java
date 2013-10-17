@@ -46,13 +46,21 @@ public class Paymill {
 		return System.getProperty("apiUrl", "https://api.paymill.com/v2");
 	}
 
+    /**
+     * Creates a new http client for accessing the api.
+     *
+     * @return
+     */
+    public static HttpClient getClient() {
+        return getClient(getApiKey());
+    }
+
 	/**
-	 * Creates a new http client for accessing the api.
+	 * Creates a new http client for accessing the api with a specific api key.
 	 * 
 	 * @return
 	 */
-	public static HttpClient getClient() {
-		String apiKey = getApiKey();
+	public static HttpClient getClient(String apiKey) {
 		if (apiKey == null) {
 			throw new PaymillException(
 					"You need to set an api key before instantiating an HttpClient");
