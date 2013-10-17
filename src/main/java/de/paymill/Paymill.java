@@ -76,13 +76,24 @@ public class Paymill {
 	 */
 	public static <T extends AbstractService<?>> T getService(
 			Class<T> serviceClass) {
-		try {
-			Constructor<T> c = serviceClass.getConstructor(HttpClient.class);
-			return c.newInstance(getClient());
-		} catch (Exception ex) {
-			throw new PaymillException(
-					"Error creating a new instance of service " + serviceClass,
-					ex);
-		}
+		return getService(serviceClass, getApiKey());
 	}
+
+    /**
+     * Creates a new api service object instance with a special apiKey.
+     *
+     * @param serviceClass
+     * @return
+     */
+    public static <T extends AbstractService<?>> T getService(
+            Class<T> serviceClass, String apiKey) {
+        try {
+            Constructor<T> c = serviceClass.getConstructor(HttpClient.class);
+            return c.newInstance(getClient(apiKey));
+        } catch (Exception ex) {
+            throw new PaymillException(
+                    "Error creating a new instance of service " + serviceClass,
+                    ex);
+        }
+    }
 }
