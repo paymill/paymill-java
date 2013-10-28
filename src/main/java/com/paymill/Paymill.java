@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymill.services.BaseService;
 import com.paymill.services.ClientService;
+import com.paymill.services.PaymentService;
 import com.paymill.services.TransactionService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -39,6 +40,7 @@ public final class Paymill {
 
     Paymill.services.put( ClientService.class, new ClientService() );
     Paymill.services.put( TransactionService.class, new TransactionService() );
+    Paymill.services.put( PaymentService.class, new PaymentService() );
   }
 
   public static void setApiKey( String apiKey ) {
@@ -84,7 +86,6 @@ public final class Paymill {
 
     return null;
   }
-
 
   public static String getIdByReflection( Object instance ) {
     String id = "";

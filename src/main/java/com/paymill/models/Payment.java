@@ -24,10 +24,30 @@ public class Payment {
     this.id = id;
   }
 
+  // NOTE[VNi]: Paymill supports two cards, namely direct debit and credit card
+
+  // Common attributes:
   private String       id;
 
   private Payment.Type type;
 
+  @JsonProperty( "created_at" )
+  private Date         createdAt;
+
+  @JsonProperty( "updated_at" )
+  private Date         updatedAt;
+
+  @JsonProperty( "app_id" )
+  private String             appId;
+
+  // Direct debit attributes
+  private String       code;
+
+  private String       account;
+
+  private String       holder;
+
+  // Credit card attributes
   private String       client;
 
   @JsonProperty( "card_type" )
@@ -45,18 +65,6 @@ public class Payment {
   private String       cardHolder;
 
   private String       last4;
-
-  private String       code;
-
-  private String       holder;
-
-  private String       account;
-
-  @JsonProperty( "created_at" )
-  private Date         createdAt;
-
-  @JsonProperty( "updated_at" )
-  private Date         updatedAt;
 
   public enum Type {
     CREDITCARD("creditcard"), DEBIT("debit");
@@ -79,7 +87,7 @@ public class Payment {
           return status;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Transaction.Status" );
+      throw new IllegalArgumentException( "Invalid value for Payment.Type" );
     }
 
   }
