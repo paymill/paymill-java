@@ -4,14 +4,18 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.paymill.Paymill;
 import com.paymill.models.Payment;
+import com.paymill.utils.RestfullUtils;
 import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public class PaymentService extends BaseService {
+public class PaymentService implements PaymillService {
 
-  private static String RESOURCE = "/payments";
+  private final static String PATH = "/payments";
+
+  public Payment show( Payment payment ) {
+    return RestfullUtils.show( PaymentService.PATH, payment, Payment.class );
+  }
 
   public Payment createCreditCardWithToken( String token ) {
     return this.createCreditCardWithTokenAndClient( token, null );
@@ -25,21 +29,11 @@ public class PaymentService extends BaseService {
     if( StringUtils.isNotBlank( clientId ) )
       params.add( "client", clientId );
 
-    return super.post( params );
+    return RestfullUtils.create( PaymentService.PATH, params, Payment.class );
   }
 
   public Payment delete( Payment payment ) {
-    return Paymill.delete( PaymentService.RESOURCE, payment );
-  }
-
-  @Override
-  protected String getPath() {
-    return PaymentService.RESOURCE;
-  }
-
-  @Override
-  protected Class<?> getClazz() {
-    return Payment.class;
+    return RestfullUtils.delete( PaymentService.PATH, payment, Payment.class );
   }
 
 }

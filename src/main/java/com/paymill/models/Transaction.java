@@ -59,7 +59,7 @@ public class Transaction {
   private String             appId;
 
   public enum Status {
-    PARTIAL_REFUNDED("partial refunded"), REFUNDED("refunded"), CLOSED("closed"), FAILED("failed"), PENDING("pending");
+    OPEN("open"), PENDING("pending"), CLOSED("closed"), FAILED("failed"), PARTIAL_REFUNDED("partial_refunded"), REFUNDED("refunded"), PREAUTH("preauth");
 
     private String value;
 
@@ -81,7 +81,6 @@ public class Transaction {
       }
       throw new IllegalArgumentException( "Invalid value for Transaction.Status" );
     }
-
   }
 
 }

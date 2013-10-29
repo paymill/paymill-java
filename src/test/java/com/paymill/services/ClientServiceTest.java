@@ -72,7 +72,7 @@ public class ClientServiceTest {
 
   @Test( dependsOnMethods = "testCreate_WithDescription_shouldSecceed" )
   public void testShow_shouldSecceed() {
-    Client client = this.clientService.show( this.client.getId() );
+    Client client = this.clientService.show( this.client );
     this.validateClient( client );
     Assert.assertEquals( client.getDescription(), this.description );
   }
@@ -93,7 +93,7 @@ public class ClientServiceTest {
   @Test( dependsOnMethods = "testUpdate_shouldSecceed", expectedExceptions = PaymillException.class, expectedExceptionsMessageRegExp = "\"Client not found\"" )
   public void testDelete_shouldSecceed() {
     this.client = this.clientService.delete( this.client );
-    this.clientService.show( this.client.getId() );
+    this.clientService.show( this.client );
   }
 
 }

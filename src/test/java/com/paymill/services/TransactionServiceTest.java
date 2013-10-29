@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.Paymill;
+import com.paymill.models.Fee;
 import com.paymill.models.Transaction;
 
 public class TransactionServiceTest {
@@ -18,53 +19,68 @@ public class TransactionServiceTest {
   private String             feePayment  = "pay_3af44644dd6d25c820a8";
 
   private Transaction        transaction;
+  private Fee                fee;
 
   private TransactionService transactionService;
 
   @BeforeClass
   public void setUp() {
+    this.fee = new Fee();
+    this.fee.setAmount( feeAmount );
+    this.fee.setPayment( feePayment );
+
     Paymill.setApiKey( "2bb9c4c3f0776ba75cfdc60020d7ea35" );
     this.transactionService = Paymill.getService( TransactionService.class );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Token can not be blank" )
   public void testCreateWithToken_TokenIsNull_shouldFail() {
-    this.transactionService.createWithToken( null, amount, currency, description, feeAmount, feePayment );
+    this.transactionService.createWithToken( null, amount, currency, description );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Amount can not be blank or negative" )
   public void testCreateWithToken_AmountIsNull_shouldFail() {
-    this.transactionService.createWithToken( token, null, currency, description, feeAmount, feePayment );
+    this.transactionService.createWithTokenAndFee( token, null, currency, description, null );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Amount can not be blank or negative" )
   public void testCreateWithToken_AmountIsNegative_shouldFail() {
-    this.transactionService.createWithToken( token, -1, currency, description, feeAmount, feePayment );
+    this.transactionService.createWithToken( token, -1, currency, description );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Currency can not be blank" )
   public void testCreateWithToken_CurrencyIsNull_shouldFail() {
-    this.transactionService.createWithToken( token, amount, null, description, feeAmount, feePayment );
+    this.transactionService.createWithToken( token, amount, null, description );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "When fee payment is given, fee amount is mandatory" )
   public void testCreateWithToken_FeeAmountIsNullAndFeePaymentIsNotNull_shouldFail() {
-    this.transactionService.createWithToken( token, amount, currency, description, null, feePayment );
+    Fee fee = new Fee();
+    fee.setPayment( feePayment );
+    this.transactionService.createWithTokenAndFee( token, amount, currency, description, fee );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "When fee amount is given, fee payment is mandatory" )
   public void testCreateWithToken_FeeAmountIsNotNullButFeePaymentIsNull_shouldFail() {
-    this.transactionService.createWithToken( token, amount, currency, description, feeAmount, null );
+    Fee fee = new Fee();
+    fee.setAmount( feeAmount );
+    this.transactionService.createWithTokenAndFee( token, amount, currency, description, fee );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Fee amount can not be negative" )
   public void testCreateWithToken_FeeAmountIsNegative_shouldFail() {
-    this.transactionService.createWithToken( token, amount, currency, description, -100, feePayment );
+    Fee fee = new Fee();
+    fee.setAmount( -100 );
+    fee.setPayment( feePayment );
+    this.transactionService.createWithTokenAndFee( token, amount, currency, description, fee );
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Fee payment should statrt with 'pay_' prefix" )
   public void testCreateWithToken_FeePayment_shouldFail() {
-    this.transactionService.createWithToken( token, amount, currency, description, feeAmount, "tran_3af44644dd6d25c820a8" );
+    Fee fee = new Fee();
+    fee.setAmount( feeAmount );
+    fee.setPayment( "tran_3af44644dd6d25c820a8" );
+    this.transactionService.createWithTokenAndFee( token, amount, currency, description, fee );
   }
 
   @Test
@@ -85,8 +101,8 @@ public class TransactionServiceTest {
 
   //  @Test
   public void testCreateWithToken_FeeAsString_shouldSucceed() {
-    Paymill.refreshApiKey( "2bb9c4c3f0776ba75cfdc60020d7ea35" );
-    Transaction transaction = this.transactionService.createWithToken( token, amount, currency, null, this.feeAmount, this.feePayment );
+    Paymill.refreshApiKey( "255de920504bd07dad2a0bf57822ee40" );
+    Transaction transaction = this.transactionService.createWithTokenAndFee( token, amount, currency, null, fee );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getPayment().getId(), this.feePayment );
     Assert.assertEquals( transaction.getDescription(), null );
@@ -115,7 +131,7 @@ public class TransactionServiceTest {
 
   @Test( dependsOnMethods = "testCreateWithToken_WithDescruption_shouldSucceed" )
   public void testShow_shouldSucceed() {
-    Transaction transaction = this.transactionService.show( this.transaction.getId() );
+    Transaction transaction = this.transactionService.show( this.transaction );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), this.description );
   }
