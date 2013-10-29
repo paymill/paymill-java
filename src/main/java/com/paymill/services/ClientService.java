@@ -5,7 +5,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Client;
-import com.paymill.utils.RestfullUtils;
+import com.paymill.utils.RestfulUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class ClientService implements PaymillService {
@@ -13,7 +13,7 @@ public class ClientService implements PaymillService {
   private final static String PATH = "/clients";
 
   public Client show( Client client ) {
-    return RestfullUtils.show( ClientService.PATH, client, Client.class );
+    return RestfulUtils.show( ClientService.PATH, client, Client.class );
   }
 
   public Client create( String email, String description ) {
@@ -23,15 +23,15 @@ public class ClientService implements PaymillService {
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
 
-    return RestfullUtils.create( ClientService.PATH, params, Client.class );
+    return RestfulUtils.create( ClientService.PATH, params, Client.class );
   }
 
   public Client update( Client client ) {
-    return RestfullUtils.update( ClientService.PATH, client, Client.class );
+    return RestfulUtils.update( ClientService.PATH, client, Client.class );
   }
 
   public Client delete( Client client ) {
-    return RestfullUtils.delete( ClientService.PATH, client, Client.class );
+    return RestfulUtils.delete( ClientService.PATH, client, Client.class );
   }
 
 }

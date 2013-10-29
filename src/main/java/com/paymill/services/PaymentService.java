@@ -5,7 +5,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Payment;
-import com.paymill.utils.RestfullUtils;
+import com.paymill.utils.RestfulUtils;
 import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -14,7 +14,7 @@ public class PaymentService implements PaymillService {
   private final static String PATH = "/payments";
 
   public Payment show( Payment payment ) {
-    return RestfullUtils.show( PaymentService.PATH, payment, Payment.class );
+    return RestfulUtils.show( PaymentService.PATH, payment, Payment.class );
   }
 
   public Payment createCreditCardWithToken( String token ) {
@@ -29,11 +29,11 @@ public class PaymentService implements PaymillService {
     if( StringUtils.isNotBlank( clientId ) )
       params.add( "client", clientId );
 
-    return RestfullUtils.create( PaymentService.PATH, params, Payment.class );
+    return RestfulUtils.create( PaymentService.PATH, params, Payment.class );
   }
 
   public Payment delete( Payment payment ) {
-    return RestfullUtils.delete( PaymentService.PATH, payment, Payment.class );
+    return RestfulUtils.delete( PaymentService.PATH, payment, Payment.class );
   }
 
 }

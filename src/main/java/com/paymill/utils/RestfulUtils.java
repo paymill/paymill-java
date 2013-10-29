@@ -13,29 +13,29 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public final class RestfullUtils {
+public final class RestfulUtils {
 
   public final static <T> T show( String path, Object instance, Class<?> clazz ) {
-    String id = RestfullUtils.getIdByReflection( instance );
+    String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
-    return RestfullUtils.deserializeObject( RestfullUtils.get( path + "/" + id ), clazz );
+    return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id ), clazz );
   }
 
   public final static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz ) {
-    return RestfullUtils.deserializeObject( RestfullUtils.post( path, params ), clazz );
+    return RestfulUtils.deserializeObject( RestfulUtils.post( path, params ), clazz );
   }
 
   public final static <T> T update( String path, Object instance, Class<?> clazz ) {
-    MultivaluedMap<String, String> params = RestfullUtils.prepareEditableParameters( instance );
-    String id = RestfullUtils.getIdByReflection( instance );
+    MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( instance );
+    String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
-    return RestfullUtils.deserializeObject( RestfullUtils.put( path + "/" + id, params ), clazz );
+    return RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params ), clazz );
   }
 
   public static <T> T delete( String path, Object instance, Class<?> clazz ) {
-    String id = RestfullUtils.getIdByReflection( instance );
+    String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
-    return RestfullUtils.deserializeObject( RestfullUtils.delete( path + "/" + id ), clazz );
+    return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id ), clazz );
   }
 
   @SuppressWarnings( "unchecked" )

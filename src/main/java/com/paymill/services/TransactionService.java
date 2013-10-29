@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.paymill.Paymill;
 import com.paymill.models.Fee;
 import com.paymill.models.Transaction;
-import com.paymill.utils.RestfullUtils;
+import com.paymill.utils.RestfulUtils;
 import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -20,7 +20,7 @@ public class TransactionService implements PaymillService {
   private final static String PATH = "/transactions";
 
   public Transaction show( Transaction transaction ) {
-    return RestfullUtils.show( TransactionService.PATH, transaction, Transaction.class );
+    return RestfulUtils.show( TransactionService.PATH, transaction, Transaction.class );
   }
 
   public Transaction createWithToken( String token, Integer amount, String currency ) {
@@ -53,7 +53,7 @@ public class TransactionService implements PaymillService {
     if( StringUtils.isNotBlank( fee.getPayment() ) )
       params.add( "fee_payment", fee.getPayment() );
 
-    return RestfullUtils.create( TransactionService.PATH, params, Transaction.class );
+    return RestfulUtils.create( TransactionService.PATH, params, Transaction.class );
   }
 
   public void list( Integer count, Integer offset, Date created_at ) {
@@ -77,7 +77,7 @@ public class TransactionService implements PaymillService {
   }
 
   public Transaction update( Transaction transaction ) {
-    return RestfullUtils.update( TransactionService.PATH, transaction, Transaction.class );
+    return RestfulUtils.update( TransactionService.PATH, transaction, Transaction.class );
   }
 
 }
