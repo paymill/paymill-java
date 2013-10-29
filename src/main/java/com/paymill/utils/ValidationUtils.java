@@ -16,6 +16,11 @@ public final class ValidationUtils {
       throw new IllegalArgumentException( "Token can not be blank" );
   }
 
+  public static void validatesTrialPeriodDays( Integer trialPeriodDays ) {
+    if( trialPeriodDays != null && trialPeriodDays < 0 )
+      throw new IllegalArgumentException( "Trial period days can not be negative" );
+  }
+
   public static void validatesAmount( Integer amount ) {
     if( amount == null || amount < 0 )
       throw new IllegalArgumentException( "Amount can not be blank or negative" );
@@ -24,6 +29,16 @@ public final class ValidationUtils {
   public static void validatesCurrency( String currency ) {
     if( StringUtils.isBlank( currency ) )
       throw new IllegalArgumentException( "Currency can not be blank" );
+  }
+
+  public static void validatesName( String name ) {
+    if( StringUtils.isBlank( name ) )
+      throw new IllegalArgumentException( "Name can not be blank" );
+  }
+
+  public static void validatesInterval( String interval ) {
+    if( StringUtils.isBlank( interval ) )
+      throw new IllegalArgumentException( "Interval can not be blank" );
   }
 
   public static void validatesFee( Fee fee ) {

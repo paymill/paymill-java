@@ -15,17 +15,17 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public final class RestfulUtils {
 
-  public final static <T> T show( String path, Object instance, Class<?> clazz ) {
+  public static <T> T show( String path, Object instance, Class<?> clazz ) {
     String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
     return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id ), clazz );
   }
 
-  public final static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz ) {
+  public static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz ) {
     return RestfulUtils.deserializeObject( RestfulUtils.post( path, params ), clazz );
   }
 
-  public final static <T> T update( String path, Object instance, Class<?> clazz ) {
+  public static <T> T update( String path, Object instance, Class<?> clazz ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( instance );
     String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
@@ -39,13 +39,20 @@ public final class RestfulUtils {
   }
 
   @SuppressWarnings( "unchecked" )
-  private final static <T> T deserializeObject( String content, Class<?> clazz ) {
+  private static <T> T deserializeObject( String content, Class<?> clazz ) {
     try {
       JsonNode wrappedNode = Paymill.getJacksonParser().readValue( content, JsonNode.class );
-      if( wrappedNode.has( "data" ) )
-        return (T) Paymill.getJacksonParser().readValue( wrappedNode.get( "data" ).toString(), clazz );
-      if( wrappedNode.has( "error" ) )
+      if( wrappedNode.has( "data" ) ) {
+        JsonNode dataNode = wrappedNode.get( "data" );
+        if( dataNode.isArray() ) {
+          return null;
+        } else {
+          return (T) Paymill.getJacksonParser().readValue( dataNode.toString(), clazz );
+        }
+      }
+      if( wrappedNode.has( "error" ) ) {
         throw new PaymillException( wrappedNode.get( "error" ).toString() );
+      }
     } catch( IOException exc ) {
       throw new RuntimeException( exc );
     }
@@ -68,7 +75,7 @@ public final class RestfulUtils {
     return params;
   }
 
-  private static String getIdByReflection( Object instance ) {
+  public static String getIdByReflection( Object instance ) {
     String id = "";
     try {
       Field field = instance.getClass().getDeclaredField( "id" );
@@ -80,25 +87,25 @@ public final class RestfulUtils {
     return id;
   }
 
-  public final static String get( String path ) {
+  public static String get( String path ) {
     WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
     ClientResponse response = webResource.get( ClientResponse.class );
     return response.getEntity( String.class );
   }
 
-  private final static String post( String path, MultivaluedMap<String, String> params ) {
+  private static String post( String path, MultivaluedMap<String, String> params ) {
     WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
     ClientResponse response = webResource.post( ClientResponse.class, params );
     return response.getEntity( String.class );
   }
 
-  private final static String put( String path, MultivaluedMap<String, String> params ) {
+  private static String put( String path, MultivaluedMap<String, String> params ) {
     WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
     ClientResponse response = webResource.put( ClientResponse.class, params );
     return response.getEntity( String.class );
   }
 
-  private final static String delete( String path ) {
+  private static String delete( String path ) {
     WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
     ClientResponse response = webResource.delete( ClientResponse.class );
     return response.getEntity( String.class );

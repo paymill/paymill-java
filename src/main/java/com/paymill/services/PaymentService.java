@@ -17,11 +17,11 @@ public class PaymentService implements PaymillService {
     return RestfulUtils.show( PaymentService.PATH, payment, Payment.class );
   }
 
-  public Payment createCreditCardWithToken( String token ) {
-    return this.createCreditCardWithTokenAndClient( token, null );
+  public Payment createWithToken( String token ) {
+    return this.createWithTokenAndClient( token, null );
   }
 
-  public Payment createCreditCardWithTokenAndClient( String token, String clientId ) {
+  public Payment createWithTokenAndClient( String token, String clientId ) {
     ValidationUtils.validatesToken( token );
 
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();

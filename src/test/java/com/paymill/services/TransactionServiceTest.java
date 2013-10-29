@@ -12,7 +12,7 @@ import com.paymill.models.Transaction;
 public class TransactionServiceTest {
 
   private String             token       = "098f6bcd4621d373cade4e832627b4f6";
-  private int                amount      = 4201;
+  private int                amount      = 3201;
   private String             currency    = "EUR";
   private String             description = "Boom, boom, shake the room";
   private Integer            feeAmount   = 200;

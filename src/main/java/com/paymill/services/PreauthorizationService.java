@@ -35,4 +35,8 @@ public class PreauthorizationService implements PaymillService {
     return null;
   }
 
+  public Preauthorization delete( Preauthorization preauthorization ) {
+    return RestfulUtils.delete( PreauthorizationService.PATH, preauthorization, Preauthorization.class );
+  }
+
 }

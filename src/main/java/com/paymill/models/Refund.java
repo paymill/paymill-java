@@ -2,127 +2,65 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Refund {
 
+  private String        id;
+
+  private Transaction   transaction;
+
+  private Integer       amount;
+
+  private Refund.Status status;
+
+  private String        description;
+
+  private Boolean       livemode;
+
+  @JsonProperty( "created_at" )
+  private Date          createdAt;
+
+  @JsonProperty( "updated_at" )
+  private Date          updatedAt;
+
+  @JsonProperty( "response_code" )
+  private Integer       responseCode;
+
+  @JsonProperty( "app_id" )
+  private String        appId;
+
   public enum Status {
-    OPEN, REFUNDED, FAILED
+    OPEN("open"), REFUNDED("refunded"), FAILED("failed");
+
+    private String value;
+
+    private Status( String value ) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return this.value;
+    }
+
+    @JsonCreator
+    public static Status create( String value ) {
+      for( Status status : Status.values() ) {
+        if( status.getValue().equals( value ) ) {
+          return status;
+        }
+      }
+      throw new IllegalArgumentException( "Invalid value for Refund.Status" );
+    }
+
   }
 
-  private String      id;
-  private Integer     amount;
-  @JsonIgnore
-  private Status      status;
-  private String      description;
-  private Transaction transaction;
-  private Date        createdAt;
-  private Date        updatedAt;
-
-  /**
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * @param id
-   *          the id to set
-   */
-  public void setId( String id ) {
-    this.id = id;
-  }
-
-  /**
-   * @return the amount
-   */
-  public Integer getAmount() {
-    return amount;
-  }
-
-  /**
-   * @param amount
-   *          the amount to set
-   */
-  public void setAmount( Integer amount ) {
-    this.amount = amount;
-  }
-
-  /**
-   * @return the status
-   */
-  public Status getStatus() {
-    return status;
-  }
-
-  /**
-   * @param status
-   *          the status to set
-   */
-  public void setStatus( Status status ) {
-    this.status = status;
-  }
-
-  /**
-   * @return the description
-   */
-  public String getDescription() {
-    return description;
-  }
-
-  /**
-   * @param description
-   *          the description to set
-   */
-  public void setDescription( String description ) {
-    this.description = description;
-  }
-
-  /**
-   * @return the createdAt
-   */
-  public Date getCreatedAt() {
-    return createdAt;
-  }
-
-  /**
-   * @param createdAt
-   *          the createdAt to set
-   */
-  public void setCreatedAt( Date createdAt ) {
-    this.createdAt = createdAt;
-  }
-
-  /**
-   * @return the updatedAt
-   */
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
-
-  /**
-   * @param updatedAt
-   *          the updatedAt to set
-   */
-  public void setUpdatedAt( Date updatedAt ) {
-    this.updatedAt = updatedAt;
-  }
-
-  /**
-   * @return the transaction
-   */
-  public Transaction getTransaction() {
-    return transaction;
-  }
-
-  /**
-   * @param transaction
-   *          the transaction to set
-   */
-  public void setTransaction( Transaction transaction ) {
-    this.transaction = transaction;
-  }
 }

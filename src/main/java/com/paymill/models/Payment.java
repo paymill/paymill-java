@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.paymill.models.Transaction.Status;
 
 @Data
 @JsonIgnoreProperties( ignoreUnknown = true )
@@ -81,10 +80,10 @@ public class Payment {
     }
 
     @JsonCreator
-    public static Status create( String value ) {
-      for( Status status : Status.values() ) {
-        if( status.getValue().equals( value ) ) {
-          return status;
+    public static Type create( String value ) {
+      for( Type type : Type.values() ) {
+        if( type.getValue().equals( value ) ) {
+          return type;
         }
       }
       throw new IllegalArgumentException( "Invalid value for Payment.Type" );

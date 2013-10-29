@@ -26,7 +26,7 @@ public class PaymentServiceTest {
 
   @Test
   public void testCreate_WithToken_shouldSecceed() {
-    Payment payment = this.paymentService.createCreditCardWithToken( token );
+    Payment payment = this.paymentService.createWithToken( token );
 
     Assert.assertNotNull( payment );
     Assert.assertNotNull( payment.getId() );
@@ -38,7 +38,7 @@ public class PaymentServiceTest {
 
   @Test
   public void testCreate_WithTokenAndClient_shouldSecceed() {
-    this.payment = this.paymentService.createCreditCardWithTokenAndClient( token, clientId );
+    this.payment = this.paymentService.createWithTokenAndClient( token, clientId );
 
     Assert.assertNotNull( payment );
     Assert.assertNotNull( payment.getId() );
@@ -60,11 +60,9 @@ public class PaymentServiceTest {
     Assert.assertEquals( payment.getId(), this.payment.getId() );
   }
 
-  //  @Test( dependsOnMethods = "testShow_shouldSucceed", expectedExceptions = PaymillException.class, expectedExceptionsMessageRegExp = "\"Payment not found\"" )
   public void testDelete_shouldSecceed() {
-    //TODO[VNi]: Returns an empty array, cause error
     this.payment = this.paymentService.delete( this.payment );
-    this.paymentService.show( this.payment );
+    Assert.assertNull( this.payment );
   }
 
 }
