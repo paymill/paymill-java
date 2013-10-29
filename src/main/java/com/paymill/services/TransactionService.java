@@ -19,6 +19,17 @@ public class TransactionService implements PaymillService {
 
   private final static String PATH = "/transactions";
 
+  public void list( Integer count, Integer offset, Date created_at ) {
+    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + PATH );
+    ClientResponse response = webResource.get( ClientResponse.class );
+
+    if( response.getStatus() != 200 ) {
+      System.out.println( "Failed : HTTP error code : " + response.getStatus() );
+    }
+
+    response.getEntity( String.class );
+  }
+
   public Transaction show( Transaction transaction ) {
     return RestfulUtils.show( TransactionService.PATH, transaction, Transaction.class );
   }
@@ -48,24 +59,12 @@ public class TransactionService implements PaymillService {
 
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
-    if( fee.getAmount() != null )
+    if( fee != null && fee.getAmount() != null )
       params.add( "fee_amount", String.valueOf( fee.getAmount() ) );
-    if( StringUtils.isNotBlank( fee.getPayment() ) )
+    if( fee != null && StringUtils.isNotBlank( fee.getPayment() ) )
       params.add( "fee_payment", fee.getPayment() );
 
     return RestfulUtils.create( TransactionService.PATH, params, Transaction.class );
-  }
-
-  public void list( Integer count, Integer offset, Date created_at ) {
-    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + PATH );
-    ClientResponse response = webResource.get( ClientResponse.class );
-
-    if( response.getStatus() != 200 ) {
-      System.out.println( "Failed : HTTP error code : " + response.getStatus() );
-    }
-
-    String output = response.getEntity( String.class );
-
   }
 
   public Transaction createWithPayment() {
