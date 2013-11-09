@@ -1,5 +1,7 @@
 package com.paymill.services;
 
+import java.util.List;
+
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +14,15 @@ public class ClientService implements PaymillService {
 
   private final static String PATH = "/clients";
 
-  public Client show( Client client ) {
+  public List<Client> list() {
+    return this.list( null, null );
+  }
+
+  public List<Client> list( Client.Filter filter, Client.Order order ) {
+    return RestfulUtils.list( ClientService.PATH, filter, order, Client.class );
+  }
+
+  public Client get( Client client ) {
     return RestfulUtils.show( ClientService.PATH, client, Client.class );
   }
 

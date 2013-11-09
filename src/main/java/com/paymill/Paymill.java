@@ -12,6 +12,7 @@ import com.paymill.services.PaymentService;
 import com.paymill.services.PaymillService;
 import com.paymill.services.PreauthorizationService;
 import com.paymill.services.RefundService;
+import com.paymill.services.SubscriptionService;
 import com.paymill.services.TransactionService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
@@ -39,6 +40,7 @@ public final class Paymill {
     Paymill.services.put( PaymentService.class, new PaymentService() );
     Paymill.services.put( PreauthorizationService.class, new PreauthorizationService() );
     Paymill.services.put( RefundService.class, new RefundService() );
+    Paymill.services.put( SubscriptionService.class, new SubscriptionService() );
     Paymill.services.put( TransactionService.class, new TransactionService() );
   }
 
