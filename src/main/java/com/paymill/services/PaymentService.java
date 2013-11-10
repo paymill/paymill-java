@@ -1,24 +1,43 @@
 package com.paymill.services;
 
+import java.util.List;
+
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.paymill.models.Client;
 import com.paymill.models.Payment;
-import com.paymill.utils.RestfulUtils;
-import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class PaymentService implements PaymillService {
 
   private final static String PATH = "/payments";
 
-  public Payment show( Payment payment ) {
-    return RestfulUtils.show( PaymentService.PATH, payment, Payment.class );
+  public List<Payment> list() {
+    return this.list( null, null );
+  }
+
+  public List<Payment> list( Payment.Filter filter, Payment.Order order ) {
+    return RestfulUtils.list( PaymentService.PATH, filter, order, Payment.class );
+  }
+
+  public Payment get( Payment payment ) {
+    return RestfulUtils.show( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class );
+  }
+
+  public Payment get( String paymentId ) {
+    return RestfulUtils.show( PaymentService.PATH, paymentId, Payment.class );
   }
 
   public Payment createWithToken( String token ) {
-    return this.createWithTokenAndClient( token, null );
+    return this.createWithTokenAndClient( token, StringUtils.EMPTY );
+  }
+
+  public Payment createWithTokenAndClient( String token, Client client ) {
+    String clientId = RestfulUtils.getIdByReflection( client );
+    ValidationUtils.validatesId( clientId );
+    return this.createWithTokenAndClient( token, clientId );
   }
 
   public Payment createWithTokenAndClient( String token, String clientId ) {
@@ -33,7 +52,14 @@ public class PaymentService implements PaymillService {
   }
 
   public Payment delete( Payment payment ) {
-    return RestfulUtils.delete( PaymentService.PATH, payment, Payment.class );
+    RestfulUtils.delete( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class );
+    payment.setId( null );
+    return payment;
+
+  }
+
+  public Payment delete( String paymentId ) {
+    return this.delete( new Payment( paymentId ) );
   }
 
 }

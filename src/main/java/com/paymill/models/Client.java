@@ -8,12 +8,24 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * The clients object is used to edit, delete, update clients as well as to permit refunds, subscriptions, insert credit card
+ * details for a client, edit client details and of course make transactions. Clients can be created individually by you or they
+ * will be automatically generated with the transaction if there is no client ID transmitted.
+ * @author Vassil Nikolov
+ */
 @Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Client {
 
+  /**
+   * @serial Unique identifier of this client.
+   */
   private String             id;
 
+  /**
+   * Mail address of this client.
+   */
   @Updateable
   private String             email;
 
@@ -132,7 +144,7 @@ public class Client {
     @SnakeCase( value = "desc", order = true )
     private boolean desc;
 
-    public Order() {
+    private Order() {
       super();
     }
 

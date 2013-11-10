@@ -5,8 +5,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import com.paymill.models.Payment;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
-import com.paymill.utils.RestfulUtils;
-import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class PreauthorizationService implements PaymillService {

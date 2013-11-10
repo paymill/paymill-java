@@ -27,17 +27,15 @@ public class ClientServiceTest {
   public void setUp() {
     Paymill.setApiKey( "255de920504bd07dad2a0bf57822ee40" );
     this.clientService = Paymill.getService( ClientService.class );
-
-    Client.createOrder().byEmail().desc();
   }
 
   @AfterClass
   public void tearDown() {
     List<Client> clients = this.clientService.list();
     for( Client client : clients ) {
-      this.clientService.delete( client );
+      Assert.assertNull( this.clientService.delete( client ).getId() );
     }
-    Assert.assertEquals( this.clientService.list().size(), 0 ) ;
+    Assert.assertEquals( this.clientService.list().size(), 0 );
   }
 
   @Test

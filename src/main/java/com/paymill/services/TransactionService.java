@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.paymill.Paymill;
 import com.paymill.models.Fee;
 import com.paymill.models.Transaction;
-import com.paymill.utils.RestfulUtils;
-import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;

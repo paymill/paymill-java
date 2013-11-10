@@ -1,4 +1,4 @@
-package com.paymill.utils;
+package com.paymill.services;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,9 +18,19 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public final class RestfulUtils {
+final class RestfulUtils {
 
-  public static <T> T list( String path, Object filter, Object order, Class<?> clazz ) {
+  static String getIdByReflection( Object instance ) {
+    try {
+      Field field = instance.getClass().getDeclaredField( "id" );
+      field.setAccessible( true );
+      return String.valueOf( field.get( instance ) );
+    } catch( Exception exc ) {
+      throw new RuntimeException( exc );
+    }
+  }
+
+  static <T> T list( String path, Object filter, Object order, Class<?> clazz ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );
     String param = RestfulUtils.prepareOrderParameter( order );
     if( StringUtils.isNotBlank( param ) && !StringUtils.startsWith( param, "_" ) ) {
@@ -29,25 +39,37 @@ public final class RestfulUtils {
     return RestfulUtils.deserializeList( RestfulUtils.get( path, params ), clazz );
   }
 
-  public static <T> T show( String path, Object instance, Class<?> clazz ) {
+  @Deprecated
+  static <T> T show( String path, Object instance, Class<?> clazz ) {
     String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
     return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id ), clazz );
   }
 
-  public static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz ) {
+  static <T> T show( String path, String id, Class<?> clazz ) {
+    ValidationUtils.validatesId( id );
+    return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id ), clazz );
+  }
+
+  static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz ) {
     return RestfulUtils.deserializeObject( RestfulUtils.post( path, params ), clazz );
   }
 
-  public static <T> T update( String path, Object instance, Class<?> clazz ) {
+  static <T> T update( String path, Object instance, Class<?> clazz ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( instance );
     String id = RestfulUtils.getIdByReflection( instance );
     ValidationUtils.validatesId( id );
     return RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params ), clazz );
   }
 
-  public static <T> T delete( String path, Object instance, Class<?> clazz ) {
+  @Deprecated
+  static <T> T delete( String path, Object instance, Class<?> clazz ) {
     String id = RestfulUtils.getIdByReflection( instance );
+    ValidationUtils.validatesId( id );
+    return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id ), clazz );
+  }
+
+  static <T> T delete( String path, String id, Class<?> clazz ) {
     ValidationUtils.validatesId( id );
     return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id ), clazz );
   }
@@ -81,7 +103,6 @@ public final class RestfulUtils {
           List<Object> objects = new ArrayList<Object>();
           for( Object object : Paymill.getJacksonParser().readValue( dataNode.toString(), List.class ) ) {
             try {
-              //              ((Map) object).get( "" )
               objects.add( Paymill.getJacksonParser().readValue( Paymill.getJacksonParser().writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
               System.out.println( object );
@@ -115,26 +136,14 @@ public final class RestfulUtils {
     return params;
   }
 
-  public static String getIdByReflection( Object instance ) {
-    String id = "";
-    try {
-      Field field = instance.getClass().getDeclaredField( "id" );
-      field.setAccessible( true );
-      id = String.valueOf( field.get( instance ) );
-    } catch( Exception exc ) {
-      throw new RuntimeException( exc );
-    }
-    return id;
-  }
-
-  public static String get( String path, MultivaluedMap<String, String> params ) {
-    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path ).queryParams( params );
+  private static String get( String path ) {
+    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
     ClientResponse response = webResource.get( ClientResponse.class );
     return response.getEntity( String.class );
   }
 
-  public static String get( String path ) {
-    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path );
+  private static String get( String path, MultivaluedMap<String, String> params ) {
+    WebResource webResource = Paymill.getHttpClient().resource( Paymill.ENDPOINT + path ).queryParams( params );
     ClientResponse response = webResource.get( ClientResponse.class );
     return response.getEntity( String.class );
   }

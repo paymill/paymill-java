@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Refund;
 import com.paymill.models.Transaction;
-import com.paymill.utils.RestfulUtils;
-import com.paymill.utils.ValidationUtils;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class RefundService implements PaymillService {

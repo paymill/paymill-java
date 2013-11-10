@@ -1,5 +1,6 @@
 package com.paymill;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,13 +36,19 @@ public final class Paymill {
 
     Paymill.services = new HashMap<Class<? extends PaymillService>, PaymillService>();
 
-    Paymill.services.put( ClientService.class, new ClientService() );
-    Paymill.services.put( OfferService.class, new OfferService() );
-    Paymill.services.put( PaymentService.class, new PaymentService() );
-    Paymill.services.put( PreauthorizationService.class, new PreauthorizationService() );
-    Paymill.services.put( RefundService.class, new RefundService() );
-    Paymill.services.put( SubscriptionService.class, new SubscriptionService() );
-    Paymill.services.put( TransactionService.class, new TransactionService() );
+    try {
+      Constructor<ClientService> declaredConstructor = ClientService.class.getDeclaredConstructor( null );
+      declaredConstructor.setAccessible( true );
+      Paymill.services.put( ClientService.class, declaredConstructor.newInstance( null ) );
+      Paymill.services.put( OfferService.class, new OfferService() );
+      Paymill.services.put( PaymentService.class, new PaymentService() );
+      Paymill.services.put( PreauthorizationService.class, new PreauthorizationService() );
+      Paymill.services.put( RefundService.class, new RefundService() );
+      Paymill.services.put( SubscriptionService.class, new SubscriptionService() );
+      Paymill.services.put( TransactionService.class, new TransactionService() );
+    } catch( Exception exc ) {
+      exc.printStackTrace();
+    }
   }
 
   public static void setApiKey( String apiKey ) {

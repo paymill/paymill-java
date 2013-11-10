@@ -21,7 +21,7 @@ public class PreauthorizationServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill.setApiKey( "2bb9c4c3f0776ba75cfdc60020d7ea35" );
+    Paymill.setApiKey( "255de920504bd07dad2a0bf57822ee40" );
     this.preauthorizationService = Paymill.getService( PreauthorizationService.class );
   }
 
