@@ -40,7 +40,7 @@ public class SubscriptionServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
 
     this.subscriptionService = paymill.getSubscriptionService();
     this.paymentService = paymill.getPaymentService();
@@ -60,10 +60,6 @@ public class SubscriptionServiceTest {
     for( Subscription subscription : this.subscriptions ) {
       Assert.assertNull( subscription.getCanceledAt() );
       this.subscriptionService.delete( subscription );
-    }
-
-    for( Subscription subscription : this.subscriptionService.list().getData() ) {
-      Assert.assertNotNull( subscription.getCanceledAt() );
     }
 
     //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill

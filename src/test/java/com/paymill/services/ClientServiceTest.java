@@ -26,7 +26,7 @@ public class ClientServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.clientService = paymill.getClientService();
   }
 

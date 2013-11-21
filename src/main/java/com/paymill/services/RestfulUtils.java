@@ -188,6 +188,8 @@ final class RestfulUtils {
   }
 
   private static String prepareOrderParameter( Object instance ) {
+    if( instance == null )
+      return StringUtils.EMPTY;
     String order = StringUtils.EMPTY;
     String sortEntry = StringUtils.EMPTY;
     try {
