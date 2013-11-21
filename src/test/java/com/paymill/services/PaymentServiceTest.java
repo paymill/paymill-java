@@ -41,14 +41,6 @@ public class PaymentServiceTest {
       if( payment.getClient() != null )
         this.clientService.delete( payment.getClient() );
     }
-
-    //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
-    PaymillList<Payment> wrapper = this.paymentService.list();
-    for( Payment payment : wrapper.getData() ) {
-      this.paymentService.delete( payment );
-      if( payment.getClient() != null )
-        this.clientService.delete( payment.getClient() );
-    }
   }
 
   @Test
@@ -93,21 +85,22 @@ public class PaymentServiceTest {
   }
 
   @Test( dependsOnMethods = "testShow_shouldSucceed" )
-  public void testListOrderByCreatedAtDesc() throws InterruptedException {
-    Payment.Order order = Payment.createOrder().byCreatedAt().asc();
+  public void testListOrderByCreatedAt() throws InterruptedException {
+    Payment.Order orderAsc = Payment.createOrder().byCreatedAt().asc();
+    Payment.Order orderDesc = Payment.createOrder().byCreatedAt().desc();
 
-    PaymillList<Payment> wrapper = this.paymentService.list( null, order );
-    List<Payment> payments = wrapper.getData();
+    List<Payment> paymentsAsc = this.paymentService.list( null, orderAsc ).getData();
+    List<Payment> paymentsDesc = this.paymentService.list( null, orderDesc ).getData();
 
     //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
-    Assert.assertNotNull( payments );
-    Assert.assertFalse( payments.isEmpty() );
-    Assert.assertEquals( payments.size(), this.payments.size() * 2 );
-    Assert.assertNull( payments.get( 3 ).getClient() );
-    Assert.assertEquals( payments.get( 1 ).getClient(), this.client.getId() );
+    Assert.assertNotNull( paymentsAsc );
+    Assert.assertNotNull( paymentsDesc );
+    Assert.assertFalse( paymentsAsc.isEmpty() );
+    Assert.assertFalse( paymentsDesc.isEmpty() );
+    Assert.assertNotEquals( paymentsAsc.get( 0 ).getId(), paymentsDesc.get( 0 ).getId() );
   }
 
-  @Test( dependsOnMethods = "testListOrderByCreatedAtDesc" )
+  @Test( dependsOnMethods = "testListOrderByCreatedAt" )
   public void testListFilterByCardType() {
     Payment.Filter filter = Payment.createFilter().byCardType( Payment.CardType.VISA );
 
@@ -116,7 +109,6 @@ public class PaymentServiceTest {
 
     Assert.assertNotNull( payments );
     Assert.assertFalse( payments.isEmpty() );
-    Assert.assertEquals( this.payments.size(), payments.size() );
   }
 
 }

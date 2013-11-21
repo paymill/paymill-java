@@ -98,7 +98,7 @@ public final class ClientService extends AbstractService {
   /**
    * This function updates the data of a client. To change only a specific attribute you can set this attribute in the update
    * request. All other attributes that should not be edited are not inserted. You can only edit the description, email and credit
-   * card. The subscription can’t be changed by updating the client data. This has to be done in the subscription call.
+   * card. The subscription can not be changed by updating the client data. This has to be done in the subscription call.
    * @param client
    *          A {@link Client} with Id.
    * @return {@link Client} object, which represents a PayMill client.
@@ -108,7 +108,7 @@ public final class ClientService extends AbstractService {
   }
 
   /**
-   * This function deletes a client, but its transactions aren’t deleted.
+   * This function deletes a client, but its transactions are not deleted.
    * @param client
    *          A {@link Client} with Id.
    * @return {@link Client} object without id, which represents a deleted PayMill client.
@@ -120,7 +120,7 @@ public final class ClientService extends AbstractService {
   }
 
   /**
-   * This function deletes a client, but its transactions aren’t deleted.
+   * This function deletes a client, but its transactions are not deleted.
    * @param clientId
    *          Id of the {@link Client}
    * @return {@link Client} object without id, which represents a deleted PayMill client.

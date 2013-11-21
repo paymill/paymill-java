@@ -32,11 +32,9 @@ public class ClientServiceTest {
 
   @AfterClass
   public void tearDown() {
-    List<Client> clients = this.clientService.list().getData();
-    for( Client client : clients ) {
+    for( Client client : this.clients ) {
       Assert.assertNull( this.clientService.delete( client ).getId() );
     }
-    Assert.assertEquals( this.clientService.list().getData().size(), 0 );
   }
 
   @Test
@@ -103,20 +101,18 @@ public class ClientServiceTest {
   }
 
   @Test( dependsOnMethods = "testUpdate_shouldSecceed" )
-  public void testListOrderByEmailAsc() {
-    Client.Order order = Client.createOrder().byEmail().asc();
+  public void testListOrderByEmailDesc() {
+    Client.Order order = Client.createOrder().byEmail().desc();
 
     PaymillList<Client> wrapper = this.clientService.list( null, order );
     List<Client> clients = wrapper.getData();
 
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );
-    Assert.assertEquals( clients.size(), this.clients.size() );
-    Assert.assertNull( clients.get( 0 ).getEmail() );
-    Assert.assertEquals( clients.get( 1 ).getEmail(), "john.firstblood.rambo@qaiware.com" );
+    Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
   }
 
-  @Test( dependsOnMethods = "testListOrderByEmailAsc" )
+  @Test( dependsOnMethods = "testListOrderByEmailDesc" )
   public void testListFilterByEmail() {
     Client.Filter filter = Client.createFilter().byEmail( "john.rambo@qaiware.com" );
 
@@ -125,7 +121,6 @@ public class ClientServiceTest {
 
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );
-    Assert.assertEquals( this.clients.size() - 2, clients.size() );
 
     Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
     Assert.assertEquals( clients.get( 1 ).getEmail(), "john.rambo@qaiware.com" );

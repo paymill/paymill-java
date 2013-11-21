@@ -81,7 +81,7 @@ public class OfferServiceTest {
   }
 
   @Test( dependsOnMethods = "testUpdate_shouldSucceed" )
-  public void testListOrderByAmountDesc() {
+  public void testListOfferByAmountDesc() {
     Offer.Order order = Offer.createOrder().byAmount().desc();
 
     PaymillList<Offer> wrapper = this.offerService.list( null, order );
@@ -89,12 +89,11 @@ public class OfferServiceTest {
 
     Assert.assertNotNull( offers );
     Assert.assertFalse( offers.isEmpty() );
-    Assert.assertEquals( this.offers.size(), offers.size() );
     Assert.assertEquals( offers.get( 0 ).getAmount(), Integer.valueOf( this.amount + 1 ) );
     Assert.assertEquals( offers.get( 1 ).getAmount(), this.amount );
   }
 
-  @Test( dependsOnMethods = "testListOrderByAmountDesc" )
+  @Test( dependsOnMethods = "testListOfferByAmountDesc" )
   public void testListFilterByAmount() {
     Offer.Filter filter = Offer.createFilter().byAmount( this.amount );
 

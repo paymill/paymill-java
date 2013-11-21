@@ -156,8 +156,18 @@ public class Offer {
       return this;
     }
 
-    public Offer.Filter byAmount( Integer amount ) {
+    public Offer.Filter byAmount( final int amount ) {
       this.amount = String.valueOf( amount );
+      return this;
+    }
+
+    public Offer.Filter byAmountGreaterThan( final int amount ) {
+      this.amount = ">" + String.valueOf( amount );
+      return this;
+    }
+
+    public Offer.Filter byAmountLessThan( final int amount ) {
+      this.amount = "<" + String.valueOf( amount );
       return this;
     }
 
