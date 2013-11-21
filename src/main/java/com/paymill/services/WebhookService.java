@@ -41,32 +41,12 @@ public class WebhookService extends AbstractService {
     return RestfulUtils.create( WebhookService.PATH, params, Webhook.class, super.httpClient );
   }
 
-  public Webhook createUrlWebhook( String url, String[] eventTypes ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    params.add( "url", url );
-
-    for( String eventType : eventTypes )
-      params.add( "event_types[]", eventType );
-
-    return RestfulUtils.create( WebhookService.PATH, params, Webhook.class, super.httpClient );
-  }
-
   public Webhook createEmailWebhook( String email, Webhook.EventType[] eventTypes ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "email", email );
 
     for( Webhook.EventType eventType : eventTypes )
       params.add( "event_types[]", eventType.getValue() );
-
-    return RestfulUtils.create( WebhookService.PATH, params, Webhook.class, super.httpClient );
-  }
-
-  public Webhook createEmailWebhook( String email, String[] eventTypes ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    params.add( "email", email );
-
-    for( String eventType : eventTypes )
-      params.add( "event_types[]", eventType );
 
     return RestfulUtils.create( WebhookService.PATH, params, Webhook.class, super.httpClient );
   }
@@ -84,7 +64,5 @@ public class WebhookService extends AbstractService {
   public Webhook delete( String webhookId ) {
     return this.delete( new Webhook( webhookId ) );
   }
-
-
 
 }

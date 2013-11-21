@@ -45,13 +45,8 @@ public final class PaymillContext {
       this.transactionService = this.getPrivateConstructor( TransactionService.class ).newInstance( this.httpClient );
       this.webhookService = this.getPrivateConstructor( WebhookService.class ).newInstance( this.httpClient );
     } catch( Exception exc ) {
-      exc.printStackTrace();
       throw new RuntimeException( exc );
     }
-  }
-
-  public Client getHttpClient() {
-    return this.httpClient;
   }
 
   public static ObjectMapper getJacksonParser() {

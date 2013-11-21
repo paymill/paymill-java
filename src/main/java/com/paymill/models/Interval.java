@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-//TODO[VNi]: check getters and setters
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Interval {
 

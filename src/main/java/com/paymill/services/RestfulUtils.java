@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.paymill.context.PaymillContext;
-import com.paymill.exception.PaymillException;
+import com.paymill.exceptions.PaymillException;
 import com.paymill.models.PaymillList;
 import com.paymill.models.SnakeCase;
 import com.paymill.models.Updateable;
@@ -49,7 +49,7 @@ final class RestfulUtils {
     return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id, httpClient ), clazz );
   }
 
-  static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz, Client httpClient  ) {
+  static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz, Client httpClient ) {
     return RestfulUtils.deserializeObject( RestfulUtils.post( path, params, httpClient ), clazz );
   }
 
@@ -182,7 +182,7 @@ final class RestfulUtils {
         }
       }
     } catch( Exception exc ) {
-
+      throw new RuntimeException( exc );
     }
     return params;
   }
@@ -203,7 +203,7 @@ final class RestfulUtils {
         }
       }
     } catch( Exception exc ) {
-
+      throw new RuntimeException( exc );
     }
     return sortEntry + order;
   }

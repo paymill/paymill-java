@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
-import com.paymill.exception.PaymillException;
+import com.paymill.exceptions.PaymillException;
 import com.paymill.models.Client;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
