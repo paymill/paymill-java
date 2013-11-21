@@ -2,15 +2,12 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.paymill.models.Payment.Type;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Webhook {
 
@@ -37,6 +34,50 @@ public class Webhook {
 
   public Webhook( String id ) {
     this.id = id;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId( String id ) {
+    this.id = id;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl( String url ) {
+    this.url = url;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail( String email ) {
+    this.email = email;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt( Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public Webhook.EventType[] getEventTypes() {
+    return eventTypes;
+  }
+
+  public void setEventTypes( Webhook.EventType[] eventTypes ) {
+    this.eventTypes = eventTypes;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
   }
 
   public void setCreatedAt( Date createdAt ) {

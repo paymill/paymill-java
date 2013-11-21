@@ -2,14 +2,11 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Payment {
 
@@ -63,36 +60,132 @@ public class Payment {
 
   private String           last4;
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId( String id ) {
+    this.id = id;
+  }
+
+  public Payment.Type getType() {
+    return type;
+  }
+
+  public void setType( Payment.Type type ) {
+    this.type = type;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt( Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId( String appId ) {
+    this.appId = appId;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode( String code ) {
+    this.code = code;
+  }
+
+  public String getAccount() {
+    return account;
+  }
+
+  public void setAccount( String account ) {
+    this.account = account;
+  }
+
+  public String getHolder() {
+    return holder;
+  }
+
+  public void setHolder( String holder ) {
+    this.holder = holder;
+  }
+
+  public String getClient() {
+    return client;
+  }
+
+  public void setClient( String client ) {
+    this.client = client;
+  }
+
+  public Payment.CardType getCardType() {
+    return cardType;
+  }
+
+  public void setCardType( Payment.CardType cardType ) {
+    this.cardType = cardType;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry( String country ) {
+    this.country = country;
+  }
+
+  public Integer getExpireMonth() {
+    return expireMonth;
+  }
+
+  public void setExpireMonth( Integer expireMonth ) {
+    this.expireMonth = expireMonth;
+  }
+
+  public Integer getExpireYear() {
+    return expireYear;
+  }
+
+  public void setExpireYear( Integer expireYear ) {
+    this.expireYear = expireYear;
+  }
+
+  public String getCardHolder() {
+    return cardHolder;
+  }
+
+  public void setCardHolder( String cardHolder ) {
+    this.cardHolder = cardHolder;
+  }
+
+  public String getLast4() {
+    return last4;
+  }
+
+  public void setLast4( String last4 ) {
+    this.last4 = last4;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
   public void setCreatedAt( Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
-  public enum Type {
+  public static Payment.Filter createFilter() {
+    return new Payment.Filter();
+  }
 
-    CREDITCARD("creditcard"),
-
-    DEBIT("debit");
-
-    private String value;
-
-    private Type( String value ) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return this.value;
-    }
-
-    @JsonCreator
-    public static Type create( String value ) {
-      for( Type type : Type.values() ) {
-        if( type.getValue().equals( value ) ) {
-          return type;
-        }
-      }
-      throw new IllegalArgumentException( "Invalid value for Payment.Type" );
-    }
+  public static Payment.Order createOrder() {
+    return new Payment.Order();
   }
 
   public enum CardType {
@@ -122,12 +215,32 @@ public class Payment {
     }
   }
 
-  public static Payment.Filter createFilter() {
-    return new Payment.Filter();
-  }
+  public enum Type {
 
-  public static Payment.Order createOrder() {
-    return new Payment.Order();
+    CREDITCARD("creditcard"),
+
+    DEBIT("debit");
+
+    private String value;
+
+    private Type( String value ) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return this.value;
+    }
+
+    @JsonCreator
+    public static Type create( String value ) {
+      for( Type type : Type.values() ) {
+        if( type.getValue().equals( value ) ) {
+          return type;
+        }
+      }
+      throw new IllegalArgumentException( "Invalid value for Payment.Type" );
+    }
   }
 
   public final static class Filter {
@@ -185,6 +298,6 @@ public class Payment {
       this.createdAt = true;
       return this;
     }
-
   }
+
 }

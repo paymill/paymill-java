@@ -8,8 +8,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.paymill.Paymill;
-import com.paymill.PaymillException;
+import com.paymill.context.PaymillContext;
+import com.paymill.exception.PaymillException;
 import com.paymill.models.Client;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
@@ -40,7 +40,7 @@ public class SubscriptionServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
 
     this.subscriptionService = paymill.getSubscriptionService();
     this.paymentService = paymill.getPaymentService();

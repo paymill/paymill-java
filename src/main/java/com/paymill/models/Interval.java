@@ -1,29 +1,38 @@
 package com.paymill.models;
 
-import lombok.Data;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-@Data
+//TODO[VNi]: check getters and setters
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Interval {
 
   private Integer       interval;
   private Interval.Unit unit;
 
-  public Interval( String interval ) {
+  public Interval( final String interval ) {
     String[] parts = StringUtils.split( interval );
     this.interval = Integer.parseInt( parts[0] );
     this.unit = Interval.Unit.create( parts[1] );
   }
 
-  @Override
-  public String toString() {
-    return interval + " " + unit;
+  public Integer getInterval() {
+    return this.interval;
+  }
+
+  public void setInterval( final Integer interval ) {
+    this.interval = interval;
+  }
+
+  public Interval.Unit getUnit() {
+    return this.unit;
+  }
+
+  public void setUnit( final Interval.Unit unit ) {
+    this.unit = unit;
   }
 
   public enum Unit {
@@ -31,7 +40,7 @@ public class Interval {
 
     private String value;
 
-    private Unit( String value ) {
+    private Unit( final String value ) {
       this.value = value;
     }
 
@@ -41,7 +50,7 @@ public class Interval {
     }
 
     @JsonCreator
-    public static Unit create( String value ) {
+    public static Unit create( final String value ) {
       for( Unit unit : Unit.values() ) {
         if( unit.getValue().equals( value ) ) {
           return unit;
@@ -49,6 +58,11 @@ public class Interval {
       }
       throw new IllegalArgumentException( "Invalid value for Interval.Unit" );
     }
+  }
+
+  @Override
+  public String toString() {
+    return this.interval + " " + this.unit;
   }
 
 }

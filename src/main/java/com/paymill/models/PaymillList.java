@@ -6,9 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
-
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class PaymillList<T> {
 
@@ -21,6 +18,20 @@ public class PaymillList<T> {
   @JsonProperty( "data_count" )
   private int     dataCount;
 
-  private String  mode;
+  public List<T> getData() {
+    return this.data;
+  }
+
+  public void setData( final List<T> data ) {
+    this.data = data;
+  }
+
+  public int getDataCount() {
+    return this.dataCount;
+  }
+
+  public void setDataCount( final int dataCount ) {
+    this.dataCount = dataCount;
+  }
 
 }

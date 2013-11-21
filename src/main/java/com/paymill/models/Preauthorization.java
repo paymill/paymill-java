@@ -2,14 +2,11 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Preauthorization {
 
@@ -42,11 +39,95 @@ public class Preauthorization {
     super();
   }
 
-  public Preauthorization( String id ) {
+  public Preauthorization( final String id ) {
     this.id = id;
   }
 
-  public void setCreatedAt( Date createdAt ) {
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId( final String id ) {
+    this.id = id;
+  }
+
+  public String getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount( final String amount ) {
+    this.amount = amount;
+  }
+
+  public String getCurrency() {
+    return this.currency;
+  }
+
+  public void setCurrency( final String currency ) {
+    this.currency = currency;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription( final String description ) {
+    this.description = description;
+  }
+
+  public Preauthorization.Status getStatus() {
+    return this.status;
+  }
+
+  public void setStatus( final Preauthorization.Status status ) {
+    this.status = status;
+  }
+
+  public Boolean getLivemode() {
+    return this.livemode;
+  }
+
+  public void setLivemode( final Boolean livemode ) {
+    this.livemode = livemode;
+  }
+
+  public Payment getPayment() {
+    return this.payment;
+  }
+
+  public void setPayment( final Payment payment ) {
+    this.payment = payment;
+  }
+
+  public Client getClient() {
+    return this.client;
+  }
+
+  public void setClient( final Client client ) {
+    this.client = client;
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public String getAppId() {
+    return this.appId;
+  }
+
+  public void setAppId( final String appId ) {
+    this.appId = appId;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void setCreatedAt( final Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
@@ -55,7 +136,7 @@ public class Preauthorization {
 
     private String value;
 
-    private Status( String value ) {
+    private Status( final String value ) {
       this.value = value;
     }
 
@@ -65,7 +146,7 @@ public class Preauthorization {
     }
 
     @JsonCreator
-    public static Status create( String value ) {
+    public static Status create( final String value ) {
       for( Status status : Status.values() ) {
         if( status.getValue().equals( value ) ) {
           return status;
@@ -101,32 +182,32 @@ public class Preauthorization {
       super();
     }
 
-    public Preauthorization.Filter byClientId( String clientId ) {
+    public Preauthorization.Filter byClientId( final String clientId ) {
       this.clientId = clientId;
       return this;
     }
 
-    public Preauthorization.Filter byPaymentId( String paymentId ) {
+    public Preauthorization.Filter byPaymentId( final String paymentId ) {
       this.paymentId = paymentId;
       return this;
     }
 
-    public Preauthorization.Filter byAmount( int amount ) {
+    public Preauthorization.Filter byAmount( final int amount ) {
       this.amount = String.valueOf( amount );
       return this;
     }
 
-    public Preauthorization.Filter byAmountGreaterThan( int amount ) {
+    public Preauthorization.Filter byAmountGreaterThan( final int amount ) {
       this.amount = ">" + String.valueOf( amount );
       return this;
     }
 
-    public Preauthorization.Filter byAmountLessThan( int amount ) {
+    public Preauthorization.Filter byAmountLessThan( final int amount ) {
       this.amount = "<" + String.valueOf( amount );
       return this;
     }
 
-    public Preauthorization.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Preauthorization.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }

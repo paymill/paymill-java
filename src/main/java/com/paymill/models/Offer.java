@@ -2,8 +2,6 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * a monthly or a yearly based paid offer/plan.
  * @author Vassil Nikolov
  */
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Offer {
   //TODO[VNi]: handle subscription_count
@@ -48,8 +45,72 @@ public class Offer {
   @JsonProperty( "app_id" )
   private String   appId;
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId( String id ) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName( String name ) {
+    this.name = name;
+  }
+
+  public Integer getAmount() {
+    return amount;
+  }
+
+  public void setAmount( Integer amount ) {
+    this.amount = amount;
+  }
+
+  public Integer getTrialPeriodDays() {
+    return trialPeriodDays;
+  }
+
+  public void setTrialPeriodDays( Integer trialPeriodDays ) {
+    this.trialPeriodDays = trialPeriodDays;
+  }
+
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency( String currency ) {
+    this.currency = currency;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt( Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId( String appId ) {
+    this.appId = appId;
+  }
+
+  public Interval getInterval() {
+    return interval;
+  }
+
   public void setInterval( String interval ) {
     this.interval = new Interval( interval );
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
   }
 
   public void setCreatedAt( Date createdAt ) {
@@ -109,7 +170,6 @@ public class Offer {
       this.updatedAt = String.valueOf( startUpdatedAt.getTime() ) + "-" + String.valueOf( endUpdatedAt.getTime() );
       return this;
     }
-
   }
 
   public final static class Order {
@@ -179,7 +239,6 @@ public class Offer {
       this.trialPeriodDays = false;
       return this;
     }
-
   }
 
 }

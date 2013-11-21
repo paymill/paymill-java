@@ -1,4 +1,4 @@
-package com.paymill;
+package com.paymill.exception;
 
 public class PaymillException extends RuntimeException {
 

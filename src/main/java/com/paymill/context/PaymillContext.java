@@ -1,8 +1,6 @@
-package com.paymill;
+package com.paymill.context;
 
 import java.lang.reflect.Constructor;
-
-import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +16,7 @@ import com.paymill.services.WebhookService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
-public final class Paymill {
+public final class PaymillContext {
 
   private ClientService           clientService;
   private OfferService            offerService;
@@ -29,13 +27,11 @@ public final class Paymill {
   private TransactionService      transactionService;
   private WebhookService          webhookService;
 
-  @Getter
   private Client                  httpClient;
 
-  @Getter
   private static ObjectMapper     jacksonParser = new ObjectMapper();
 
-  public Paymill( final String apiKey ) {
+  public PaymillContext( final String apiKey ) {
     try {
       this.httpClient = new Client();
       this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );
@@ -52,6 +48,14 @@ public final class Paymill {
       exc.printStackTrace();
       throw new RuntimeException( exc );
     }
+  }
+
+  public Client getHttpClient() {
+    return this.httpClient;
+  }
+
+  public static ObjectMapper getJacksonParser() {
+    return PaymillContext.jacksonParser;
   }
 
   public ClientService getClientService() {
@@ -83,7 +87,7 @@ public final class Paymill {
   }
 
   public WebhookService getWebhookService() {
-    return webhookService;
+    return this.webhookService;
   }
 
   private <T> Constructor<T> getPrivateConstructor( final Class<T> clazz ) throws Exception {

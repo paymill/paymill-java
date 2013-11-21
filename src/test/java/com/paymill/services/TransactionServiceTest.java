@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.paymill.Paymill;
+import com.paymill.context.PaymillContext;
 import com.paymill.models.Fee;
 import com.paymill.models.Payment;
 import com.paymill.models.Transaction;
@@ -34,7 +34,7 @@ public class TransactionServiceTest {
     this.fee.setAmount( this.feeAmount );
     this.fee.setPayment( this.feePayment );
 
-    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
     this.transactionService = paymill.getTransactionService();
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();

@@ -2,12 +2,9 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Subscription {
 
@@ -15,7 +12,7 @@ public class Subscription {
     super();
   }
 
-  public Subscription( String id ) {
+  public Subscription( final String id ) {
     this.id = id;
   }
 
@@ -55,7 +52,107 @@ public class Subscription {
   @JsonProperty( "app_id" )
   private String  appId;
 
-  public void setCreatedAt( Date createdAt ) {
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId( final String id ) {
+    this.id = id;
+  }
+
+  public Offer getOffer() {
+    return this.offer;
+  }
+
+  public void setOffer( final Offer offer ) {
+    this.offer = offer;
+  }
+
+  public Boolean getLivemode() {
+    return this.livemode;
+  }
+
+  public void setLivemode( final Boolean livemode ) {
+    this.livemode = livemode;
+  }
+
+  public Boolean getCancelAtPeriodEnd() {
+    return this.cancelAtPeriodEnd;
+  }
+
+  public void setCancelAtPeriodEnd( final Boolean cancelAtPeriodEnd ) {
+    this.cancelAtPeriodEnd = cancelAtPeriodEnd;
+  }
+
+  public Date getTrialStart() {
+    return this.trialStart;
+  }
+
+  public void setTrialStart( final Date trialStart ) {
+    this.trialStart = trialStart;
+  }
+
+  public Date getTrialEnd() {
+    return this.trialEnd;
+  }
+
+  public void setTrialEnd( final Date trialEnd ) {
+    this.trialEnd = trialEnd;
+  }
+
+  public Date getNextCaptureAt() {
+    return this.nextCaptureAt;
+  }
+
+  public void setNextCaptureAt( final Date nextCaptureAt ) {
+    this.nextCaptureAt = nextCaptureAt;
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public Date getCanceledAt() {
+    return this.canceledAt;
+  }
+
+  public void setCanceledAt( final Date canceledAt ) {
+    this.canceledAt = canceledAt;
+  }
+
+  public Payment getPayment() {
+    return this.payment;
+  }
+
+  public void setPayment( final Payment payment ) {
+    this.payment = payment;
+  }
+
+  public Client getClient() {
+    return this.client;
+  }
+
+  public void setClient( final Client client ) {
+    this.client = client;
+  }
+
+  public String getAppId() {
+    return this.appId;
+  }
+
+  public void setAppId( final String appId ) {
+    this.appId = appId;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void setCreatedAt( final Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
@@ -79,12 +176,12 @@ public class Subscription {
       super();
     }
 
-    public Subscription.Filter byOfferId( String offerId ) {
+    public Subscription.Filter byOfferId( final String offerId ) {
       this.offerId = offerId;
       return this;
     }
 
-    public Subscription.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Subscription.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }

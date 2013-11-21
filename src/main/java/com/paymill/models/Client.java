@@ -3,8 +3,6 @@ package com.paymill.models;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * will be automatically generated with the transaction if there is no client ID transmitted.
  * @author Vassil Nikolov
  */
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Client {
 
@@ -51,12 +48,72 @@ public class Client {
     super();
   }
 
-  public Client( String id ) {
+  public Client( final String id ) {
     this.id = id;
   }
 
-  public void setCreatedAt( Date createdAt ) {
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId( final String id ) {
+    this.id = id;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public void setEmail( final String email ) {
+    this.email = email;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription( final String description ) {
+    this.description = description;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void setCreatedAt( final Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public List<Payment> getPayments() {
+    return this.payments;
+  }
+
+  public void setPayments( final List<Payment> payments ) {
+    this.payments = payments;
+  }
+
+  public List<Subscription> getSubscriptions() {
+    return this.subscriptions;
+  }
+
+  public void setSubscriptions( final List<Subscription> subscriptions ) {
+    this.subscriptions = subscriptions;
+  }
+
+  public String getAppId() {
+    return this.appId;
+  }
+
+  public void setAppId( final String appId ) {
+    this.appId = appId;
   }
 
   public static Client.Filter createFilter() {
@@ -94,41 +151,40 @@ public class Client {
       super();
     }
 
-    public Client.Filter byDescription( String description ) {
+    public Client.Filter byDescription( final String description ) {
       this.description = description;
       return this;
     }
 
-    public Client.Filter byEmail( String email ) {
+    public Client.Filter byEmail( final String email ) {
       this.email = email;
       return this;
     }
 
-    public Client.Filter byPayment( String paymentId ) {
+    public Client.Filter byPayment( final String paymentId ) {
       this.paymentId = paymentId;
       return this;
     }
 
-    public Client.Filter bySubscriptionId( String subscriptionId ) {
+    public Client.Filter bySubscriptionId( final String subscriptionId ) {
       this.subscriptionId = subscriptionId;
       return this;
     }
 
-    public Client.Filter byOfferId( String offerId ) {
+    public Client.Filter byOfferId( final String offerId ) {
       this.offerId = offerId;
       return this;
     }
 
-    public Client.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Client.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
 
-    public Client.Filter byUpdatedAt( Date startUpdatedAt, Date endUpdatedAt ) {
+    public Client.Filter byUpdatedAt( final Date startUpdatedAt, final Date endUpdatedAt ) {
       this.updatedAt = String.valueOf( startUpdatedAt.getTime() ) + "-" + String.valueOf( endUpdatedAt.getTime() );
       return this;
     }
-
   }
 
   public final static class Order {
@@ -184,7 +240,6 @@ public class Client {
       this.creditCard = false;
       return this;
     }
-
   }
 
 }

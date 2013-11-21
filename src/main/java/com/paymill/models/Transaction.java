@@ -3,14 +3,11 @@ package com.paymill.models;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Transaction {
 
@@ -18,7 +15,7 @@ public class Transaction {
     super();
   }
 
-  public Transaction( String id ) {
+  public Transaction( final String id ) {
     this.id = id;
   }
 
@@ -66,7 +63,147 @@ public class Transaction {
   @JsonProperty( "app_id" )
   private String             appId;
 
-  public void setCreatedAt( Date createdAt ) {
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId( final String id ) {
+    this.id = id;
+  }
+
+  public Integer getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount( final Integer amount ) {
+    this.amount = amount;
+  }
+
+  public Integer getOriginAmount() {
+    return this.originAmount;
+  }
+
+  public void setOriginAmount( final Integer originAmount ) {
+    this.originAmount = originAmount;
+  }
+
+  public String getCurrency() {
+    return this.currency;
+  }
+
+  public void setCurrency( final String currency ) {
+    this.currency = currency;
+  }
+
+  public Transaction.Status getStatus() {
+    return this.status;
+  }
+
+  public void setStatus( final Transaction.Status status ) {
+    this.status = status;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription( final String description ) {
+    this.description = description;
+  }
+
+  public Boolean getLivemode() {
+    return this.livemode;
+  }
+
+  public void setLivemode( final Boolean livemode ) {
+    this.livemode = livemode;
+  }
+
+  public List<Refund> getRefunds() {
+    return this.refunds;
+  }
+
+  public void setRefunds( final List<Refund> refunds ) {
+    this.refunds = refunds;
+  }
+
+  public Payment getPayment() {
+    return this.payment;
+  }
+
+  public void setPayment( final Payment payment ) {
+    this.payment = payment;
+  }
+
+  public Client getClient() {
+    return this.client;
+  }
+
+  public void setClient( final Client client ) {
+    this.client = client;
+  }
+
+  public Preauthorization getPreauthorization() {
+    return this.preauthorization;
+  }
+
+  public void setPreauthorization( final Preauthorization preauthorization ) {
+    this.preauthorization = preauthorization;
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public String getResponseCode() {
+    return this.responseCode;
+  }
+
+  public void setResponseCode( final String responseCode ) {
+    this.responseCode = responseCode;
+  }
+
+  public String getShortId() {
+    return this.shortId;
+  }
+
+  public void setShortId( final String shortId ) {
+    this.shortId = shortId;
+  }
+
+  public Boolean getFraud() {
+    return this.fraud;
+  }
+
+  public void setFraud( final Boolean fraud ) {
+    this.fraud = fraud;
+  }
+
+  public List<Fee> getFees() {
+    return this.fees;
+  }
+
+  public void setFees( final List<Fee> fees ) {
+    this.fees = fees;
+  }
+
+  public String getAppId() {
+    return this.appId;
+  }
+
+  public void setAppId( final String appId ) {
+    this.appId = appId;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void setCreatedAt( final Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
@@ -105,47 +242,47 @@ public class Transaction {
       super();
     }
 
-    public Transaction.Filter byClientId( String clientId ) {
+    public Transaction.Filter byClientId( final String clientId ) {
       this.clientId = clientId;
       return this;
     }
 
-    public Transaction.Filter byPaymentId( String paymentId ) {
+    public Transaction.Filter byPaymentId( final String paymentId ) {
       this.paymentId = paymentId;
       return this;
     }
 
-    public Transaction.Filter byAmount( int amount ) {
+    public Transaction.Filter byAmount( final int amount ) {
       this.amount = String.valueOf( amount );
       return this;
     }
 
-    public Transaction.Filter byAmountGreaterThan( int amount ) {
+    public Transaction.Filter byAmountGreaterThan( final int amount ) {
       this.amount = ">" + String.valueOf( amount );
       return this;
     }
 
-    public Transaction.Filter byAmountLessThan( int amount ) {
+    public Transaction.Filter byAmountLessThan( final int amount ) {
       this.amount = "<" + String.valueOf( amount );
       return this;
     }
 
-    public Transaction.Filter byDescription( String description ) {
+    public Transaction.Filter byDescription( final String description ) {
       this.description = description;
       return this;
     }
 
-    public Transaction.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Transaction.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
 
-    public Transaction.Filter byUpdatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Transaction.Filter byUpdatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.updatedAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
 
-    public Transaction.Filter byStatus( Transaction.Status status ) {
+    public Transaction.Filter byStatus( final Transaction.Status status ) {
       this.status = status.getValue();
       return this;
     }
@@ -203,7 +340,7 @@ public class Transaction {
 
     private String value;
 
-    private Status( String value ) {
+    private Status( final String value ) {
       this.value = value;
     }
 
@@ -213,7 +350,7 @@ public class Transaction {
     }
 
     @JsonCreator
-    public static Status create( String value ) {
+    public static Status create( final String value ) {
       for( Status status : Status.values() ) {
         if( status.getValue().equals( value ) ) {
           return status;

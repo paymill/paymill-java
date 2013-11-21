@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.paymill.Paymill;
+import com.paymill.context.PaymillContext;
 import com.paymill.models.Refund;
 import com.paymill.models.Transaction;
 
@@ -22,7 +22,7 @@ public class RefundServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
     this.refundService = paymill.getRefundService();
     this.transactionService = paymill.getTransactionService();
     this.transaction = this.transactionService.createWithToken( token, amount, "EUR" );

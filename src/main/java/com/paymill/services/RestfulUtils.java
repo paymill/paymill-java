@@ -11,8 +11,8 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.paymill.Paymill;
-import com.paymill.PaymillException;
+import com.paymill.context.PaymillContext;
+import com.paymill.exception.PaymillException;
 import com.paymill.models.PaymillList;
 import com.paymill.models.SnakeCase;
 import com.paymill.models.Updateable;
@@ -68,11 +68,11 @@ final class RestfulUtils {
   @SuppressWarnings( "unchecked" )
   private static <T> T deserializeObject( String content, Class<?> clazz ) {
     try {
-      JsonNode wrappedNode = Paymill.getJacksonParser().readValue( content, JsonNode.class );
+      JsonNode wrappedNode = PaymillContext.getJacksonParser().readValue( content, JsonNode.class );
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( !dataNode.isArray() ) {
-          return (T) Paymill.getJacksonParser().readValue( dataNode.toString(), clazz );
+          return (T) PaymillContext.getJacksonParser().readValue( dataNode.toString(), clazz );
         }
       }
       if( wrappedNode.has( "error" ) ) {
@@ -87,17 +87,17 @@ final class RestfulUtils {
   @SuppressWarnings( "unchecked" )
   private static <T> PaymillList<T> deserializeList( String content, Class<?> clazz ) {
     try {
-      JsonNode wrappedNode = Paymill.getJacksonParser().readValue( content, JsonNode.class );
-      PaymillList<T> wrapper = Paymill.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class );
+      JsonNode wrappedNode = PaymillContext.getJacksonParser().readValue( content, JsonNode.class );
+      PaymillList<T> wrapper = PaymillContext.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class );
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( dataNode.isArray() ) {
           List<T> objects = new ArrayList<T>();
-          for( Object object : Paymill.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class ).getData() ) {
+          for( Object object : PaymillContext.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class ).getData() ) {
             try {
               //TODO[VNi]: There is an API error:
               // when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
-              objects.add( (T) Paymill.getJacksonParser().readValue( Paymill.getJacksonParser().writeValueAsString( object ), clazz ) );
+              objects.add( (T) PaymillContext.getJacksonParser().readValue( PaymillContext.getJacksonParser().writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
               throw new RuntimeException( exc );
             }

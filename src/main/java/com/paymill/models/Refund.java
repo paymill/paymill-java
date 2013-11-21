@@ -2,14 +2,11 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-@Data
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Refund {
 
@@ -37,7 +34,83 @@ public class Refund {
   @JsonProperty( "app_id" )
   private String        appId;
 
-  public void setCreatedAt( Date createdAt ) {
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId( final String id ) {
+    this.id = id;
+  }
+
+  public Transaction getTransaction() {
+    return this.transaction;
+  }
+
+  public void setTransaction( final Transaction transaction ) {
+    this.transaction = transaction;
+  }
+
+  public Integer getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount( final Integer amount ) {
+    this.amount = amount;
+  }
+
+  public Refund.Status getStatus() {
+    return this.status;
+  }
+
+  public void setStatus( final Refund.Status status ) {
+    this.status = status;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription( final String description ) {
+    this.description = description;
+  }
+
+  public Boolean getLivemode() {
+    return this.livemode;
+  }
+
+  public void setLivemode( final Boolean livemode ) {
+    this.livemode = livemode;
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+  }
+
+  public Integer getResponseCode() {
+    return this.responseCode;
+  }
+
+  public void setResponseCode( final Integer responseCode ) {
+    this.responseCode = responseCode;
+  }
+
+  public String getAppId() {
+    return this.appId;
+  }
+
+  public void setAppId( final String appId ) {
+    this.appId = appId;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public void setCreatedAt( final Date createdAt ) {
     this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
@@ -63,37 +136,36 @@ public class Refund {
     @SnakeCase( "created_at" )
     private String createdAt;
 
-
     private Filter() {
       super();
     }
 
-    public Refund.Filter byClientId( String clientId ) {
+    public Refund.Filter byClientId( final String clientId ) {
       this.clientId = clientId;
       return this;
     }
 
-    public Refund.Filter byTransactionId( String transactionId ) {
+    public Refund.Filter byTransactionId( final String transactionId ) {
       this.transactionId = transactionId;
       return this;
     }
 
-    public Refund.Filter byAmount( int amount ) {
+    public Refund.Filter byAmount( final int amount ) {
       this.amount = String.valueOf( amount );
       return this;
     }
 
-    public Refund.Filter byAmountGreaterThan( int amount ) {
+    public Refund.Filter byAmountGreaterThan( final int amount ) {
       this.amount = ">" + String.valueOf( amount );
       return this;
     }
 
-    public Refund.Filter byAmountLessThan( int amount ) {
+    public Refund.Filter byAmountLessThan( final int amount ) {
       this.amount = "<" + String.valueOf( amount );
       return this;
     }
 
-    public Refund.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Refund.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
@@ -175,7 +247,7 @@ public class Refund {
 
     private String value;
 
-    private Status( String value ) {
+    private Status( final String value ) {
       this.value = value;
     }
 
@@ -185,7 +257,7 @@ public class Refund {
     }
 
     @JsonCreator
-    public static Status create( String value ) {
+    public static Status create( final String value ) {
       for( Status status : Status.values() ) {
         if( status.getValue().equals( value ) ) {
           return status;
