@@ -63,8 +63,15 @@ public class Payment {
 
   private String           last4;
 
+  public void setCreatedAt( Date createdAt ) {
+    this.createdAt = new Date( createdAt.getTime() * 1000 );
+  }
+
   public enum Type {
-    CREDITCARD("creditcard"), DEBIT("debit");
+
+    CREDITCARD("creditcard"),
+
+    DEBIT("debit");
 
     private String value;
 

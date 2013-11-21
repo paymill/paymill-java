@@ -22,9 +22,9 @@ public class RefundServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill.setApiKey( "255de920504bd07dad2a0bf57822ee40" );
-    this.refundService = Paymill.getService( RefundService.class );
-    this.transactionService = Paymill.getService( TransactionService.class );
+    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    this.refundService = paymill.getRefundService();
+    this.transactionService = paymill.getTransactionService();
     this.transaction = this.transactionService.createWithToken( token, amount, "EUR" );
   }
 

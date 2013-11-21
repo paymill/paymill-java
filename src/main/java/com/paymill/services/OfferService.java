@@ -8,21 +8,28 @@ import com.paymill.models.Client;
 import com.paymill.models.Offer;
 import com.paymill.models.Offer.Filter;
 import com.paymill.models.Offer.Order;
+import com.paymill.models.PaymillList;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * The {@link OfferService} is used to list, create, edit, delete and update PayMill {@link Offer}s.
  * @author Vassil Nikolov
  */
-public class OfferService implements PaymillService {
+public class OfferService extends AbstractService {
+
+  private OfferService( com.sun.jersey.api.client.Client httpClient ) {
+    super( httpClient );
+  }
 
   private final static String PATH = "/offers";
 
+
   /**
    * This function returns a {@link List} of PayMill {@link Offer} objects.
-   * @return {@link List} of PayMill {@link Offer} objects.
+   * @return {@link PaymillList} which contains a {@link List} of PayMill {@link Offer}s their total count and the mode test or
+   *         live.
    */
-  public List<Offer> list() {
+  public PaymillList<Offer> list() {
     return this.list( null, null );
   }
 
@@ -33,10 +40,11 @@ public class OfferService implements PaymillService {
    *          {@link Filter} or <code>null</code>
    * @param order
    *          {@link Order} or <code>null</code>
-   * @return {@link List} of PayMill {@link Offer} objects
+   * @return {@link PaymillList} which contains a {@link List} of PayMill {@link Offer}s their total count and the mode test or
+   *         live.
    */
-  public List<Offer> list( Offer.Filter filter, Offer.Order order ) {
-    return RestfulUtils.list( OfferService.PATH, filter, order, Offer.class );
+  public PaymillList<Offer> list( Offer.Filter filter, Offer.Order order ) {
+    return RestfulUtils.list( OfferService.PATH, filter, order, Offer.class, super.httpClient );
   }
 
   /**
@@ -46,7 +54,7 @@ public class OfferService implements PaymillService {
    * @return {@link Offer} object, which represents a PayMill offer.
    */
   public Offer show( Offer offer ) {
-    return RestfulUtils.show( OfferService.PATH, RestfulUtils.getIdByReflection( offer ), Offer.class );
+    return RestfulUtils.show( OfferService.PATH, RestfulUtils.getIdByReflection( offer ), Offer.class, super.httpClient );
   }
 
   /**
@@ -56,7 +64,7 @@ public class OfferService implements PaymillService {
    * @return {@link Offer} object, which represents a PayMill client.
    */
   public Offer show( String offerId ) {
-    return RestfulUtils.show( OfferService.PATH, offerId, Offer.class );
+    return RestfulUtils.show( OfferService.PATH, offerId, Offer.class, super.httpClient );
   }
 
   /**
@@ -104,7 +112,7 @@ public class OfferService implements PaymillService {
     if( trialPeriodDays != null )
       params.add( "trial_period_days", String.valueOf( trialPeriodDays ) );
 
-    return RestfulUtils.create( OfferService.PATH, params, Offer.class );
+    return RestfulUtils.create( OfferService.PATH, params, Offer.class, super.httpClient );
   }
 
   /**
@@ -114,7 +122,7 @@ public class OfferService implements PaymillService {
    * @return {@link Offer} object with id, which represents a PayMill offer.
    */
   public Offer update( Offer offer ) {
-    return RestfulUtils.update( OfferService.PATH, offer, Offer.class );
+    return RestfulUtils.update( OfferService.PATH, offer, Offer.class, super.httpClient );
   }
 
   /**
@@ -124,7 +132,7 @@ public class OfferService implements PaymillService {
    * @return {@link Offer} object without id, which represents a deleted PayMill offer.
    */
   public Offer delete( Offer offer ) {
-    RestfulUtils.delete( OfferService.PATH, RestfulUtils.getIdByReflection( offer ), Offer.class );
+    RestfulUtils.delete( OfferService.PATH, RestfulUtils.getIdByReflection( offer ), Offer.class, super.httpClient );
     offer.setId( null );
     return offer;
   }

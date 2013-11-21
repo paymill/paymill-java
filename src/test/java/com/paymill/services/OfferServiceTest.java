@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.paymill.Paymill;
 import com.paymill.models.Interval;
 import com.paymill.models.Offer;
+import com.paymill.models.PaymillList;
 
 public class OfferServiceTest {
 
@@ -27,17 +28,17 @@ public class OfferServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill.setApiKey( "255de920504bd07dad2a0bf57822ee40" );
-    this.offerService = Paymill.getService( OfferService.class );
+    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    this.offerService = paymill.getOfferService();
   }
 
   @AfterClass
   public void tearDown() {
-    List<Offer> offers = this.offerService.list();
+    List<Offer> offers = this.offerService.list().getData();
     for( Offer offer : offers ) {
       Assert.assertNull( this.offerService.delete( offer ).getId() );
     }
-    Assert.assertEquals( this.offerService.list().size(), 0 );
+    Assert.assertEquals( this.offerService.list().getData().size(), 0 );
   }
 
   @Test
@@ -83,7 +84,8 @@ public class OfferServiceTest {
   public void testListOrderByAmountDesc() {
     Offer.Order order = Offer.createOrder().byAmount().desc();
 
-    List<Offer> offers = this.offerService.list( null, order );
+    PaymillList<Offer> wrapper = this.offerService.list( null, order );
+    List<Offer> offers = wrapper.getData();
 
     Assert.assertNotNull( offers );
     Assert.assertFalse( offers.isEmpty() );
@@ -96,7 +98,8 @@ public class OfferServiceTest {
   public void testListFilterByAmount() {
     Offer.Filter filter = Offer.createFilter().byAmount( this.amount );
 
-    List<Offer> offers = this.offerService.list( filter, null );
+    PaymillList<Offer> wrapper = this.offerService.list( filter, null );
+    List<Offer> offers = wrapper.getData();
 
     Assert.assertNotNull( offers );
     Assert.assertFalse( offers.isEmpty() );

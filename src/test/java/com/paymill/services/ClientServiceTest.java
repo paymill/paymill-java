@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.paymill.Paymill;
 import com.paymill.PaymillException;
 import com.paymill.models.Client;
+import com.paymill.models.PaymillList;
 
 public class ClientServiceTest {
 
@@ -25,22 +26,22 @@ public class ClientServiceTest {
 
   @BeforeClass
   public void setUp() {
-    Paymill.setApiKey( "255de920504bd07dad2a0bf57822ee40" );
-    this.clientService = Paymill.getService( ClientService.class );
+    Paymill paymill = new Paymill( "255de920504bd07dad2a0bf57822ee40" );
+    this.clientService = paymill.getClientService();
   }
 
   @AfterClass
   public void tearDown() {
-    List<Client> clients = this.clientService.list();
+    List<Client> clients = this.clientService.list().getData();
     for( Client client : clients ) {
       Assert.assertNull( this.clientService.delete( client ).getId() );
     }
-    Assert.assertEquals( this.clientService.list().size(), 0 );
+    Assert.assertEquals( this.clientService.list().getData().size(), 0 );
   }
 
   @Test
   public void testCreate_WithoutParameters_shouldSecceed() {
-    Client client = this.clientService.create( null, null );
+    Client client = this.clientService.createWithEmailAndDescription( null, null );
     Assert.assertNotNull( client );
     this.validateClient( client );
     Assert.assertNull( client.getEmail() );
@@ -50,7 +51,7 @@ public class ClientServiceTest {
 
   @Test
   public void testCreate_WithEmail_shouldSecceed() {
-    Client client = this.clientService.create( this.email, null );
+    Client client = this.clientService.createWithEmailAndDescription( this.email, null );
     this.validateClient( client );
     Assert.assertEquals( this.email, client.getEmail() );
     Assert.assertNull( client.getDescription() );
@@ -59,12 +60,12 @@ public class ClientServiceTest {
 
   @Test( expectedExceptions = PaymillException.class )
   public void testCreate_WithWrongEmail_shouldFail() {
-    this.clientService.create( "wrong.email", null );
+    this.clientService.createWithEmailAndDescription( "wrong.email", null );
   }
 
   @Test
   public void testCreate_WithDescription_shouldSecceed() {
-    Client client = this.clientService.create( null, this.description );
+    Client client = this.clientService.createWithEmailAndDescription( null, this.description );
     this.validateClient( client );
     Assert.assertNull( client.getEmail() );
     Assert.assertEquals( this.description, client.getDescription() );
@@ -75,7 +76,7 @@ public class ClientServiceTest {
 
   @Test
   public void testCreate_WithEmailAndDescription_shouldSecceed() {
-    Client client = this.clientService.create( this.email, this.description );
+    Client client = this.clientService.createWithEmailAndDescription( this.email, this.description );
     this.validateClient( client );
     Assert.assertEquals( this.email, client.getEmail() );
     Assert.assertEquals( this.description, client.getDescription() );
@@ -105,11 +106,12 @@ public class ClientServiceTest {
   public void testListOrderByEmailAsc() {
     Client.Order order = Client.createOrder().byEmail().asc();
 
-    List<Client> clients = this.clientService.list( null, order );
+    PaymillList<Client> wrapper = this.clientService.list( null, order );
+    List<Client> clients = wrapper.getData();
 
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );
-    Assert.assertEquals( this.clients.size(), clients.size() );
+    Assert.assertEquals( clients.size(), this.clients.size() );
     Assert.assertNull( clients.get( 0 ).getEmail() );
     Assert.assertEquals( clients.get( 1 ).getEmail(), "john.firstblood.rambo@qaiware.com" );
   }
@@ -118,7 +120,8 @@ public class ClientServiceTest {
   public void testListFilterByEmail() {
     Client.Filter filter = Client.createFilter().byEmail( "john.rambo@qaiware.com" );
 
-    List<Client> clients = this.clientService.list( filter, null );
+    PaymillList<Client> wrapper = this.clientService.list( filter, null );
+    List<Client> clients = wrapper.getData();
 
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );

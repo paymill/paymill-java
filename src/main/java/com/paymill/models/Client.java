@@ -26,10 +26,10 @@ public class Client {
   /**
    * Mail address of this client.
    */
-  @Updateable
+  @Updateable( "email" )
   private String             email;
 
-  @Updateable
+  @Updateable( "description" )
   private String             description;
 
   @JsonProperty( "created_at" )
@@ -53,6 +53,10 @@ public class Client {
 
   public Client( String id ) {
     this.id = id;
+  }
+
+  public void setCreatedAt( Date createdAt ) {
+    this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
   public static Client.Filter createFilter() {

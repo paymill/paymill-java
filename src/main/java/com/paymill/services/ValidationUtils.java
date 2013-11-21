@@ -2,7 +2,10 @@ package com.paymill.services;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.paymill.models.Client;
 import com.paymill.models.Fee;
+import com.paymill.models.Offer;
+import com.paymill.models.Payment;
 
 final class ValidationUtils {
 
@@ -56,6 +59,21 @@ final class ValidationUtils {
         }
       }
     }
+  }
+
+  static void validatesPayment( Payment payment ) {
+    if( payment == null || StringUtils.isBlank( payment.getId() ) )
+      throw new IllegalArgumentException( "Payment or its Id can not be blank" );
+  }
+
+  static void validatesOffer( Offer offer ) {
+    if( offer == null || StringUtils.isBlank( offer.getId() ) )
+      throw new IllegalArgumentException( "Offer or its  Id can not be blank" );
+  }
+
+  static void validatesClient( Client client ) {
+    if( client == null || StringUtils.isBlank( client.getId() ) )
+      throw new IllegalArgumentException( "Client or its  Id can not be blank" );
   }
 
 }

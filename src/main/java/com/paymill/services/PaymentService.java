@@ -1,33 +1,36 @@
 package com.paymill.services;
 
-import java.util.List;
-
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Client;
 import com.paymill.models.Payment;
+import com.paymill.models.PaymillList;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public class PaymentService implements PaymillService {
+public class PaymentService extends AbstractService {
 
   private final static String PATH = "/payments";
 
-  public List<Payment> list() {
+  private PaymentService( com.sun.jersey.api.client.Client httpClient ) {
+    super( httpClient );
+  }
+
+  public PaymillList<Payment> list() {
     return this.list( null, null );
   }
 
-  public List<Payment> list( Payment.Filter filter, Payment.Order order ) {
-    return RestfulUtils.list( PaymentService.PATH, filter, order, Payment.class );
+  public PaymillList<Payment> list( Payment.Filter filter, Payment.Order order ) {
+    return RestfulUtils.list( PaymentService.PATH, filter, order, Payment.class, super.httpClient );
   }
 
   public Payment get( Payment payment ) {
-    return RestfulUtils.show( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class );
+    return RestfulUtils.show( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class, super.httpClient );
   }
 
   public Payment get( String paymentId ) {
-    return RestfulUtils.show( PaymentService.PATH, paymentId, Payment.class );
+    return RestfulUtils.show( PaymentService.PATH, paymentId, Payment.class, super.httpClient );
   }
 
   public Payment createWithToken( String token ) {
@@ -48,11 +51,11 @@ public class PaymentService implements PaymillService {
     if( StringUtils.isNotBlank( clientId ) )
       params.add( "client", clientId );
 
-    return RestfulUtils.create( PaymentService.PATH, params, Payment.class );
+    return RestfulUtils.create( PaymentService.PATH, params, Payment.class, super.httpClient );
   }
 
   public Payment delete( Payment payment ) {
-    RestfulUtils.delete( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class );
+    RestfulUtils.delete( PaymentService.PATH, RestfulUtils.getIdByReflection( payment ), Payment.class, super.httpClient );
     payment.setId( null );
     return payment;
 

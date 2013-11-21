@@ -27,7 +27,7 @@ public class Offer {
 
   private String   id;
 
-  @Updateable
+  @Updateable( "name" )
   private String   name;
 
   private Integer  amount;
@@ -50,6 +50,10 @@ public class Offer {
 
   public void setInterval( String interval ) {
     this.interval = new Interval( interval );
+  }
+
+  public void setCreatedAt( Date createdAt ) {
+    this.createdAt = new Date( createdAt.getTime() * 1000 );
   }
 
   public static Offer.Filter createFilter() {
