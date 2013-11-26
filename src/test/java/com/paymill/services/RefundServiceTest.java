@@ -22,7 +22,7 @@ public class RefundServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( "255de920504bd07dad2a0bf57822ee40" );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.refundService = paymill.getRefundService();
     this.transactionService = paymill.getTransactionService();
     this.transaction = this.transactionService.createWithToken( token, amount, "EUR" );
