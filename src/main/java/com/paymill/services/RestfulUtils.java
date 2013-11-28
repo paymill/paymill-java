@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,16 +26,6 @@ final class RestfulUtils {
 
   private final static String ENDPOINT = "https://api.paymill.com/v2";
 
-  static String getIdByReflection( Object instance ) {
-    try {
-      Field field = instance.getClass().getDeclaredField( "id" );
-      field.setAccessible( true );
-      return String.valueOf( field.get( instance ) );
-    } catch( Exception exc ) {
-      throw new RuntimeException( exc );
-    }
-  }
-
   static <T> PaymillList<T> list( String path, Object filter, Object order, Class<?> clazz, Client httpClient ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );
     String param = RestfulUtils.prepareOrderParameter( order );
@@ -44,25 +35,40 @@ final class RestfulUtils {
     return RestfulUtils.deserializeList( RestfulUtils.get( path, params, httpClient ), clazz );
   }
 
-  static <T> T show( String path, String id, Class<?> clazz, Client httpClient ) {
-    ValidationUtils.validatesId( id );
-    return RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id, httpClient ), clazz );
+  static <T> T show( String path, T target, Class<?> clazz, Client httpClient ) {
+    String id = RestfulUtils.getIdByReflection( target );
+    T source = RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id, httpClient ), clazz );
+    return RestfulUtils.refreshInstance( source, target );
   }
 
   static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz, Client httpClient ) {
     return RestfulUtils.deserializeObject( RestfulUtils.post( path, params, httpClient ), clazz );
   }
 
-  static <T> T update( String path, Object instance, Class<?> clazz, Client httpClient ) {
-    MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( instance );
-    String id = RestfulUtils.getIdByReflection( instance );
-    ValidationUtils.validatesId( id );
-    return RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
+  static <T> T update( String path, T target, Class<?> clazz, Client httpClient ) {
+    MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( target );
+    String id = RestfulUtils.getIdByReflection( target );
+    T source = RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
+    return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T delete( String path, String id, Class<?> clazz, Client httpClient ) {
-    ValidationUtils.validatesId( id );
+  static <T> T delete( String path, T target, Class<?> clazz, Client httpClient ) {
+    String id = RestfulUtils.getIdByReflection( target );
     return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, httpClient ), clazz );
+  }
+
+  private static String getIdByReflection( Object instance ) {
+    if( instance == null )
+      throw new RuntimeException( "Can not obtain Id from null" );
+    try {
+      Field field = instance.getClass().getDeclaredField( "id" );
+      field.setAccessible( true );
+      String id = String.valueOf( field.get( instance ) );
+      ValidationUtils.validatesId( id );
+      return id;
+    } catch( Exception exc ) {
+      throw new RuntimeException( exc );
+    }
   }
 
   @SuppressWarnings( "unchecked" )
@@ -95,8 +101,7 @@ final class RestfulUtils {
           List<T> objects = new ArrayList<T>();
           for( Object object : PaymillContext.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class ).getData() ) {
             try {
-              //TODO[VNi]: There is an API error:
-              // when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
+              //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
               objects.add( (T) PaymillContext.getJacksonParser().readValue( PaymillContext.getJacksonParser().writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
               throw new RuntimeException( exc );
@@ -208,6 +213,15 @@ final class RestfulUtils {
       throw new RuntimeException( exc );
     }
     return sortEntry + order;
+  }
+
+  private static <T> T refreshInstance( T source, T target ) {
+    try {
+      BeanUtils.copyProperties( target, source );
+    } catch( Exception exc ) {
+      throw new RuntimeException( exc );
+    }
+    return target;
   }
 
 }

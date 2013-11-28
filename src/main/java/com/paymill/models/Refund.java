@@ -3,6 +3,7 @@ package com.paymill.models;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -33,6 +34,14 @@ public class Refund {
 
   @JsonProperty( "app_id" )
   private String        appId;
+
+  public Refund() {
+    super();
+  }
+
+  public Refund( String refundId ) {
+    this.id = refundId;
+  }
 
   public String getId() {
     return this.id;
@@ -82,14 +91,6 @@ public class Refund {
     this.livemode = livemode;
   }
 
-  public Date getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt( final Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
-  }
-
   public Integer getResponseCode() {
     return this.responseCode;
   }
@@ -110,8 +111,26 @@ public class Refund {
     return this.createdAt;
   }
 
+  @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+    this.createdAt = createdAt;
+  }
+
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Refund.Filter createFilter() {

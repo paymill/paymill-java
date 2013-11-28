@@ -3,6 +3,7 @@ package com.paymill.models;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -74,14 +75,6 @@ public class Payment {
 
   public void setType( Payment.Type type ) {
     this.type = type;
-  }
-
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt( Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
   }
 
   public String getAppId() {
@@ -173,11 +166,29 @@ public class Payment {
   }
 
   public Date getCreatedAt() {
-    return createdAt;
+    return this.createdAt;
   }
 
-  public void setCreatedAt( Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+  @JsonIgnore
+  public void setCreatedAt( final Date createdAt ) {
+    this.createdAt = createdAt;
+  }
+
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Payment.Filter createFilter() {

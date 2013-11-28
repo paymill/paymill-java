@@ -24,11 +24,11 @@ public class WebhookService extends AbstractService {
   }
 
   public Webhook get( Webhook webhook ) {
-    return RestfulUtils.show( WebhookService.PATH, RestfulUtils.getIdByReflection( webhook ), Webhook.class, super.httpClient );
+    return RestfulUtils.show( WebhookService.PATH, webhook, Webhook.class, super.httpClient );
   }
 
   public Webhook get( String webhookId ) {
-    return RestfulUtils.show( WebhookService.PATH, webhookId, Webhook.class, super.httpClient );
+    return this.get( new Webhook( webhookId ) );
   }
 
   public Webhook createUrlWebhook( String url, Webhook.EventType[] eventTypes ) {
@@ -51,18 +51,16 @@ public class WebhookService extends AbstractService {
     return RestfulUtils.create( WebhookService.PATH, params, Webhook.class, super.httpClient );
   }
 
-  public Webhook update( Webhook webhook ) {
-    return RestfulUtils.update( WebhookService.PATH, webhook, Webhook.class, super.httpClient );
+  public void update( Webhook webhook ) {
+    RestfulUtils.update( WebhookService.PATH, webhook, Webhook.class, super.httpClient );
   }
 
-  public Webhook delete( Webhook webhook ) {
-    RestfulUtils.delete( WebhookService.PATH, RestfulUtils.getIdByReflection( webhook ), Webhook.class, super.httpClient );
-    webhook.setId( null );
-    return webhook;
+  public void delete( Webhook webhook ) {
+    RestfulUtils.delete( WebhookService.PATH, webhook, Webhook.class, super.httpClient );
   }
 
-  public Webhook delete( String webhookId ) {
-    return this.delete( new Webhook( webhookId ) );
+  public void delete( String webhookId ) {
+    this.delete( new Webhook( webhookId ) );
   }
 
 }

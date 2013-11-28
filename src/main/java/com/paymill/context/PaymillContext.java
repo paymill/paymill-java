@@ -1,7 +1,10 @@
 package com.paymill.context;
 
 import java.lang.reflect.Constructor;
+import java.util.Date;
 
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,7 @@ public final class PaymillContext {
   private static ObjectMapper     jacksonParser = new ObjectMapper();
 
   public PaymillContext( final String apiKey ) {
+    ConvertUtils.register( new DateConverter( null ), Date.class );
     try {
       this.httpClient = new Client();
       this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );

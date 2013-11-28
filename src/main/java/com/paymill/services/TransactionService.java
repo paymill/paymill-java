@@ -29,11 +29,11 @@ public class TransactionService extends AbstractService {
   }
 
   public Transaction get( Transaction transaction ) {
-    return RestfulUtils.show( TransactionService.PATH, RestfulUtils.getIdByReflection( transaction ), Transaction.class, super.httpClient );
+    return RestfulUtils.show( TransactionService.PATH, transaction, Transaction.class, super.httpClient );
   }
 
   public Transaction get( String transactionId ) {
-    return RestfulUtils.show( TransactionService.PATH, transactionId, Transaction.class, super.httpClient );
+    return this.get( new Transaction( transactionId ) );
   }
 
   public Transaction createWithToken( String token, Integer amount, String currency ) {
@@ -155,8 +155,8 @@ public class TransactionService extends AbstractService {
     return RestfulUtils.create( TransactionService.PATH, params, Transaction.class, super.httpClient );
   }
 
-  public Transaction update( Transaction transaction ) {
-    return RestfulUtils.update( TransactionService.PATH, transaction, Transaction.class, super.httpClient );
+  public void update( Transaction transaction ) {
+    RestfulUtils.update( TransactionService.PATH, transaction, Transaction.class, super.httpClient );
   }
 
 }

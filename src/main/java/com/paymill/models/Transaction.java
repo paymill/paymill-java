@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -151,14 +152,6 @@ public class Transaction {
     this.preauthorization = preauthorization;
   }
 
-  public Date getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt( final Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
-  }
-
   public String getResponseCode() {
     return this.responseCode;
   }
@@ -203,8 +196,26 @@ public class Transaction {
     return this.createdAt;
   }
 
+  @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+    this.createdAt = createdAt;
+  }
+
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Transaction.Filter createFilter() {

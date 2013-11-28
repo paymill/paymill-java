@@ -36,7 +36,7 @@ public class OfferServiceTest {
   public void tearDown() {
     List<Offer> offers = this.offerService.list().getData();
     for( Offer offer : offers ) {
-      Assert.assertNull( this.offerService.delete( offer ).getId() );
+      this.offerService.delete( offer );
     }
     Assert.assertEquals( this.offerService.list().getData().size(), 0 );
   }
@@ -63,7 +63,7 @@ public class OfferServiceTest {
 
   @Test( dependsOnMethods = "testCreate_WithTrial_shouldSecceed" )
   public void testShow_shouldSecceed() {
-    Offer offer = this.offerService.show( this.offerWithTrial );
+    Offer offer = this.offerService.get( this.offerWithTrial );
     this.validatesOffer( offer );
     Assert.assertEquals( offer.getName(), this.name );
     Assert.assertEquals( offer.getTrialPeriodDays(), this.trialPeriodDays );
@@ -72,9 +72,9 @@ public class OfferServiceTest {
   @Test( dependsOnMethods = "testShow_shouldSecceed" )
   public void testUpdate_shouldSucceed() {
     this.offerWithTrial.setName( "Charles A. 'Chuck' Testa" );
-    Offer offer = this.offerService.update( this.offerWithTrial );
-    this.validatesOffer( offer );
-    Assert.assertEquals( offer.getName(), "Charles A. 'Chuck' Testa" );
+    this.offerService.update( this.offerWithTrial );
+    this.validatesOffer( offerWithTrial );
+    Assert.assertEquals( offerWithTrial.getName(), "Charles A. 'Chuck' Testa" );
 
     //TODO[VNi]: after update api returns 0 days trial period
     //    Assert.assertEquals( offer.getTrialPeriodDays(), this.trialPeriodDays );

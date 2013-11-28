@@ -28,11 +28,11 @@ public class SubscriptionService extends AbstractService {
   }
 
   public Subscription get( Subscription subscription ) {
-    return RestfulUtils.show( SubscriptionService.PATH, RestfulUtils.getIdByReflection( subscription ), Subscription.class, super.httpClient );
+    return RestfulUtils.show( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
   }
 
   public Subscription get( String subscriptionId ) {
-    return RestfulUtils.show( SubscriptionService.PATH, subscriptionId, Subscription.class, super.httpClient );
+    return this.get( new Subscription( subscriptionId ) );
   }
 
   public Subscription createWithOfferAndPayment( Offer offer, Payment payment ) {
@@ -78,16 +78,16 @@ public class SubscriptionService extends AbstractService {
     return RestfulUtils.create( SubscriptionService.PATH, params, Subscription.class, super.httpClient );
   }
 
-  public Subscription update( Subscription subscription ) {
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
+  public void update( Subscription subscription ) {
+    RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
   }
 
   public Subscription delete( Subscription subscription ) {
-    return RestfulUtils.delete( SubscriptionService.PATH, RestfulUtils.getIdByReflection( subscription ), Subscription.class, super.httpClient );
+    return RestfulUtils.delete( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
   }
 
   public Subscription delete( String subscriptionId ) {
-    return RestfulUtils.delete( SubscriptionService.PATH, subscriptionId, Subscription.class, super.httpClient );
+    return this.delete( new Subscription( subscriptionId ) );
   }
 
 }

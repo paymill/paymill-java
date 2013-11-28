@@ -150,7 +150,8 @@ public class TransactionServiceTest {
   public void testUpdate_shouldSucceed() {
     this.transaction.setDescription( "Boom, boom, update the room" );
     this.transaction.setAmount( 5555 );
-    this.transaction = this.transactionService.update( this.transaction );
+    this.transaction.setAppId( "fake" );
+    this.transactionService.update( this.transaction );
     this.validateTransaction( this.transaction );
     Assert.assertEquals( this.transaction.getDescription(), "Boom, boom, update the room" );
     Assert.assertEquals( this.transaction.getAmount(), Integer.valueOf( this.amount ) );

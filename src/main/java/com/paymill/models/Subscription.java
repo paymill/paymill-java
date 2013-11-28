@@ -2,6 +2,7 @@ package com.paymill.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -84,44 +85,12 @@ public class Subscription {
     this.cancelAtPeriodEnd = cancelAtPeriodEnd;
   }
 
-  public Date getTrialStart() {
-    return this.trialStart;
-  }
-
-  public void setTrialStart( final Date trialStart ) {
-    this.trialStart = trialStart;
-  }
-
-  public Date getTrialEnd() {
-    return this.trialEnd;
-  }
-
-  public void setTrialEnd( final Date trialEnd ) {
-    this.trialEnd = trialEnd;
-  }
-
   public Date getNextCaptureAt() {
     return this.nextCaptureAt;
   }
 
   public void setNextCaptureAt( final Date nextCaptureAt ) {
     this.nextCaptureAt = nextCaptureAt;
-  }
-
-  public Date getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt( final Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
-  }
-
-  public Date getCanceledAt() {
-    return this.canceledAt;
-  }
-
-  public void setCanceledAt( final Date canceledAt ) {
-    this.canceledAt = canceledAt;
   }
 
   public Payment getPayment() {
@@ -148,12 +117,72 @@ public class Subscription {
     this.appId = appId;
   }
 
+  public Date getTrialStart() {
+    return this.trialStart;
+  }
+
+  @JsonIgnore
+  public void setTrialStart( final Date trialStart ) {
+    this.trialStart = trialStart;
+  }
+
+  public void setTrialStart( final long seconds ) {
+    if( seconds > 0 )
+      this.trialStart = new Date( seconds * 1000 );
+  }
+
+  public Date getTrialEnd() {
+    return this.trialEnd;
+  }
+
+  @JsonIgnore
+  public void setTrialEnd( final Date trialEnd ) {
+    this.trialEnd = trialEnd;
+  }
+
+  public void setTrialEnd( final long seconds ) {
+    if( seconds > 0 )
+      this.trialEnd = new Date( seconds * 1000 );
+  }
+
+  public Date getCanceledAt() {
+    return this.canceledAt;
+  }
+
+  @JsonIgnore
+  public void setCanceledAt( final Date canceledAt ) {
+    this.canceledAt = canceledAt;
+  }
+
+  public void setCanceledAt( final long seconds ) {
+    if( seconds > 0 )
+      this.canceledAt = new Date( seconds * 1000 );
+  }
+
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+    this.createdAt = createdAt;
+  }
+
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Subscription.Filter createFilter() {

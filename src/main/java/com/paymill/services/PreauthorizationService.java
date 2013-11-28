@@ -6,14 +6,13 @@ import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class PreauthorizationService extends AbstractService {
 
   private final static String PATH = "/preauthorizations";
 
-  private PreauthorizationService( Client httpClient ) {
+  private PreauthorizationService( com.sun.jersey.api.client.Client httpClient ) {
     super( httpClient );
   }
 
@@ -26,11 +25,11 @@ public class PreauthorizationService extends AbstractService {
   }
 
   public Preauthorization get( Preauthorization preauthorization ) {
-    return RestfulUtils.show( PreauthorizationService.PATH, RestfulUtils.getIdByReflection( preauthorization ), Preauthorization.class, super.httpClient );
+    return RestfulUtils.show( PreauthorizationService.PATH, preauthorization, Preauthorization.class, super.httpClient );
   }
 
   public Preauthorization get( String preauthorizationId ) {
-    return RestfulUtils.show( PreauthorizationService.PATH, preauthorizationId, Preauthorization.class, super.httpClient );
+    return this.get( new Preauthorization( preauthorizationId ) );
   }
 
   public Transaction createWithToken( String token, Integer amount, String currency ) {
@@ -61,19 +60,16 @@ public class PreauthorizationService extends AbstractService {
     return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
   }
 
-  public Preauthorization delete( Preauthorization preauthorization ) {
-    RestfulUtils.delete( PreauthorizationService.PATH, RestfulUtils.getIdByReflection( preauthorization ), Preauthorization.class, super.httpClient );
-    preauthorization.setId( null );
-    return preauthorization;
-
+  public void delete( Preauthorization preauthorization ) {
+    RestfulUtils.delete( PreauthorizationService.PATH, preauthorization, Preauthorization.class, super.httpClient );
   }
 
-  public Preauthorization delete( String preauthorizationId ) {
-    return this.delete( new Preauthorization( preauthorizationId ) );
+  public void delete( String preauthorizationId ) {
+    this.delete( new Preauthorization( preauthorizationId ) );
   }
 
-  public Preauthorization delete( Transaction transaction ) {
-    return this.delete( transaction.getPreauthorization() );
+  public void delete( Transaction transaction ) {
+    this.delete( transaction.getPreauthorization() );
   }
 
 }
