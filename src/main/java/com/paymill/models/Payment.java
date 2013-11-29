@@ -3,6 +3,7 @@ package com.paymill.models;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -76,18 +77,19 @@ public class Payment {
     this.type = type;
   }
 
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt( Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
-  }
-
+  /**
+   * Returns App (ID) that created this payment or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getAppId() {
-    return appId;
+    return this.appId;
   }
 
+  /**
+   * Sets App (ID) that created this payment or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
   public void setAppId( String appId ) {
     this.appId = appId;
   }
@@ -172,12 +174,58 @@ public class Payment {
     this.last4 = last4;
   }
 
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
-    return createdAt;
+    return this.createdAt;
   }
 
-  public void setCreatedAt( Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
+  @JsonIgnore
+  public void setCreatedAt( final Date createdAt ) {
+    this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Payment.Filter createFilter() {

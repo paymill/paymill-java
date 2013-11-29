@@ -2,19 +2,12 @@ package com.paymill.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Subscription {
-
-  public Subscription() {
-    super();
-  }
-
-  public Subscription( final String id ) {
-    this.id = id;
-  }
 
   private String  id;
 
@@ -52,6 +45,14 @@ public class Subscription {
   @JsonProperty( "app_id" )
   private String  appId;
 
+  public Subscription() {
+    super();
+  }
+
+  public Subscription( final String id ) {
+    this.id = id;
+  }
+
   public String getId() {
     return this.id;
   }
@@ -84,44 +85,12 @@ public class Subscription {
     this.cancelAtPeriodEnd = cancelAtPeriodEnd;
   }
 
-  public Date getTrialStart() {
-    return this.trialStart;
-  }
-
-  public void setTrialStart( final Date trialStart ) {
-    this.trialStart = trialStart;
-  }
-
-  public Date getTrialEnd() {
-    return this.trialEnd;
-  }
-
-  public void setTrialEnd( final Date trialEnd ) {
-    this.trialEnd = trialEnd;
-  }
-
   public Date getNextCaptureAt() {
     return this.nextCaptureAt;
   }
 
   public void setNextCaptureAt( final Date nextCaptureAt ) {
     this.nextCaptureAt = nextCaptureAt;
-  }
-
-  public Date getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public void setUpdatedAt( final Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
-  }
-
-  public Date getCanceledAt() {
-    return this.canceledAt;
-  }
-
-  public void setCanceledAt( final Date canceledAt ) {
-    this.canceledAt = canceledAt;
   }
 
   public Payment getPayment() {
@@ -140,20 +109,117 @@ public class Subscription {
     this.client = client;
   }
 
+  /**
+   * Returns App (ID) that created this subscription or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getAppId() {
     return this.appId;
   }
 
+  /**
+   * Sets App (ID) that created this subscription or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
   public void setAppId( final String appId ) {
     this.appId = appId;
   }
 
+  public Date getTrialStart() {
+    return this.trialStart;
+  }
+
+  @JsonIgnore
+  public void setTrialStart( final Date trialStart ) {
+    this.trialStart = trialStart;
+  }
+
+  public void setTrialStart( final long seconds ) {
+    if( seconds > 0 )
+      this.trialStart = new Date( seconds * 1000 );
+  }
+
+  public Date getTrialEnd() {
+    return this.trialEnd;
+  }
+
+  @JsonIgnore
+  public void setTrialEnd( final Date trialEnd ) {
+    this.trialEnd = trialEnd;
+  }
+
+  public void setTrialEnd( final long seconds ) {
+    if( seconds > 0 )
+      this.trialEnd = new Date( seconds * 1000 );
+  }
+
+  public Date getCanceledAt() {
+    return this.canceledAt;
+  }
+
+  @JsonIgnore
+  public void setCanceledAt( final Date canceledAt ) {
+    this.canceledAt = canceledAt;
+  }
+
+  public void setCanceledAt( final long seconds ) {
+    if( seconds > 0 )
+      this.canceledAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
+  @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+    this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
+  @JsonIgnore
+  public void setUpdatedAt( final Date updatedAt ) {
+    this.updatedAt = updatedAt;
+  }
+
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Subscription.Filter createFilter() {

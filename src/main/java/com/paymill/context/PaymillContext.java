@@ -1,7 +1,10 @@
 package com.paymill.context;
 
 import java.lang.reflect.Constructor;
+import java.util.Date;
 
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +19,23 @@ import com.paymill.services.WebhookService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
+/**
+ * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key<br />
+ * It creates 8 services, which represents the PAYMILL API:
+ * <ul>
+ * <li>{@link ClientService}</li>
+ * <li>{@link OfferService}</li>
+ * <li>{@link PaymentService}</li>
+ * <li>{@link PreauthorizationService}</li>
+ * <li>{@link RefundService}</li>
+ * <li>{@link SubscriptionService}</li>
+ * <li>{@link TransactionService}</li>
+ * <li>{@link WebhookService}</li>
+ * </ul>
+ * This services should not be created directly. They have to be obtained by the context's accessors.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 public final class PaymillContext {
 
   private ClientService           clientService;
@@ -32,6 +52,7 @@ public final class PaymillContext {
   private static ObjectMapper     jacksonParser = new ObjectMapper();
 
   public PaymillContext( final String apiKey ) {
+    ConvertUtils.register( new DateConverter( null ), Date.class );
     try {
       this.httpClient = new Client();
       this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );

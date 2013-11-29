@@ -33,7 +33,7 @@ public class WebhookServiceTest {
   public void tearDown() {
     List<Webhook> webhooks = this.webhookService.list().getData();
     for( Webhook webhook : webhooks ) {
-      Assert.assertNull( this.webhookService.delete( webhook ).getId() );
+      this.webhookService.delete( webhook );
     }
     Assert.assertEquals( this.webhookService.list().getData().size(), 0 );
   }

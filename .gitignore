@@ -1,7 +1,6 @@
-target
 .classpath
 .project
-.settings
-bin
-dist
-build.xml
+.settings/
+target/
+bin/
+test-output/

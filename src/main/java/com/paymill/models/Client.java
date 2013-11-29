@@ -3,6 +3,7 @@ package com.paymill.models;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,18 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * details for a client, edit client details and of course make transactions. Clients can be created individually by you or they
  * will be automatically generated with the transaction if there is no client ID transmitted.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Client {
+public final class Client {
 
-  /**
-   * @serial Unique identifier of this client.
-   */
   private String             id;
 
-  /**
-   * Mail address of this client.
-   */
   @Updateable( "email" )
   private String             email;
 
@@ -52,66 +48,157 @@ public class Client {
     this.id = id;
   }
 
+  /**
+   * Returns the unique identifier of this client.
+   * @return {@link String}
+   */
   public String getId() {
     return this.id;
   }
 
+  /**
+   * Sets the unique identifier of this client.
+   * @param id
+   *          {@link String}
+   */
   public void setId( final String id ) {
     this.id = id;
   }
 
+  /**
+   * Returns the email address of this client.
+   * @return {@link String} or <code>null</code>
+   */
   public String getEmail() {
     return this.email;
   }
 
+  /**
+   * Sets the email address of this client.
+   * @param email
+   *          {@link String} or <code>null</code>
+   */
   public void setEmail( final String email ) {
     this.email = email;
   }
 
+  /**
+   * Returns additional description for this client, perhaps the identifier from your CRM system?
+   * @return {@link String} or <code>null</code>
+   */
   public String getDescription() {
     return this.description;
   }
 
+  /**
+   * Sets additional description for this client, perhaps the identifier from your CRM system?
+   * @param description
+   *          {@link String} or <code>null</code>
+   */
   public void setDescription( final String description ) {
     this.description = description;
   }
 
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
+  @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
-    this.createdAt = new Date( createdAt.getTime() * 1000 );
+    this.createdAt = createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
+  public void setCreatedAt( final long seconds ) {
+    this.createdAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
   public Date getUpdatedAt() {
     return this.updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
+  @JsonIgnore
   public void setUpdatedAt( final Date updatedAt ) {
-    this.updatedAt = new Date( updatedAt.getTime() * 1000 );
+    this.updatedAt = updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
+  public void setUpdatedAt( final long seconds ) {
+    this.updatedAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns {@link List} of credit card/direct depit
+   * @return {@link List} of {@link Payment}
+   */
   public List<Payment> getPayments() {
     return this.payments;
   }
 
+  /**
+   * Sets {@link List} of {@link Payment}s.
+   * @param payments
+   *          {@link List}.
+   */
   public void setPayments( final List<Payment> payments ) {
     this.payments = payments;
   }
 
+  /**
+   * Returns {@link List} of {@link Subscription}s.
+   * @return {@link List} or <code>null</code>.
+   */
   public List<Subscription> getSubscriptions() {
     return this.subscriptions;
   }
 
+  /**
+   * Sets {@link List} of {@link Subscription}s.
+   * @param subscriptions
+   */
   public void setSubscriptions( final List<Subscription> subscriptions ) {
     this.subscriptions = subscriptions;
   }
 
+  /**
+   * Returns App (ID) that created this client or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getAppId() {
     return this.appId;
   }
 
+  /**
+   * Sets App (ID) that created this client or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
   public void setAppId( final String appId ) {
     this.appId = appId;
   }

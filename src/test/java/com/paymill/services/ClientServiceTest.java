@@ -1,6 +1,7 @@
 package com.paymill.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.testng.Assert;
@@ -33,7 +34,7 @@ public class ClientServiceTest {
   @AfterClass
   public void tearDown() {
     for( Client client : this.clients ) {
-      Assert.assertNull( this.clientService.delete( client ).getId() );
+      this.clientService.delete( client );
     }
   }
 
@@ -83,7 +84,8 @@ public class ClientServiceTest {
 
   @Test( dependsOnMethods = "testCreate_WithDescription_shouldSecceed" )
   public void testShow_shouldSecceed() {
-    Client client = this.clientService.get( this.clientWithDescriptionAndEmail );
+    this.clientWithDescriptionAndEmail.setAppId( "fake" );
+    Client client = this.clientService.get( this.clientWithDescriptionAndEmail.getId() );
     this.validateClient( client );
     Assert.assertEquals( client.getDescription(), this.description );
   }
@@ -92,7 +94,8 @@ public class ClientServiceTest {
   public void testUpdate_shouldSecceed() {
     this.clientWithDescriptionAndEmail.setEmail( "john.firstblood.rambo@qaiware.com" );
     this.clientWithDescriptionAndEmail.setDescription( "Boom, boom, update the room" );
-    this.clientWithDescriptionAndEmail = this.clientService.update( this.clientWithDescriptionAndEmail );
+    this.clientWithDescriptionAndEmail.setCreatedAt( new Date( System.currentTimeMillis() * 100 ) );
+    this.clientService.update( this.clientWithDescriptionAndEmail );
 
     this.validateClient( this.clientWithDescriptionAndEmail );
     Assert.assertEquals( this.clientWithDescriptionAndEmail.getEmail(), "john.firstblood.rambo@qaiware.com" );

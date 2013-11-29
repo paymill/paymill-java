@@ -44,7 +44,7 @@ public class RefundServiceTest {
 
   @Test
   public void testShow_shouldSucceed() {
-    this.refund = this.refundService.show( this.refund );
+    this.refund = this.refundService.get( this.refund );
     this.validatesRefund( refund );
     Assert.assertEquals( refund.getDescription(), this.description );
   }
