@@ -3,7 +3,7 @@ package com.paymill.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public class Fee {
+public final class Fee {
 
   private Fee.Type type;
   private String   application;

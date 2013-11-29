@@ -2,18 +2,22 @@ package com.paymill.models;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * An offer is a recurring plan which a user can subscribe to. You can create different offers with different plan attributes e.g.
  * a monthly or a yearly based paid offer/plan.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Offer {
-  //TODO[VNi]: handle subscription_count
+public final class Offer {
 
   public Offer() {
     super();
@@ -23,28 +27,31 @@ public class Offer {
     this.id = id;
   }
 
-  private String   id;
+  private String                  id;
 
   @Updateable( "name" )
-  private String   name;
+  private String                  name;
 
-  private Integer  amount;
+  private Integer                 amount;
 
-  private Interval interval;
+  private Interval                interval;
 
   @JsonProperty( "trial_period_days" )
-  private Integer  trialPeriodDays;
+  private Integer                 trialPeriodDays;
 
-  private String   currency;
+  private String                  currency;
 
   @JsonProperty( "created_at" )
-  private Date     createdAt;
+  private Date                    createdAt;
 
   @JsonProperty( "updated_at" )
-  private Date     updatedAt;
+  private Date                    updatedAt;
 
   @JsonProperty( "app_id" )
-  private String   appId;
+  private String                  appId;
+
+  @JsonProperty( "subscription_count" )
+  private Offer.SubscriptionCount subscriptionCount;
 
   public String getId() {
     return id;
@@ -86,10 +93,19 @@ public class Offer {
     this.currency = currency;
   }
 
+  /**
+   * Returns App (ID) that created this offer or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getAppId() {
-    return appId;
+    return this.appId;
   }
 
+  /**
+   * Sets App (ID) that created this offer or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
   public void setAppId( String appId ) {
     this.appId = appId;
   }
@@ -102,28 +118,64 @@ public class Offer {
     this.interval = new Interval( interval );
   }
 
+  public Offer.SubscriptionCount getSubscriptionCount() {
+    return this.subscriptionCount;
+  }
+
+  public void setSubscriptionCount( final Offer.SubscriptionCount subscriptionCount ) {
+    this.subscriptionCount = subscriptionCount;
+  }
+
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
     this.createdAt = createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
   public void setCreatedAt( final long seconds ) {
     this.createdAt = new Date( seconds * 1000 );
   }
 
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
   public Date getUpdatedAt() {
     return this.updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setUpdatedAt( final Date updatedAt ) {
     this.updatedAt = updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
   public void setUpdatedAt( final long seconds ) {
     this.updatedAt = new Date( seconds * 1000 );
   }
@@ -134,6 +186,89 @@ public class Offer {
 
   public static Offer.Order createOrder() {
     return new Offer.Order();
+  }
+
+  @JsonIgnoreProperties( ignoreUnknown = true )
+  public class Interval {
+
+    private Integer    interval;
+    private Offer.Unit unit;
+
+    public Interval( final String interval ) {
+      String[] parts = StringUtils.split( interval );
+      this.interval = Integer.parseInt( parts[0] );
+      this.unit = Offer.Unit.create( parts[1] );
+    }
+
+    public Integer getInterval() {
+      return this.interval;
+    }
+
+    public void setInterval( final Integer interval ) {
+      this.interval = interval;
+    }
+
+    public Offer.Unit getUnit() {
+      return this.unit;
+    }
+
+    public void setUnit( final Offer.Unit unit ) {
+      this.unit = unit;
+    }
+
+    @Override
+    public String toString() {
+      return this.interval + " " + this.unit;
+    }
+
+  }
+
+  public enum Unit {
+    DAY("DAY"), WEEK("WEEK"), MONTH("MONTH"), YEAR("YEAR");
+
+    private String value;
+
+    private Unit( final String value ) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return this.value;
+    }
+
+    @JsonCreator
+    public static Unit create( final String value ) {
+      for( Unit unit : Unit.values() ) {
+        if( unit.getValue().equals( value ) ) {
+          return unit;
+        }
+      }
+      throw new IllegalArgumentException( "Invalid value for Interval.Unit" );
+    }
+  }
+
+  @JsonIgnoreProperties( ignoreUnknown = true )
+  public class SubscriptionCount {
+    private String  active;
+    private Integer inactive;
+
+    public String getActive() {
+      return this.active;
+    }
+
+    public void setActive( final String active ) {
+      this.active = active;
+    }
+
+    public Integer getInactive() {
+      return this.inactive;
+    }
+
+    public void setInactive( final Integer inactive ) {
+      this.inactive = inactive;
+    }
+
   }
 
   public final static class Filter {

@@ -14,6 +14,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * The {@link RefundService} is used to list and create PAYMILL {@link Refund}s.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 public class RefundService extends AbstractService {
 
@@ -45,20 +46,20 @@ public class RefundService extends AbstractService {
   }
 
   /**
-   * Returns detailed informations of a specific {@link Refund}.
+   * Returns and refresh detailed informations of a specific {@link Refund}.
    * @param refund
    *          A {@link Refund} with Id.
-   * @return {@link Refund} object, which represents a PAYMILL refund.
+   * @return Refreshed instance of the given {@link Refund}.
    */
   public Refund get( Refund refund ) {
     return RestfulUtils.show( RefundService.PATH, refund, Refund.class, super.httpClient );
   }
 
   /**
-   * Returns detailed informations of a specific {@link Refund}.
+   * Returns and refresh detailed informations of a specific {@link Refund}.
    * @param refundId
    *          Id of the {@link Refund}
-   * @return {@link Refund} object, which represents a PAYMILL refund.
+   * @return Refreshed instance of the given {@link Refund}.
    */
   public Refund get( String refundId ) {
     return this.get( new Refund( refundId ) );
@@ -76,21 +77,78 @@ public class RefundService extends AbstractService {
    * <li>There is no need to define a currency for refunds, because they will be in the same currency as the original transaction</li>
    * </ul>
    * @param transaction
+   *          The {@link Transaction}, which will be refunded.
    * @param amount
-   * @return
+   *          Amount (in cents) which will be charged
+   * @return A {@link Refund} for the given {@link Transaction}.
    */
   public Refund refundTransaction( Transaction transaction, Integer amount ) {
     return this.refundTransaction( transaction, amount, null );
   }
 
+  /**
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn’t refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
+   * <br />
+   * Note:
+   * <ul>
+   * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
+   * for every refund</li>
+   * <li>There is no need to define a currency for refunds, because they will be in the same currency as the original transaction</li>
+   * </ul>
+   * @param transactionId
+   *          Id of {@link Transaction}, which will be refunded.
+   * @param amount
+   *          Amount (in cents) which will be charged.
+   * @return A {@link Refund} for the given {@link Transaction}.
+   */
   public Refund refundTransaction( String transactionId, Integer amount ) {
     return this.refundTransaction( new Transaction( transactionId ), amount, null );
   }
 
+  /**
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn’t refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
+   * <br />
+   * Note:
+   * <ul>
+   * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
+   * for every refund</li>
+   * <li>There is no need to define a currency for refunds, because they will be in the same currency as the original transaction</li>
+   * </ul>
+   * @param transactionId
+   *          Id of {@link Transaction}, which will be refunded.
+   * @param amount
+   *          Amount (in cents) which will be charged.
+   * @param description
+   *          Additional description for this refund.
+   * @return A {@link Refund} for the given {@link Transaction}.
+   */
   public Refund refundTransaction( String transactionId, Integer amount, String description ) {
     return this.refundTransaction( new Transaction( transactionId ), amount, description );
   }
 
+  /**
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn’t refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
+   * <br />
+   * Note:
+   * <ul>
+   * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
+   * for every refund</li>
+   * <li>There is no need to define a currency for refunds, because they will be in the same currency as the original transaction</li>
+   * </ul>
+   * @param transactionId
+   *          The {@link Transaction}, which will be refunded.
+   * @param amount
+   *          Amount (in cents) which will be charged.
+   * @param description
+   *          Additional description for this refund.
+   * @return A {@link Refund} for the given {@link Transaction}.
+   */
   public Refund refundTransaction( Transaction transaction, Integer amount, String description ) {
     ValidationUtils.validatesAmount( amount );
 

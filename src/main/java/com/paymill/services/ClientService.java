@@ -13,6 +13,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * The {@link ClientService} is used to list, create, edit, delete and update PAYMILL {@link Client}s.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 public final class ClientService extends AbstractService {
 
@@ -44,20 +45,20 @@ public final class ClientService extends AbstractService {
   }
 
   /**
-   * Get the details of an existing PAYMILL {@link Client}.
+   * Get and refresh the details of an existing PAYMILL {@link Client}.
    * @param client
    *          A {@link Client} with Id.
-   * @return {@link Client} object, which represents a PAYMILL client.
+   * @return Refreshed instance of the given {@link Client}.
    */
   public Client get( Client client ) {
     return RestfulUtils.show( ClientService.PATH, client, Client.class, super.httpClient );
   }
 
   /**
-   * Get the details of an existing PAYMILL {@link Client}.
+   * Get and refresh the details of an existing PAYMILL {@link Client}.
    * @param clientId
    *          Id of the {@link Client}
-   * @return {@link Client} object, which represents a PAYMILL client.
+   * @return Refreshed instance of the given {@link Client}.
    */
   public Client get( String clientId ) {
     return this.get( new Client( clientId ) );

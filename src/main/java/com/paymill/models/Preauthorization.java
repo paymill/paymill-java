@@ -108,36 +108,73 @@ public class Preauthorization {
     this.client = client;
   }
 
+  /**
+   * Returns App (ID) that created this preauthorization or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getAppId() {
     return this.appId;
   }
 
+  /**
+   * Sets App (ID) that created this preauthorization or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
   public void setAppId( final String appId ) {
     this.appId = appId;
   }
 
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
     this.createdAt = createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
   public void setCreatedAt( final long seconds ) {
     this.createdAt = new Date( seconds * 1000 );
   }
 
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
   public Date getUpdatedAt() {
     return this.updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setUpdatedAt( final Date updatedAt ) {
     this.updatedAt = updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
   public void setUpdatedAt( final long seconds ) {
     this.updatedAt = new Date( seconds * 1000 );
   }

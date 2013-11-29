@@ -12,6 +12,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * The {@link PaymentService} is used to list, create, edit, delete and update PAYMILL {@link Payment}s.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 public class PaymentService extends AbstractService {
 
@@ -43,20 +44,20 @@ public class PaymentService extends AbstractService {
   }
 
   /**
-   * Returns data of a specific {@link Payment}.
+   * Returns and refresh data of a specific {@link Payment}.
    * @param payment
    *          A {@link Payment} with Id.
-   * @return {@link Payment} object, which represents a PAYMILL payment.
+   * @return Refreshed instance of the given {@link Payment}.
    */
   public Payment get( Payment payment ) {
     return RestfulUtils.show( PaymentService.PATH, payment, Payment.class, super.httpClient );
   }
 
   /**
-   * Returns data of a specific {@link Payment}.
+   * Returns and refresh data of a specific {@link Payment}.
    * @param paymentId
    *          A {@link Payment} with Id.
-   * @return {@link Payment} object, which represents a PAYMILL payment.
+   * @return Refreshed instance of the given {@link Payment}.
    */
   public Payment get( String paymentId ) {
     return this.get( new Payment( paymentId ) );

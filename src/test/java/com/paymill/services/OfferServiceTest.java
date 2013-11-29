@@ -9,7 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
-import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.PaymillList;
 
@@ -113,14 +112,10 @@ public class OfferServiceTest {
     Assert.assertEquals( offer.getCurrency(), this.currency );
     Assert.assertNotNull( offer.getInterval() );
     Assert.assertEquals( offer.getInterval().getInterval(), Integer.valueOf( 1 ) );
-    Assert.assertEquals( offer.getInterval().getUnit(), Interval.Unit.MONTH );
+    Assert.assertEquals( offer.getInterval().getUnit(), Offer.Unit.MONTH );
     Assert.assertNotNull( offer.getCreatedAt() );
     Assert.assertNotNull( offer.getUpdatedAt() );
     Assert.assertNull( offer.getAppId() );
-    //    "subscription_count": {
-    //        "active": "3",
-    //        "inactive": 0
-    //    },
   }
 
 }

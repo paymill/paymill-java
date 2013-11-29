@@ -12,6 +12,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * The {@link OfferService} is used to list, create, edit, delete and update PAYMILL {@link Offer}s.
  * @author Vassil Nikolov
+ * @since 3.0.0
  */
 public class OfferService extends AbstractService {
 
@@ -43,20 +44,20 @@ public class OfferService extends AbstractService {
   }
 
   /**
-   * Get the details of an existing PAYMILL {@link Offer}.
+   * Get and refresh the details of an existing PAYMILL {@link Offer}.
    * @param offer
    *          A {@link Offer} with Id.
-   * @return {@link Offer} object, which represents a PAYMILL offer.
+   * @return Refreshed instance of the given {@link Offer}.
    */
   public Offer get( Offer offer ) {
     return RestfulUtils.show( OfferService.PATH, offer, Offer.class, super.httpClient );
   }
 
   /**
-   * Get the details of an existing PAYMILL {@link Offer}.
+   * Get and refresh the details of an existing PAYMILL {@link Offer}.
    * @param offerId
    *          Id of the {@link Offer}
-   * @return {@link Offer} object, which represents a PAYMILL offer.
+   * @return Refreshed instance of the given {@link Offer}.
    */
   public Offer get( String offerId ) {
     return this.get( new Offer( offerId ) );

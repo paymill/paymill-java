@@ -1,6 +1,7 @@
 package com.paymill.models;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.paymill.models.Payment.Type;
 
+/**
+ * With webhooks we give you the possibility to react automatically to certain events which happen within our system. A webhook is
+ * basically a URL where we send an HTTP POST request to, every time one of the events attached to that webhook is triggered.
+ * Alternatively you can define an email address where we send the event’s information to You can manage your webhooks via the API
+ * as explained below or you can use the web interface inside our cockpit.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class Webhook {
 
@@ -20,6 +29,8 @@ public class Webhook {
   @Updateable( "email" )
   private String              email;
 
+  private Boolean             livemode;
+
   @JsonProperty( "created_at" )
   private Date                createdAt;
 
@@ -29,6 +40,9 @@ public class Webhook {
   @JsonProperty( "event_types" )
   private Webhook.EventType[] eventTypes;
 
+  @JsonProperty( "app_id" )
+  private String              appId;
+
   public Webhook() {
     super();
   }
@@ -37,60 +51,158 @@ public class Webhook {
     this.id = id;
   }
 
+  /**
+   * Returns unique identifier of this webhook.
+   * @return {@link String}
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Sets unique identifier of this webhook.
+   * @param id
+   *          {@link String}
+   */
   public void setId( String id ) {
     this.id = id;
   }
 
+  /**
+   * Returns the url of the webhook.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getUrl() {
     return url;
   }
 
+  /**
+   * Sets the url of the webhook.
+   * @param url
+   *          {@link String}
+   */
   public void setUrl( String url ) {
     this.url = url;
   }
 
+  /**
+   * Returns the email of the webhook.
+   * @return {@link String} or <code>null</code>.
+   */
   public String getEmail() {
     return email;
   }
 
+  /**
+   * Sets the email of the webhook.
+   * @param email
+   *          {@link String}
+   */
   public void setEmail( String email ) {
     this.email = email;
   }
 
+  /**
+   * Returns if the webhook is for live or test mode.
+   * @return {@link Boolean}
+   */
+  public Boolean getLivemode() {
+    return this.livemode;
+  }
+
+  /**
+   * You can create webhooks for livemode and testmode.
+   * @param livemode
+   *          {@link Boolean} <code>false</code> is default.
+   */
+  public void setLivemode( final Boolean livemode ) {
+    this.livemode = livemode;
+  }
+
+  /**
+   * Returns {@link List} of {@link Webhook.EventType}s.
+   * @return {@link List}.
+   */
   public Webhook.EventType[] getEventTypes() {
     return eventTypes;
   }
 
+  /**
+   * Sets {@link List} of {@link Webhook.EventType}s.
+   * @param eventTypes
+   *          {@link List} of {@link Webhook.EventType}s.
+   */
   public void setEventTypes( Webhook.EventType[] eventTypes ) {
     this.eventTypes = eventTypes;
   }
 
+  /**
+   * Returns App (ID) that created this transaction or <code>null</code> if created by yourself.
+   * @return {@link String} or <code>null</code>.
+   */
+  public String getAppId() {
+    return this.appId;
+  }
+
+  /**
+   * Sets App (ID) that created this transaction or <code>null</code> if created by yourself.
+   * @param appId
+   *          {@link String}
+   */
+  public void setAppId( final String appId ) {
+    this.appId = appId;
+  }
+
+  /**
+   * Returns the creation date.
+   * @return {@link Date}
+   */
   public Date getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param createdAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
     this.createdAt = createdAt;
   }
 
+  /**
+   * Set the creation date.
+   * @param seconds
+   *          Creation date representation is seconds.
+   */
   public void setCreatedAt( final long seconds ) {
     this.createdAt = new Date( seconds * 1000 );
   }
 
+  /**
+   * Returns the last update.
+   * @return {@link Date}
+   */
   public Date getUpdatedAt() {
     return this.updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param updatedAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setUpdatedAt( final Date updatedAt ) {
     this.updatedAt = updatedAt;
   }
 
+  /**
+   * Sets the last update.
+   * @param seconds
+   *          Last update representation is seconds.
+   */
   public void setUpdatedAt( final long seconds ) {
     this.updatedAt = new Date( seconds * 1000 );
   }
@@ -191,6 +303,12 @@ public class Webhook {
 
   }
 
+  /**
+   * There are a number of events you can react to. Each webhook can be configured to catch any kind of event individually, so you
+   * can create different webhooks for different events. Each Webhook needs to be attached to at least one event.
+   * @author Vassil Nikolov
+   * @since 3.0.0
+   */
   public enum EventType {
 
     /**
