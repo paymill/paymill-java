@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -29,14 +28,6 @@ public class OfferServiceTest {
   public void setUp() {
     PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.offerService = paymill.getOfferService();
-  }
-
-  @AfterClass
-  public void tearDown() {
-    List<Offer> offers = this.offerService.list().getData();
-    for( Offer offer : offers ) {
-      this.offerService.delete( offer );
-    }
   }
 
   @Test
