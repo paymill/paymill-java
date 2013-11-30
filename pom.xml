@@ -37,7 +37,6 @@
   </scm>
 
   <dependencies>
-
     <!-- Core Dependencies -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

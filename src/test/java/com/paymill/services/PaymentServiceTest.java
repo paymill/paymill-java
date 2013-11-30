@@ -100,7 +100,7 @@ public class PaymentServiceTest {
     Assert.assertNotEquals( paymentsAsc.get( 0 ).getId(), paymentsDesc.get( 0 ).getId() );
   }
 
-  @Test( dependsOnMethods = "testListOrderByCreatedAt" )
+  // @Test( dependsOnMethods = "testListOrderByCreatedAt" )
   public void testListFilterByCardType() {
     Payment.Filter filter = Payment.createFilter().byCardType( Payment.CardType.VISA );
 
