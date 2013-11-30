@@ -19,7 +19,7 @@ import com.paymill.models.Payment.Type;
  * @since 3.0.0
  */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Webhook {
+public final class Webhook {
 
   private String              id;
 
@@ -244,7 +244,6 @@ public class Webhook {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
-
   }
 
   public final static class Order {

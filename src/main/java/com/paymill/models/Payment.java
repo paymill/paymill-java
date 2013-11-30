@@ -8,14 +8,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * The Payment object represents a payment with a credit card or via direct debit. It is used for several function calls (e.g.
+ * transactions, subscriptions, clients, ...). To be PCI compliant these information is encoded by our Paymill PSP. You only get
+ * in touch with safe data (token) and needn’t to care about the security problematic of informations like credit card data.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Payment {
+public final class Payment {
 
   public Payment() {
     super();
   }
 
-  public Payment( String id ) {
+  public Payment( final String id ) {
     this.id = id;
   }
 
@@ -61,19 +68,36 @@ public class Payment {
 
   private String           last4;
 
+  /**
+   * Returns unique identifier for this credit card payment.
+   * @return {@link String}
+   */
   public String getId() {
-    return id;
+    return this.id;
   }
 
-  public void setId( String id ) {
+  /**
+   * Sets unique identifier for this credit card payment.
+   * @param id
+   */
+  public void setId( final String id ) {
     this.id = id;
   }
 
+  /**
+   * Returns enumeration for credit card and direct debit
+   * @return {@link Payment.Type}
+   */
   public Payment.Type getType() {
-    return type;
+    return this.type;
   }
 
-  public void setType( Payment.Type type ) {
+  /**
+   * Sets enumeration for credit card and direct debit
+   * @param type
+   *          {@link Payment.Type}
+   */
+  public void setType( final Payment.Type type ) {
     this.type = type;
   }
 
@@ -90,87 +114,176 @@ public class Payment {
    * @param appId
    *          {@link String}
    */
-  public void setAppId( String appId ) {
+  public void setAppId( final String appId ) {
     this.appId = appId;
   }
 
+  /**
+   * Returns the used Bank Code
+   * @return {@link String}
+   */
   public String getCode() {
-    return code;
+    return this.code;
   }
 
-  public void setCode( String code ) {
+  /**
+   * Sets the used Bank Code.
+   * @param code
+   */
+  public void setCode( final String code ) {
     this.code = code;
   }
 
+  /**
+   * Returns the used account number, for security reasons the number is masked.
+   * @return {@link String}
+   */
   public String getAccount() {
-    return account;
+    return this.account;
   }
 
-  public void setAccount( String account ) {
+  /**
+   * Sets the used account number, for security reasons the number is masked.
+   * @param account
+   *          {@link String}
+   */
+  public void setAccount( final String account ) {
     this.account = account;
   }
 
+  /**
+   * Returns name of the account holder.
+   * @return
+   */
   public String getHolder() {
-    return holder;
+    return this.holder;
   }
 
-  public void setHolder( String holder ) {
+  /**
+   * Sets name of the account holder.
+   * @param holder
+   *          {@link String}
+   */
+  public void setHolder( final String holder ) {
     this.holder = holder;
   }
 
+  /**
+   * The {@link Client}
+   * @return {@link Client} or <code>null</code>.
+   */
   public String getClient() {
-    return client;
+    return this.client;
   }
 
-  public void setClient( String client ) {
+  /**
+   * Sets the {@link Client}.
+   * @param client
+   *          {@link Client} or <code>null</code>
+   */
+  public void setClient( final String client ) {
     this.client = client;
   }
 
+  /**
+   * Returns the card type eg. visa, mastercard.
+   * @return {@link Payment.CardType}
+   */
   public Payment.CardType getCardType() {
-    return cardType;
+    return this.cardType;
   }
 
-  public void setCardType( Payment.CardType cardType ) {
+  /**
+   * Sets the card type eg. visa, mastercard.
+   * @param cardType
+   *          {@link Payment.CardType}
+   */
+  public void setCardType( final Payment.CardType cardType ) {
     this.cardType = cardType;
   }
 
+  /**
+   * Returns the country.
+   * @return {@link String}
+   */
   public String getCountry() {
-    return country;
+    return this.country;
   }
 
-  public void setCountry( String country ) {
+  /**
+   * Sets the country.
+   * @param country
+   *          {@link String}
+   */
+  public void setCountry( final String country ) {
     this.country = country;
   }
 
+  /**
+   * Returns the expiry month of the credit card.
+   * @return {@link Integer}
+   */
   public Integer getExpireMonth() {
-    return expireMonth;
+    return this.expireMonth;
   }
 
-  public void setExpireMonth( Integer expireMonth ) {
+  /**
+   * Sets the expiry month of the credit card.
+   * @param expireMonth
+   *          {@link Integer}
+   */
+  public void setExpireMonth( final Integer expireMonth ) {
     this.expireMonth = expireMonth;
   }
 
+  /**
+   * Returns the expiry year of the credit card.
+   * @return {@link Integer}
+   */
   public Integer getExpireYear() {
-    return expireYear;
+    return this.expireYear;
   }
 
-  public void setExpireYear( Integer expireYear ) {
+  /**
+   * Sets the expiry year of the credit card.
+   * @param expireYear
+   *          {@link Integer}
+   */
+  public void setExpireYear( final Integer expireYear ) {
     this.expireYear = expireYear;
   }
 
+  /**
+   * Returns name of the card holder.
+   * @return {@link String} or <code>null</code>
+   */
   public String getCardHolder() {
-    return cardHolder;
+    return this.cardHolder;
   }
 
-  public void setCardHolder( String cardHolder ) {
+  /**
+   * Sets name of the card holder.
+   * @param cardHolder
+   *          {@link String} or <code>null</code>
+   */
+  public void setCardHolder( final String cardHolder ) {
     this.cardHolder = cardHolder;
   }
 
+  /**
+   * Returns the last four digits of the credit card.
+   * @return {@link String}
+   */
   public String getLast4() {
-    return last4;
+    return this.last4;
   }
 
-  public void setLast4( String last4 ) {
+  /**
+   * Sets the last four digits of the credit card.
+   * @param last4
+   *          {@link String}
+   */
+  public void setLast4( final String last4 ) {
     this.last4 = last4;
   }
 
@@ -243,7 +356,7 @@ public class Payment {
 
     private String value;
 
-    private CardType( String value ) {
+    private CardType( final String value ) {
       this.value = value;
     }
 
@@ -253,7 +366,7 @@ public class Payment {
     }
 
     @JsonCreator
-    public static Type create( String value ) {
+    public static Type create( final String value ) {
       for( Type type : Type.values() ) {
         if( type.getValue().equals( value ) ) {
           return type;
@@ -271,7 +384,7 @@ public class Payment {
 
     private String value;
 
-    private Type( String value ) {
+    private Type( final String value ) {
       this.value = value;
     }
 
@@ -281,7 +394,7 @@ public class Payment {
     }
 
     @JsonCreator
-    public static Type create( String value ) {
+    public static Type create( final String value ) {
       for( Type type : Type.values() ) {
         if( type.getValue().equals( value ) ) {
           return type;
@@ -303,16 +416,15 @@ public class Payment {
       super();
     }
 
-    public Payment.Filter byCardType( Payment.CardType cardType ) {
+    public Payment.Filter byCardType( final Payment.CardType cardType ) {
       this.cardType = cardType.getValue();
       return this;
     }
 
-    public Payment.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
+    public Payment.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
-
   }
 
   public final static class Order {

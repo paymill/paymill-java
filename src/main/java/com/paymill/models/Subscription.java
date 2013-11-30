@@ -6,8 +6,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Subscriptions allow you to charge recurring payments on a client’s credit card / to a client’s direct debit. A subscription
+ * connects a client to the {@link Offer}s. A client can have several subscriptions to different offers, but only one subscription
+ * to the same offer.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Subscription {
+public final class Subscription {
 
   private String  id;
 

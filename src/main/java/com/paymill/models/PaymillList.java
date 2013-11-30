@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class PaymillList<T> {
+public final class PaymillList<T> {
 
   public PaymillList() {
     this.data = new ArrayList<T>();

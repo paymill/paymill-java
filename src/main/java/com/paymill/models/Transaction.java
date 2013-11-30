@@ -9,8 +9,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * A transaction is the charging of a credit card or a direct debit. In this case you need a new transaction object with either a
+ * valid token, payment, client + payment or preauthorization. Every transaction has a unique identifier which will be generated
+ * by PAYMILL to identify every transaction. You can issue/create, list and display transactions in detail. Refunds can be done in
+ * an extra entity.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Transaction {
+public final class Transaction {
 
   private String             id;
 

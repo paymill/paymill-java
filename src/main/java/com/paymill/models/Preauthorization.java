@@ -8,8 +8,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * If you’d like to reserve some money from the client’s credit card but you’d also like to execute the transaction itself a bit
+ * later, then use preauthorizations. This is NOT possible with direct debit. <br />
+ * <strong>A preauthorization is valid for 7 days.</strong>
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Preauthorization {
+public final class Preauthorization {
 
   private String                  id;
 

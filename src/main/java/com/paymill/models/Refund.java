@@ -8,8 +8,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Refunds are own objects with own calls for existing transactions. The refunded amount will be credited to the account of the
+ * client.
+ * @author Vassil Nikolov
+ * @since 3.0.0
+ */
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Refund {
+public final class Refund {
 
   private String        id;
 
