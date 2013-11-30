@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
-import com.paymill.models.Client;
 import com.paymill.models.Payment;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
@@ -26,12 +25,10 @@ public class PreauthorizationServiceTest {
 
   private PreauthorizationService preauthorizationService;
   private PaymentService          paymentService;
-  private ClientService           clientService;
 
   @BeforeClass
   public void setUp() {
     PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
-    this.clientService = paymill.getClientService();
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
 
@@ -43,14 +40,6 @@ public class PreauthorizationServiceTest {
   public void tearDown() {
     for( Transaction transaction : preauthorizations )
       this.preauthorizationService.delete( transaction );
-
-    //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
-    for( Payment payment : this.paymentService.list().getData() ) {
-      this.paymentService.delete( payment );
-    }
-    for( Client client : this.clientService.list().getData() ) {
-      this.clientService.delete( client );
-    }
   }
 
   @Test
@@ -70,7 +59,7 @@ public class PreauthorizationServiceTest {
     this.preauthorizations.add( transaction );
   }
 
-  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
+  // @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
   public void testListOrderByOffer() {
     Preauthorization.Order orderDesc = Preauthorization.createOrder().byCreatedAt().desc();
     Preauthorization.Order orderAsc = Preauthorization.createOrder().byCreatedAt().asc();
