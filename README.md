@@ -32,7 +32,7 @@ In all cases, you'll use the predefined service classes to access the paymill ap
 
 To fetch a service instance, call *service name* accessor from paymillContext, like
 ```
-  ClientService clients = paymillContext.getClientService();
+  ClientService clientService = paymillContext.getClientService();
 ```
 Every service instance provides basic methods for CRUD functionality.
 
