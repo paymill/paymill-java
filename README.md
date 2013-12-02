@@ -123,6 +123,37 @@ or
 ```
   clients.delete( client );
 ```
+## Spring integration
+
+This example is suitable if you use this wrapper for a single account.
+
+Defines the PAYMILL context in Spring context.
+
+```
+<bean id="paymillContext" class="com.paymill.context.PaymillContext">
+  <constructor-arg value="<YOUR PRIVATE API KEY>" />
+</bean>
+```
+
+Defines custom Controller, which uses PAYMILL ClientService internaly. Note that the setter receives *paymillContext*.
+```
+<bean id="clientController" class="com.yourpackage.ClientController">
+  <property name="clientService" ref="paymillContext" />
+</bean>
+```
+
+The ClientController class itself. Note that the clientService property is set by getting the ClientService form the paymillContext.
+
+```
+public class ClientController {
+  private ClientService clientService;
+
+  public void setClientService( PaymillContext paymillContext ) {
+    this.clientService = paymillContext.getClientService();
+  }
+}
+```
+
 ## Changelog
 
 ### 3.0.0
