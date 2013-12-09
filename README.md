@@ -20,10 +20,10 @@ Java wrapper for PAYMILL API
 
 ```
 <dependency>
-	<groupId>com.paymill</groupId>
-	<artifactId>paymill-java</artifactId>
-	<version>3.0.0</version>
-</dependency>         
+  <groupId>com.paymill</groupId>
+  <artifactId>paymill-java</artifactId>
+  <version>3.0.1</version>
+</dependency>
 ```
 
 
@@ -156,6 +156,10 @@ public class ClientController {
 
 ## Changelog
 
+### 3.0.1
+* Add "chargeback" value ro Transaction.Status enum
+* Add workaround for subscription without offer. Now the lib will not throw parsing error.
+
 ### 3.0.0
 * Improved implementation internally, now most of the configuration uses annotations and reflection.
 * Package name changed from de.paymill to com.paymill .
@@ -165,7 +169,7 @@ public class ClientController {
 + Improved create methods. All create methods now work with arguments. Removed unnecessary fields in objects (e.g. token in Transaction).
 + Improved get, update and remove methods. Get and remove now work with both instances and IDs. Get and Update methods now work on the same instance.
 - Offer is no longer updateable for a subscription.
- 
+
 ### 2.6
 First maven central
 
