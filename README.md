@@ -16,7 +16,7 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases) .
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.1|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/paymill-java-3.0.1) .
 
 ```
 <dependency>
@@ -29,7 +29,7 @@ Java wrapper for PAYMILL API
 
 ## What's new
 
-We have released version 3.0.0. This version is not backwards compatible. Concrete changes in the changelog.
+We have released version 3. This version is not backwards compatible with version 2. Concrete changes in the changelog.
 
 ## Usage
 
