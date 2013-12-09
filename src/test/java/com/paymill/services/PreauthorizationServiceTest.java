@@ -76,7 +76,7 @@ public class PreauthorizationServiceTest {
   public void testListOrderByFilterAmountGreaterThan() {
     Preauthorization.Filter filter = Preauthorization.createFilter().byAmountGreaterThan( amount - 100 );
     List<Preauthorization> preauthorization = this.preauthorizationService.list( filter, null ).getData();
-    Assert.assertEquals( preauthorization.size(), this.preauthorizations.size() );
+    Assert.assertFalse( preauthorization.isEmpty() );
   }
 
   @Test( dependsOnMethods = "testListOrderByFilterAmountGreaterThan" )
