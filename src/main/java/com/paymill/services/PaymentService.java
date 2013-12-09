@@ -27,7 +27,19 @@ public class PaymentService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Payment}s and their total count.
    */
   public PaymillList<Payment> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Payment} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Payment}s and their total count.
+   */
+  public PaymillList<Payment> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -40,7 +52,25 @@ public class PaymentService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Payment}s and their total count.
    */
   public PaymillList<Payment> list( Payment.Filter filter, Payment.Order order ) {
-    return RestfulUtils.list( PaymentService.PATH, filter, order, Payment.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Payment} objects. In which order this list is returned depends on the
+   * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
+   * offset.
+   * @param filter
+   *          {@link Payment.Filter} or <code>null</code>
+   * @param order
+   *          {@link Payment.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Payment}s and their total count.
+   */
+  public PaymillList<Payment> list( Payment.Filter filter, Payment.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( PaymentService.PATH, filter, order, count, offset, Payment.class, super.httpClient );
   }
 
   /**

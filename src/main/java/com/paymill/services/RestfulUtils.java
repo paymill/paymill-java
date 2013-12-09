@@ -26,11 +26,17 @@ final class RestfulUtils {
 
   private final static String ENDPOINT = "https://api.paymill.com/v2";
 
-  static <T> PaymillList<T> list( String path, Object filter, Object order, Class<?> clazz, Client httpClient ) {
+  static <T> PaymillList<T> list( String path, Object filter, Object order, Integer count, Integer offset, Class<?> clazz, Client httpClient ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );
     String param = RestfulUtils.prepareOrderParameter( order );
     if( StringUtils.isNotBlank( param ) && !StringUtils.startsWith( param, "_" ) ) {
       params.add( "order", param );
+    }
+    if( count != null && count > 0 ) {
+      params.add( "count", String.valueOf( count ) );
+    }
+    if( offset != null && offset >= 0 ) {
+      params.add( "offset", String.valueOf( offset ) );
     }
     return RestfulUtils.deserializeList( RestfulUtils.get( path, params, httpClient ), clazz );
   }
@@ -99,9 +105,11 @@ final class RestfulUtils {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( dataNode.isArray() ) {
           List<T> objects = new ArrayList<T>();
-          for( Object object : PaymillContext.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class ).getData() ) {
+          //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
+          //TODO[VNi]: Remove this line after fix
+          String dump = wrappedNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );;
+          for( Object object : PaymillContext.getJacksonParser().readValue( dump, PaymillList.class ).getData() ) {
             try {
-              //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
               objects.add( (T) PaymillContext.getJacksonParser().readValue( PaymillContext.getJacksonParser().writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
               throw new RuntimeException( exc );

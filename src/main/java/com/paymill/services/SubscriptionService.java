@@ -31,7 +31,19 @@ public class SubscriptionService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Subscription} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
+   */
+  public PaymillList<Subscription> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -44,7 +56,25 @@ public class SubscriptionService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list( Subscription.Filter filter, Subscription.Order order ) {
-    return RestfulUtils.list( SubscriptionService.PATH, filter, order, Subscription.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Subscription} objects. In which order this list is returned depends on
+   * the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
+   * offset.
+   * @param filter
+   *          {@link Subscription.Filter} or <code>null</code>
+   * @param order
+   *          {@link Subscription.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
+   */
+  public PaymillList<Subscription> list( Subscription.Filter filter, Subscription.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( SubscriptionService.PATH, filter, order, count, offset, Subscription.class, super.httpClient );
   }
 
   /**

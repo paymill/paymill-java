@@ -32,7 +32,19 @@ public class TransactionService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Transaction}s and their total count.
    */
   public PaymillList<Transaction> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Transaction} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Transaction}s and their total count.
+   */
+  public PaymillList<Transaction> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -45,7 +57,25 @@ public class TransactionService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Transaction}s and their total count.
    */
   public PaymillList<Transaction> list( Transaction.Filter filter, Transaction.Order order ) {
-    return RestfulUtils.list( TransactionService.PATH, filter, order, Transaction.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Transaction} objects. In which order this list is returned depends on
+   * the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
+   * offset.
+   * @param filter
+   *          {@link Transaction.Filter} or <code>null</code>
+   * @param order
+   *          {@link Transaction.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Transaction}s and their total count.
+   */
+  public PaymillList<Transaction> list( Transaction.Filter filter, Transaction.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( TransactionService.PATH, filter, order, count, offset, Transaction.class, super.httpClient );
   }
 
   /**

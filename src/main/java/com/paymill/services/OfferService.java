@@ -27,7 +27,19 @@ public class OfferService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Offer}s and their total count.
    */
   public PaymillList<Offer> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Offer} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Offer}s and their total count.
+   */
+  public PaymillList<Offer> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -40,7 +52,25 @@ public class OfferService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Offer}s and their total count.
    */
   public PaymillList<Offer> list( Offer.Filter filter, Offer.Order order ) {
-    return RestfulUtils.list( OfferService.PATH, filter, order, Offer.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Offer} objects. In which order this list is returned depends on the
+   * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
+   * offset.
+   * @param filter
+   *          {@link Offer.Filter} or <code>null</code>
+   * @param order
+   *          {@link Offer.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Offer}s and their total count.
+   */
+  public PaymillList<Offer> list( Offer.Filter filter, Offer.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( OfferService.PATH, filter, order, count, offset, Offer.class, super.httpClient );
   }
 
   /**

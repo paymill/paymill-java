@@ -28,7 +28,19 @@ public class PreauthorizationService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
   public PaymillList<Preauthorization> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Preauthorization} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
+   */
+  public PaymillList<Preauthorization> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -41,7 +53,25 @@ public class PreauthorizationService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
   public PaymillList<Preauthorization> list( Preauthorization.Filter filter, Preauthorization.Order order ) {
-    return RestfulUtils.list( PreauthorizationService.PATH, filter, order, Preauthorization.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Preauthorization} objects. In which order this list is returned
+   * depends on the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default
+   * count and offset.
+   * @param filter
+   *          {@link Preauthorization.Filter} or <code>null</code>
+   * @param order
+   *          {@link Preauthorization.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
+   */
+  public PaymillList<Preauthorization> list( Preauthorization.Filter filter, Preauthorization.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( PreauthorizationService.PATH, filter, order, count, offset, Preauthorization.class, super.httpClient );
   }
 
   /**

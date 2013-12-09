@@ -124,20 +124,17 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscriptionsDesc.get( 1 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
   }
 
-  // @Test( dependsOnMethods = "testUpdate" )
-  // TODO[VNi] Uncomment after fix: Can not deserialize instance of com.paymill.models.Offer
+  @Test( dependsOnMethods = "testUpdate" )
   public void testListOrderByCreatedAt() {
     Subscription.Order orderDesc = Subscription.createOrder().byCreatedAt().desc();
     Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();
 
-    List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc ).getData();
-    Assert.assertEquals( subscriptionsDesc.size(), this.subscriptions.size() );
+    List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc, 100000, 0 ).getData();
 
-    List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc ).getData();
-    Assert.assertEquals( subscriptionsAsc.size(), this.subscriptions.size() );
+    List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc, 100000, 0 ).getData();
 
-    Assert.assertEquals( subscriptionsDesc.get( 0 ).getOffer().getId(), subscriptionsAsc.get( 1 ).getOffer().getId() );
-    Assert.assertEquals( subscriptionsDesc.get( 1 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
+    Assert.assertEquals( subscriptionsDesc.get( 0 ).getId(), subscriptionsAsc.get( subscriptionsAsc.size() - 1 ).getId() );
+    Assert.assertEquals( subscriptionsDesc.get( subscriptionsDesc.size() - 1 ).getId(), subscriptionsAsc.get( 0 ).getId() );
   }
 
 }

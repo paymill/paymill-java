@@ -29,7 +29,19 @@ public class RefundService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Refund}s and their total count.
    */
   public PaymillList<Refund> list() {
-    return this.list( null, null );
+    return this.list( null, null, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Refund} objects, overriding the default count and offset.
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Refund}s and their total count.
+   */
+  public PaymillList<Refund> list( Integer count, Integer offset ) {
+    return this.list( null, null, count, offset );
   }
 
   /**
@@ -42,7 +54,25 @@ public class RefundService extends AbstractService {
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Refund}s and their total count.
    */
   public PaymillList<Refund> list( Refund.Filter filter, Refund.Order order ) {
-    return RestfulUtils.list( RefundService.PATH, filter, order, Refund.class, super.httpClient );
+    return this.list( filter, order, null, null );
+  }
+
+  /**
+   * This function returns a {@link List} of PAYMILL {@link Refund} objects. In which order this list is returned depends on the
+   * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
+   * offset.
+   * @param filter
+   *          {@link Refund.Filter} or <code>null</code>
+   * @param order
+   *          {@link Refund.Order} or <code>null</code>
+   * @param count
+   *          Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset
+   *          {@link Integer} to start from.
+   * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Refund}s and their total count.
+   */
+  public PaymillList<Refund> list( Refund.Filter filter, Refund.Order order, Integer count, Integer offset ) {
+    return RestfulUtils.list( RefundService.PATH, filter, order, count, offset, Refund.class, super.httpClient );
   }
 
   /**
