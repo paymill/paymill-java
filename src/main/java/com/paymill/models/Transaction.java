@@ -392,7 +392,9 @@ public final class Transaction {
 
     REFUNDED("refunded"),
 
-    PREAUTH("preauth");
+    PREAUTH("preauth"),
+
+    CHARGEBACK("chargeback");
 
     private String value;
 
