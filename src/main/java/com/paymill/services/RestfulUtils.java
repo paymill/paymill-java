@@ -84,7 +84,10 @@ final class RestfulUtils {
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( !dataNode.isArray() ) {
-          return (T) PaymillContext.getJacksonParser().readValue( dataNode.toString(), clazz );
+          //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
+          //TODO[VNi]: Remove this line after fix
+          String dump = dataNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );;
+          return (T) PaymillContext.getJacksonParser().readValue( dump, clazz );
         }
       }
       if( wrappedNode.has( "error" ) ) {

@@ -130,6 +130,10 @@ public class SubscriptionServiceTest {
     Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();
 
     List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc, 100000, 0 ).getData();
+    for( Subscription subscription : subscriptionsDesc ) {
+      if( subscription.getOffer() == null )
+        this.subscriptionService.get( subscription );
+    }
 
     List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc, 100000, 0 ).getData();
 
