@@ -273,10 +273,10 @@ public final class Transaction {
 
   public final static class Filter {
 
-    @SnakeCase( "client_id" )
+    @SnakeCase( "client" )
     private String clientId;
 
-    @SnakeCase( "payment_id" )
+    @SnakeCase( "payment" )
     private String paymentId;
 
     @SnakeCase( "amount" )

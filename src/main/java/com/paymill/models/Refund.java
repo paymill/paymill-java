@@ -186,10 +186,10 @@ public final class Refund {
 
   public final static class Filter {
 
-    @SnakeCase( "client_id" )
+    @SnakeCase( "client" )
     private String clientId;
 
-    @SnakeCase( "transaction_id" )
+    @SnakeCase( "transaction" )
     private String transactionId;
 
     @SnakeCase( "amount" )

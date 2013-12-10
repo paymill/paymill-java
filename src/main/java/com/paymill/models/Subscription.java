@@ -239,7 +239,7 @@ public final class Subscription {
 
   public final static class Filter {
 
-    @SnakeCase( "offer_id" )
+    @SnakeCase( "offer" )
     private String offerId;
 
     @SnakeCase( "created_at" )

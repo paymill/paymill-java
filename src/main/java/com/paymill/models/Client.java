@@ -213,13 +213,13 @@ public final class Client {
 
   public final static class Filter {
 
-    @SnakeCase( "payment_id" )
+    @SnakeCase( "payment" )
     private String paymentId;
 
-    @SnakeCase( "subscription_id" )
+    @SnakeCase( "subscription" )
     private String subscriptionId;
 
-    @SnakeCase( "offer_id" )
+    @SnakeCase( "offer" )
     private String offerId;
 
     @SnakeCase( "description" )
