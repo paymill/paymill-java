@@ -157,7 +157,7 @@ public class ClientController {
 ## Changelog
 
 ### 3.0.2
-fix: remove _id in names for reference types in filter parameters for list methods( eg. *client_id* to *client* )
+* fix: remove **_id** in names for reference types in filter parameters for list methods( eg. *client_id* to *client* )
 
 ### 3.0.1
 * Add "chargeback" value to Transaction.Status enum
