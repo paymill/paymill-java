@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.1|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/paymill-java-3.0.1) .
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.2|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.2) .
 
 ```
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
 </dependency>
 ```
 
@@ -156,8 +156,11 @@ public class ClientController {
 
 ## Changelog
 
+### 3.0.2
+fix: remove _id in names for reference types in filter parameters for list methods( eg. *client_id* to *client* )
+
 ### 3.0.1
-* Add "chargeback" value ro Transaction.Status enum
+* Add "chargeback" value to Transaction.Status enum
 * Add workaround for subscription without offer. Now the lib will not throw parsing error.
 
 ### 3.0.0
