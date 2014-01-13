@@ -3,7 +3,7 @@
 
 Java wrapper for PAYMILL API
 
-[![Build Status](https://travis-ci.org/paymill/paymill-java.png?branch=master)](https://travis-ci.org/paymill/paymill-java) [![Dependency Status](https://www.versioneye.com/user/projects/51f106fa632bac3e2b036ded/badge.png)](https://www.versioneye.com/user/projects/51f106fa632bac3e2b036ded)
+[![Build Status](https://travis-ci.org/paymill/paymill-java.png?branch=master)](https://travis-ci.org/paymill/paymill-java) [![Dependency Status](https://www.versioneye.com/user/projects/529b1d18632bac0197000024/badge.png)](https://www.versioneye.com/user/projects/529b1d18632bac0197000024)
 
 ## Getting started
 
