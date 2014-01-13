@@ -51,10 +51,29 @@ public final class PaymillContext {
 
   private static ObjectMapper     jacksonParser = new ObjectMapper();
 
+  /**
+   * Creates a PAYMILL context with the given apiKey. Connection timeout to PAYMILL by default is set to infinity.
+   * @param apiKey
+   *          Private key from PAYMILL merchant center.
+   */
   public PaymillContext( final String apiKey ) {
+    this( apiKey, null );
+  }
+
+  /**
+   * Creates a PAYMILL context with the given apiKey and timeout.
+   * @param apiKey
+   *          Private key from PAYMILL merchant center.
+   * @param timeout
+   *          Timeout in milliseconds for the HTTP connection to PAYMILL. If <code>null</code> or <code>0</code> then an interval
+   *          of infinity is declared.
+   */
+  public PaymillContext( final String apiKey, Integer timeout ) {
     ConvertUtils.register( new DateConverter( null ), Date.class );
     try {
       this.httpClient = new Client();
+      this.httpClient.setReadTimeout( timeout );
+      this.httpClient.setConnectTimeout( timeout );
       this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );
 
       this.clientService = this.getPrivateConstructor( ClientService.class ).newInstance( this.httpClient );
