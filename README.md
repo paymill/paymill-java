@@ -156,6 +156,11 @@ public class ClientController {
 
 ## Changelog
 
+### 3.0.3
+* update project dependencies
+* Ability to set HTTP connection timeout in miliseconds to PaymillContext constructor (infinity by default)
+* [#39](https://github.com/paymill/paymill-java/issues/39) fix deserialization of Subscription nextCaptureAt
+
 ### 3.0.2
 * fix: remove **_id** in names for reference types in filter parameters for list methods( eg. *client_id* to *client* )
 
