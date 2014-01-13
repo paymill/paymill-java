@@ -92,14 +92,6 @@ public final class Subscription {
     this.cancelAtPeriodEnd = cancelAtPeriodEnd;
   }
 
-  public Date getNextCaptureAt() {
-    return this.nextCaptureAt;
-  }
-
-  public void setNextCaptureAt( final Date nextCaptureAt ) {
-    this.nextCaptureAt = nextCaptureAt;
-  }
-
   public Payment getPayment() {
     return this.payment;
   }
@@ -133,43 +125,113 @@ public final class Subscription {
     this.appId = appId;
   }
 
+  /**
+   * Returns the next captured date.
+   * @return {@link Date}
+   */
+  public Date getNextCaptureAt() {
+    return this.nextCaptureAt;
+  }
+
+  /**
+   * Set the next capture date.
+   * @param nextCaptureAt
+   *          {@link Date}
+   */
+  @JsonIgnore
+  public void setNextCaptureAt( final Date nextCaptureAt ) {
+    this.nextCaptureAt = nextCaptureAt;
+  }
+
+  /**
+   * Set the next capture date.
+   * @param seconds
+   *          Next capture date representation is seconds.
+   */
+  public void setNextCaptureAt( final long seconds ) {
+    if( seconds > 0 )
+      this.nextCaptureAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Returns the trial start date.
+   * @return {@link Date}
+   */
   public Date getTrialStart() {
     return this.trialStart;
   }
 
+  /**
+   * Set the trial start date.
+   * @param trialStart
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setTrialStart( final Date trialStart ) {
     this.trialStart = trialStart;
   }
 
+  /**
+   * Set the trial start date.
+   * @param seconds
+   *          Trial start date representation is seconds.
+   */
   public void setTrialStart( final long seconds ) {
     if( seconds > 0 )
       this.trialStart = new Date( seconds * 1000 );
   }
 
+  /**
+   * Returns the trial end date.
+   * @return {@link Date}
+   */
   public Date getTrialEnd() {
     return this.trialEnd;
   }
 
+  /**
+   * Set the trial end date.
+   * @param trialEnd
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setTrialEnd( final Date trialEnd ) {
     this.trialEnd = trialEnd;
   }
 
+  /**
+   * Set the trial end date.
+   * @param seconds
+   *          Trial end date representation is seconds.
+   */
   public void setTrialEnd( final long seconds ) {
     if( seconds > 0 )
       this.trialEnd = new Date( seconds * 1000 );
   }
 
+  /**
+   * Returns the cancellation date.
+   * @return {@link Date}
+   */
   public Date getCanceledAt() {
     return this.canceledAt;
   }
 
+  /**
+   * Set the cancellation date.
+   * @param canceledAt
+   *          {@link Date}
+   */
   @JsonIgnore
   public void setCanceledAt( final Date canceledAt ) {
     this.canceledAt = canceledAt;
   }
 
+  /**
+   * Set the cancellation date.
+   * @param seconds
+   *          Cancellation date representation is seconds.
+   */
   public void setCanceledAt( final long seconds ) {
     if( seconds > 0 )
       this.canceledAt = new Date( seconds * 1000 );
