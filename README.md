@@ -18,7 +18,7 @@ Java wrapper for PAYMILL API
 
 - Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.4|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.4).
 
-```
+```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
@@ -34,7 +34,7 @@ We have released version 3. This version is not backwards compatible with versio
 ## Usage
 
 Initialize the library by providing your api key:
-```
+```java
   PaymillContext paymillContext = new PaymillContext( "<YOUR PRIVATE API KEY>" );
 ```
 PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key. It creates 8 services, which represents the PAYMILL API:
@@ -60,7 +60,7 @@ To run the tests:
 In all cases, you'll use the predefined service classes to access the PAYMILL API.
 
 To fetch a service instance, call *service name* accessor from paymillContext, like
-```
+```java
   ClientService clientService = paymillContext.getClientService();
 ```
 Every service instance provides basic methods for CRUD functionality.
@@ -68,7 +68,7 @@ Every service instance provides basic methods for CRUD functionality.
 ### Creating objects
 
 Every service provides instance factory methods for creation. They are very different for every service, because every object can be created in a different way. The common pattern is
-```
+```java
   xxxService.createXXX( params... );
 ```
 For example: client can be created with two optional parameters: *email* and *description*. So we have four possible methods to create the client:
@@ -80,11 +80,11 @@ For example: client can be created with two optional parameters: *email* and *de
 ### Retrieving objects
 
 You can retrieve an object by using the get() method with an object id:
-```
+```java
   Client client = clientService.get( "client_12345" );
 ```
 or with the instance itself, which also refreshes it:
-```
+```java
   clientService.get( client );
 ```
 This method throws an ApiException if there is no client under the given id.
@@ -92,11 +92,11 @@ This method throws an ApiException if there is no client under the given id.
 ### Retrieving lists
 
 To retrieve a list you may simply use the list() method:
-```
+```java
   PaymillList<Client> clients = clientService.list();
 ```
 You may provide a filter and order to list method:
-```
+```java
   PaymillList<Client> clients =
     clientService.list(
       Client.createFilter().byEmail( "john.rambo@paymill.com" ),
@@ -108,7 +108,7 @@ This will load only clients with email john.rambo@paymill.com, order descending 
 ### Updating objects
 
 In order to update an object simply call a service's update() method:
-```
+```java
   clientServive.update( client );
 ```
 The update method also refreshes the the given instance. For example: If you changed the value of 'createdAt' locally and  pass the instance to the update() method, it will be refreshed with the data from PAYMILL. Because 'createdAt' is not updateable field your change will be lost.
@@ -116,11 +116,11 @@ The update method also refreshes the the given instance. For example: If you cha
 ### Deleting objects
 
 You may delete objects by calling the service's delete() method with an object instance or object id.
-```
+```java
   clientService.delete( "client_12345" );
 ```
 or
-```
+```java
   clientService.delete( client );
 ```
 ## Spring integration
@@ -129,14 +129,14 @@ This example is suitable if you use this wrapper for a single account.
 
 Defines the PAYMILL context in Spring context.
 
-```
+```xml
 <bean id="paymillContext" class="com.paymill.context.PaymillContext">
   <constructor-arg value="<YOUR PRIVATE API KEY>" />
 </bean>
 ```
 
 Defines custom Controller, which uses PAYMILL ClientService internaly. Note that the setter receives *paymillContext*.
-```
+```xml
 <bean id="clientController" class="com.yourpackage.ClientController">
   <property name="clientService" ref="paymillContext" />
 </bean>
@@ -144,7 +144,7 @@ Defines custom Controller, which uses PAYMILL ClientService internaly. Note that
 
 The ClientController class itself. Note that the clientService property is set by getting the ClientService form the paymillContext.
 
-```
+```java
 public class ClientController {
   private ClientService clientService;
 
