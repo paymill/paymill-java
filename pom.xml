@@ -11,7 +11,7 @@
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
   <packaging>jar</packaging>
-  <version>3.0.4-SNAPSHOT</version>
+  <version>3.0.5-SNAPSHOT</version>
 
   <name>paymill-java</name>
   <url>http://www.paymill.com</url>
@@ -46,6 +46,17 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
+      <version>1.18</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
       <version>1.18</version>
     </dependency>
     <dependency>
