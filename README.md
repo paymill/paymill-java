@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.3|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.3) .
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.4|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.4).
 
 ```
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.0.3</version>
+  <version>3.0.4</version>
 </dependency>
 ```
 
@@ -69,7 +69,7 @@ Every service instance provides basic methods for CRUD functionality.
 
 Every service provides instance factory methods for creation. They are very different for every service, because every object can be created in a different way. The common pattern is
 ```
-  service.createXXX( params... );
+  xxxService.createXXX( params... );
 ```
 For example: client can be created with two optional parameters: *email* and *description*. So we have four possible methods to create the client:
 * clientService.create() - creates a client without email and description
@@ -97,7 +97,7 @@ To retrieve a list you may simply use the list() method:
 ```
 You may provide a filter and order to list method:
 ```
-  PaymillList<Client> cliens =
+  PaymillList<Client> clients =
     clientService.list(
       Client.createFilter().byEmail( "john.rambo@paymill.com" ),
       Client.createOrder().byCreatedAt().desc()
@@ -117,11 +117,11 @@ The update method also refreshes the the given instance. For example: If you cha
 
 You may delete objects by calling the service's delete() method with an object instance or object id.
 ```
-  clients.delete( "client_12345" );
+  clientService.delete( "client_12345" );
 ```
 or
 ```
-  clients.delete( client );
+  clientService.delete( client );
 ```
 ## Spring integration
 
@@ -156,9 +156,12 @@ public class ClientController {
 
 ## Changelog
 
+### 3.0.4
+* [#38](https://github.com/paymill/paymill-java/issues/39) explicit dependency to *jersey-core*
+
 ### 3.0.3
 * update project dependencies
-* Ability to set HTTP connection timeout in miliseconds to PaymillContext constructor (infinity by default)
+* Ability to set HTTP connection timeout in milliseconds to PaymillContext constructor (infinity by default)
 * [#39](https://github.com/paymill/paymill-java/issues/39) fix deserialization of Subscription nextCaptureAt
 
 ### 3.0.2
