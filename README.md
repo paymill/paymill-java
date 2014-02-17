@@ -157,7 +157,7 @@ public class ClientController {
 ## Changelog
 
 ### 3.0.4
-* [#38](https://github.com/paymill/paymill-java/issues/39) explicit dependency to *jersey-core*
+* [#38](https://github.com/paymill/paymill-java/issues/38) explicit dependency to *jersey-core*
 
 ### 3.0.3
 * update project dependencies
