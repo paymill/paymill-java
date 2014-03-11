@@ -68,8 +68,8 @@ public class SubscriptionServiceTest {
       this.paymentService.delete( payment );
     }
     this.clientService.delete( this.client );
-    this.offerService.delete( this.offer1 );
-    this.offerService.delete( this.offer2 );
+    //    this.offerService.delete( this.offer1 );
+    //    this.offerService.delete( this.offer2 );
   }
 
   @Test
