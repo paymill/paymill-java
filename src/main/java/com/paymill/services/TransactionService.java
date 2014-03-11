@@ -6,6 +6,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.paymill.context.PaymillContext;
 import com.paymill.models.Client;
 import com.paymill.models.Fee;
 import com.paymill.models.Payment;
@@ -168,6 +169,7 @@ public class TransactionService extends AbstractService {
     params.add( "token", token );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
@@ -218,6 +220,7 @@ public class TransactionService extends AbstractService {
     params.add( "payment", payment.getId() );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
@@ -298,6 +301,7 @@ public class TransactionService extends AbstractService {
     params.add( "client", client.getId() );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
@@ -388,6 +392,7 @@ public class TransactionService extends AbstractService {
     params.add( "preauthorization", preauthorizationId );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );

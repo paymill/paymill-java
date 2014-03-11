@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.paymill.context.PaymillContext;
 import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Preauthorization;
@@ -114,6 +115,7 @@ public class PreauthorizationService extends AbstractService {
     params.add( "token", token );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
   }
@@ -139,6 +141,7 @@ public class PreauthorizationService extends AbstractService {
     params.add( "payment", payment.getId() );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
+    params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
     return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
   }

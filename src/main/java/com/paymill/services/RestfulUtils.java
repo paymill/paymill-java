@@ -80,14 +80,14 @@ final class RestfulUtils {
   @SuppressWarnings( "unchecked" )
   private static <T> T deserializeObject( String content, Class<?> clazz ) {
     try {
-      JsonNode wrappedNode = PaymillContext.getJacksonParser().readValue( content, JsonNode.class );
+      JsonNode wrappedNode = PaymillContext.PARSER.readValue( content, JsonNode.class );
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( !dataNode.isArray() ) {
           //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
           //TODO[VNi]: Remove this line after fix
-          String dump = dataNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );;
-          return (T) PaymillContext.getJacksonParser().readValue( dump, clazz );
+          String dump = dataNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );
+          return (T) PaymillContext.PARSER.readValue( dump, clazz );
         }
       }
       if( wrappedNode.has( "error" ) ) {
@@ -102,18 +102,18 @@ final class RestfulUtils {
   @SuppressWarnings( "unchecked" )
   private static <T> PaymillList<T> deserializeList( String content, Class<?> clazz ) {
     try {
-      JsonNode wrappedNode = PaymillContext.getJacksonParser().readValue( content, JsonNode.class );
-      PaymillList<T> wrapper = PaymillContext.getJacksonParser().readValue( wrappedNode.toString(), PaymillList.class );
+      JsonNode wrappedNode = PaymillContext.PARSER.readValue( content, JsonNode.class );
+      PaymillList<T> wrapper = PaymillContext.PARSER.readValue( wrappedNode.toString(), PaymillList.class );
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( dataNode.isArray() ) {
           List<T> objects = new ArrayList<T>();
           //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
           //TODO[VNi]: Remove this line after fix
-          String dump = wrappedNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );;
-          for( Object object : PaymillContext.getJacksonParser().readValue( dump, PaymillList.class ).getData() ) {
+          String dump = wrappedNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );
+          for( Object object : PaymillContext.PARSER.readValue( dump, PaymillList.class ).getData() ) {
             try {
-              objects.add( (T) PaymillContext.getJacksonParser().readValue( PaymillContext.getJacksonParser().writeValueAsString( object ), clazz ) );
+              objects.add( (T) PaymillContext.PARSER.readValue( PaymillContext.PARSER.writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
               throw new RuntimeException( exc );
             }

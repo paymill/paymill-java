@@ -1,7 +1,10 @@
 package com.paymill.context;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.Date;
+import java.util.Properties;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
@@ -38,18 +41,19 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  */
 public final class PaymillContext {
 
-  private ClientService           clientService;
-  private OfferService            offerService;
-  private PaymentService          paymentService;
-  private PreauthorizationService preauthorizationService;
-  private RefundService           refundService;
-  private SubscriptionService     subscriptionService;
-  private TransactionService      transactionService;
-  private WebhookService          webhookService;
+  public final static ObjectMapper PARSER     = new ObjectMapper();
+  private final static Properties  PROPERTIES = new Properties();
 
-  private Client                  httpClient;
+  private Client                   httpClient;
 
-  private static ObjectMapper     jacksonParser = new ObjectMapper();
+  private ClientService            clientService;
+  private OfferService             offerService;
+  private PaymentService           paymentService;
+  private PreauthorizationService  preauthorizationService;
+  private RefundService            refundService;
+  private SubscriptionService      subscriptionService;
+  private TransactionService       transactionService;
+  private WebhookService           webhookService;
 
   /**
    * Creates a PAYMILL context with the given apiKey. Connection timeout to PAYMILL by default is set to infinity.
@@ -70,6 +74,8 @@ public final class PaymillContext {
    */
   public PaymillContext( final String apiKey, Integer timeout ) {
     ConvertUtils.register( new DateConverter( null ), Date.class );
+    InputStream input = null;
+
     try {
       this.httpClient = new Client();
       this.httpClient.setReadTimeout( timeout );
@@ -84,13 +90,29 @@ public final class PaymillContext {
       this.subscriptionService = this.getPrivateConstructor( SubscriptionService.class ).newInstance( this.httpClient );
       this.transactionService = this.getPrivateConstructor( TransactionService.class ).newInstance( this.httpClient );
       this.webhookService = this.getPrivateConstructor( WebhookService.class ).newInstance( this.httpClient );
+
+      input = PaymillContext.class.getClassLoader().getResourceAsStream( "META-INF/maven/com.paymill/paymill-java/pom.properties" );
+      PaymillContext.PROPERTIES.load( input );
+
     } catch( Exception exc ) {
       throw new RuntimeException( exc );
+    } finally {
+      if( input != null ) {
+        try {
+          input.close();
+        } catch( IOException e ) {
+          e.printStackTrace();
+        }
+      }
     }
   }
 
-  public static ObjectMapper getJacksonParser() {
-    return PaymillContext.jacksonParser;
+  public final static String getProjectName() {
+    return PaymillContext.PROPERTIES.getProperty( "artifactId" );
+  }
+
+  public final static String getProjectVersion() {
+    return PaymillContext.PROPERTIES.getProperty( "version" );
   }
 
   public ClientService getClientService() {
