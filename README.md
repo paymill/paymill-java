@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.4|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.4).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.5|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.5).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.0.4</version>
+  <version>3.0.5</version>
 </dependency>
 ```
 
@@ -155,6 +155,11 @@ public class ClientController {
 ```
 
 ## Changelog
+
+### 3.0.5
+* internal improvements
+* [#42](https://github.com/paymill/paymill-java/issues/42) add currency to fee
+* update project dependencies
 
 ### 3.0.4
 * [#38](https://github.com/paymill/paymill-java/issues/38) explicit dependency to *jersey-core*
