@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.0.5|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.0.5).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.1.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.1.0).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.0.5</version>
+  <version>3.1.0</version>
 </dependency>
 ```
 
@@ -154,8 +154,11 @@ public class ClientController {
 }
 ```
 
-
 ## Changelog
+
+### 3.1.0
+* Allow update of an offer for a subscription
+* update project dependencies
 
 ### 3.0.5
 * internal improvements
@@ -182,7 +185,7 @@ public class ClientController {
 * Package name changed from de.paymill to com.paymill .
 - Removed singleton Paymill object and replaced with a PaymillContext object.
 + All services are now directly accessible from PaymillContext.
-+ Improved list handling. Now the list method returns a PaymillList, which also contains the dataCount. All models now contain methods to create list filters and an order.
++ Improved list handling. Now the list method returns a PaymillList, which also contains the dataCount. All models now contain methods to create filter and sort criteria.
 + Improved create methods. All create methods now work with arguments. Removed unnecessary fields in objects (e.g. token in Transaction).
 + Improved get, update and remove methods. Get and remove now work with both instances and IDs. Get and Update methods now work on the same instance.
 - Offer is no longer updateable for a subscription.

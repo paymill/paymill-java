@@ -18,6 +18,7 @@ public final class Subscription {
 
   private String  id;
 
+  @Updateable( "offer" )
   private Offer   offer;
 
   private Boolean livemode;

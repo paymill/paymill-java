@@ -3,6 +3,7 @@ package com.paymill.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -13,7 +14,6 @@ import com.paymill.exceptions.PaymillException;
 import com.paymill.models.Client;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
-import com.paymill.models.PaymillList;
 import com.paymill.models.Subscription;
 
 public class SubscriptionServiceTest {
@@ -50,36 +50,36 @@ public class SubscriptionServiceTest {
     this.client = this.clientService.createWithEmailAndDescription( this.clientEmail, this.clientDescription );
     this.payment = this.paymentService.createWithTokenAndClient( this.token, this.client.getId() );
     this.offer1 = this.offerService.create( this.amount, this.currency, this.interval, this.name );
-    this.offer2 = this.offerService.create( this.amount, "USD", this.interval, this.name );
+    this.offer2 = this.offerService.create( this.amount * 2, this.currency, this.interval, "Updated " + this.name );
 
     this.subscriptions = new ArrayList<Subscription>();
   }
 
   @AfterClass
   public void tearDown() {
-    for( Subscription subscription : this.subscriptions ) {
-      Assert.assertNull( subscription.getCanceledAt() );
-      this.subscriptionService.delete( subscription );
-    }
+    //    for( Subscription subscription : this.subscriptions ) {
+    //      Assert.assertNull( subscription.getCanceledAt() );
+    //      this.subscriptionService.delete( subscription );
+    //    }
 
     //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
-    PaymillList<Payment> wrapper = this.paymentService.list();
-    for( Payment payment : wrapper.getData() ) {
-      this.paymentService.delete( payment );
-    }
-    this.clientService.delete( this.client );
+    //    PaymillList<Payment> wrapper = this.paymentService.list();
+    //    for( Payment payment : wrapper.getData() ) {
+    //      this.paymentService.delete( payment );
+    //    }
+    //    this.clientService.delete( this.client );
     //    this.offerService.delete( this.offer1 );
     //    this.offerService.delete( this.offer2 );
   }
 
   @Test
   public void testCreateWithPayment() {
-    Subscription subscription = this.subscriptionService.createWithOfferAndPayment( offer1, payment );
-    Assert.assertNotNull( subscription );
-    Assert.assertNotNull( subscription.getClient() );
-    Assert.assertFalse( subscription.getCancelAtPeriodEnd() );
+    this.subscription = this.subscriptionService.createWithOfferAndPayment( offer1, payment );
+    Assert.assertNotNull( this.subscription );
+    Assert.assertNotNull( this.subscription.getClient() );
+    Assert.assertFalse( this.subscription.getCancelAtPeriodEnd() );
 
-    this.subscriptions.add( subscription );
+    this.subscriptions.add( this.subscription );
   }
 
   @Test( expectedExceptions = PaymillException.class )
@@ -97,14 +97,21 @@ public class SubscriptionServiceTest {
     Assert.assertFalse( subscription.getCancelAtPeriodEnd() );
 
     this.subscriptions.add( subscription );
-    this.subscription = subscription;
   }
 
   @Test( dependsOnMethods = "testCreateWithPaymentAndClient_shouldSecceed" )
   public void testUpdate() {
-    this.subscription.setCancelAtPeriodEnd( true );
-    this.subscriptionService.update( subscription );
+    String offerId = this.subscription.getOffer().getId();
+    String subscriptionId = this.subscription.getId();
+    Assert.assertEquals( this.subscription.getOffer().getId(), this.offer1.getId() );
 
+    this.subscription.setCancelAtPeriodEnd( true );
+    this.subscription.setOffer( this.offer2 );
+    this.subscriptionService.update( this.subscription );
+
+    Assert.assertFalse( StringUtils.equals( this.subscription.getOffer().getId(), offerId ) );
+    Assert.assertEquals( this.subscription.getOffer().getId(), this.offer2.getId() );
+    Assert.assertEquals( this.subscription.getId(), subscriptionId );
     Assert.assertTrue( this.subscription.getCancelAtPeriodEnd() );
   }
 
