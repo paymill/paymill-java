@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.1.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.1.0).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.1.1|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.1.1).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
 </dependency>
 ```
 
@@ -156,6 +156,9 @@ public class ClientController {
 
 
 ## Changelog
+
+### 3.1.1
+* fix in *createWithOfferPaymentAndClient*: now *trialStart* represents the timestamp in correct format.
 
 ### 3.1.0
 * Allow update of an offer for a subscription

@@ -1,6 +1,7 @@
 package com.paymill.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,18 +19,21 @@ import com.paymill.models.Subscription;
 
 public class SubscriptionServiceTest {
 
+  private final static long   TWO_WEEKS_FROM_NOW = 1000 * 60 * 60 * 24 * 14;
+  private final static long   TWO_DAYS_FROM_NOW  = 1000 * 60 * 60 * 24 * 2;
+
   private SubscriptionService subscriptionService;
   private PaymentService      paymentService;
   private ClientService       clientService;
   private OfferService        offerService;
 
-  private String              clientEmail       = "john.rambo@qaiware.com";
-  private String              clientDescription = "Boom, boom, shake the room";
-  private String              token             = "098f6bcd4621d373cade4e832627b4f6";
-  private Integer             amount            = 900;
-  private String              currency          = "EUR";
-  private String              interval          = "1 MONTH";
-  private String              name              = "Chuck Testa";
+  private String              clientEmail        = "john.rambo@qaiware.com";
+  private String              clientDescription  = "Boom, boom, shake the room";
+  private String              token              = "098f6bcd4621d373cade4e832627b4f6";
+  private Integer             amount             = 900;
+  private String              currency           = "EUR";
+  private String              interval           = "1 MONTH";
+  private String              name               = "Chuck Testa";
 
   private Client              client;
   private Payment             payment;
@@ -80,6 +84,52 @@ public class SubscriptionServiceTest {
     Assert.assertFalse( this.subscription.getCancelAtPeriodEnd() );
 
     this.subscriptions.add( this.subscription );
+  }
+
+  @Test
+  public void testCreateWithPaymentAndClient_WithOfferWithoutTrial_shouldReturnSubscriptionWithNullTrialStartAndNullTrialEnd() {
+    Client client = clientService.createWithEmail( "zendest@example.com" );
+    Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
+    Offer offer = offerService.create( 2223, "EUR", "1 WEEK", "Offer No Trial" );
+
+    Subscription subscriptionNoTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client );
+    Assert.assertNull( subscriptionNoTrial.getTrialStart() );
+    Assert.assertNull( subscriptionNoTrial.getTrialEnd() );
+  }
+
+  @Test
+  public void testCreateWithPaymentClientAndTrial_WithOfferWithoutTrial_shouldReturnSubscriptionWithTrialEqualsTrialInSubscription() {
+    Client client = clientService.createWithEmail( "zendest@example.com" );
+    Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
+    Offer offer = offerService.create( 2224, "EUR", "1 WEEK", "Offer No Trial" );
+
+    long trialStart = System.currentTimeMillis() + SubscriptionServiceTest.TWO_WEEKS_FROM_NOW;
+    Subscription subscriptionWithTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client, new Date( trialStart ) );
+    Assert.assertNotNull( subscriptionWithTrial.getTrialStart() );
+    Assert.assertEquals( subscriptionWithTrial.getTrialEnd().getTime(), ((trialStart / 1000) * 1000) - 1000 );
+  }
+
+  @Test
+  public void testCreateWithPaymentAndClient_WithOfferWithTrial_shouldReturnSubscriptionWithTrialEqualsTrialInOffer() {
+    Client client = clientService.createWithEmail( "zendest@example.com" );
+    Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
+    Offer offer = offerService.create( 2225, "EUR", "1 WEEK", "Offer With Trial", 2 );
+
+    Subscription subscription = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client );
+    Assert.assertNotNull( subscription.getTrialStart() );
+    Assert.assertEquals( subscription.getTrialEnd().getTime(), (subscription.getTrialStart().getTime() + SubscriptionServiceTest.TWO_DAYS_FROM_NOW) );
+  }
+
+  @Test
+  public void testCreateWithPaymentClientAndTrial_WithOfferWithTrial_shouldReturnSubscriptionWithTrialEqualsTrialInSubscription() {
+    Client client = clientService.createWithEmail( "zendest@example.com" );
+    Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
+    Offer offer = offerService.create( 2224, "EUR", "1 WEEK", "Offer No Trial", 2 );
+
+    long trialStart = System.currentTimeMillis() + SubscriptionServiceTest.TWO_WEEKS_FROM_NOW;
+    Subscription subscriptionWithTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client, new Date( trialStart ) );
+    Assert.assertNotNull( subscriptionWithTrial.getTrialStart() );
+    Assert.assertEquals( subscriptionWithTrial.getTrialEnd().getTime(), ((trialStart / 1000) * 1000) - 1000 );
   }
 
   @Test( expectedExceptions = PaymillException.class )

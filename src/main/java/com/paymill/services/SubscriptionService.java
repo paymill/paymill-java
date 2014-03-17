@@ -110,14 +110,7 @@ public class SubscriptionService extends AbstractService {
    * @return {@link Subscription}, which allows you to charge recurring payments.
    */
   public Subscription createWithOfferAndPayment( Offer offer, Payment payment ) {
-    ValidationUtils.validatesOffer( offer );
-    ValidationUtils.validatesPayment( payment );
-
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    params.add( "offer", offer.getId() );
-    params.add( "payment", payment.getId() );
-
-    return RestfulUtils.create( SubscriptionService.PATH, params, Subscription.class, super.httpClient );
+    return this.createWithOfferAndPayment( offer, payment, null );
   }
 
   /**
@@ -134,6 +127,51 @@ public class SubscriptionService extends AbstractService {
    */
   public Subscription createWithOfferAndPayment( String offerId, String paymentId ) {
     return this.createWithOfferAndPayment( new Offer( offerId ), new Payment( paymentId ) );
+  }
+
+  /**
+   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}. A {@link Client} can have several
+   * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
+   * {@link Client}s is charged for each billing interval entered. <br />
+   * This call will use the {@link Client} from the {@link Payment} object.
+   * @param offerId
+   *          The Id of an {@link Offer} to subscribe to.
+   * @param paymentId
+   *          The Id of a {@link Payment} used for charging.
+   * @param trialStart
+   *          Date representing trial period start.
+   * @return {@link Subscription}, which allows you to charge recurring payments.
+   */
+  public Subscription createWithOfferAndPayment( String offerId, String paymentId, Date trialStart ) {
+    return this.createWithOfferAndPayment( new Offer( offerId ), new Payment( paymentId ), trialStart );
+  }
+
+  /**
+   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}. A {@link Client} can have several
+   * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
+   * {@link Client}s is charged for each billing interval entered. <br />
+   * <strong>NOTE</strong><br />
+   * This call will use the {@link Client} from the {@link Payment} object.
+   * @param offer
+   *          An {@link Offer} to subscribe to.
+   * @param payment
+   *          A {@link Payment} used for charging.
+   * @param trialStart
+   *          Date representing trial period start.
+   * @return {@link Subscription}, which allows you to charge recurring payments.
+   */
+  public Subscription createWithOfferAndPayment( Offer offer, Payment payment, Date trialStart ) {
+    ValidationUtils.validatesOffer( offer );
+    ValidationUtils.validatesPayment( payment );
+
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "offer", offer.getId() );
+    params.add( "payment", payment.getId() );
+    if( trialStart != null ) {
+      params.add( "start_at", String.valueOf( trialStart.getTime() / 1000 ) );
+    }
+
+    return RestfulUtils.create( SubscriptionService.PATH, params, Subscription.class, super.httpClient );
   }
 
   /**
@@ -218,7 +256,7 @@ public class SubscriptionService extends AbstractService {
     params.add( "payment", payment.getId() );
     params.add( "client", client.getId() );
     if( trialStart != null ) {
-      params.add( "start_at", String.valueOf( trialStart.getTime() ) );
+      params.add( "start_at", String.valueOf( trialStart.getTime() / 1000 ) );
     }
 
     return RestfulUtils.create( SubscriptionService.PATH, params, Subscription.class, super.httpClient );
