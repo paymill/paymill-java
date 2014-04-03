@@ -328,7 +328,7 @@ public final class Webhook {
     /**
      * returns a {@link Transaction}.
      */
-    TRANSACTION_FAILED(""),
+    TRANSACTION_FAILED("transaction.failed"),
 
     /**
      * Returns a {@link Subscription}.
