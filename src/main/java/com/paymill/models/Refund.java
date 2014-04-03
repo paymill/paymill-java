@@ -231,7 +231,6 @@ public final class Refund {
       this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
       return this;
     }
-
   }
 
   public final static class Order {
@@ -305,7 +304,7 @@ public final class Refund {
   }
 
   public enum Status {
-    OPEN("open"), REFUNDED("refunded"), FAILED("failed");
+    OPEN("open"), REFUNDED("refunded"), FAILED("failed"), UNDEFINED("undefined");
 
     private String value;
 
@@ -325,9 +324,8 @@ public final class Refund {
           return status;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Refund.Status" );
+      return Status.UNDEFINED;
     }
-
   }
 
 }

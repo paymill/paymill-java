@@ -394,7 +394,9 @@ public final class Transaction {
 
     PREAUTH("preauth"),
 
-    CHARGEBACK("chargeback");
+    CHARGEBACK("chargeback"),
+
+    UNDEFINED("undefined");
 
     private String value;
 
@@ -414,7 +416,7 @@ public final class Transaction {
           return status;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Transaction.Status" );
+      return Status.UNDEFINED;
     }
   }
 

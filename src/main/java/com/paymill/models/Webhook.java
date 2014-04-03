@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.paymill.models.Payment.Type;
 
 /**
  * With webhooks we give you the possibility to react automatically to certain events which happen within our system. A webhook is
@@ -398,7 +397,9 @@ public final class Webhook {
     /**
      * Returns a {@link Client} if a {@link Client} was updated.
      */
-    CLIENT_UPDATED("client.updated");
+    CLIENT_UPDATED("client.updated"),
+
+    UNDEFINED("undefined");
 
     private String value;
 
@@ -412,13 +413,13 @@ public final class Webhook {
     }
 
     @JsonCreator
-    public static Type create( String value ) {
-      for( Type type : Type.values() ) {
+    public static EventType create( String value ) {
+      for( EventType type : EventType.values() ) {
         if( type.getValue().equals( value ) ) {
           return type;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Webhook.EventType" );
+      return EventType.UNDEFINED;
     }
 
   }

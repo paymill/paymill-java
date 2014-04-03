@@ -187,7 +187,7 @@ public final class Preauthorization {
   }
 
   public enum Status {
-    PREAUTH("preauth"), OPEN("open"), CLOSED("closed"), DELETED("deleted"), FAILED("failed"), PENDING("pending");
+    PREAUTH("preauth"), OPEN("open"), CLOSED("closed"), DELETED("deleted"), FAILED("failed"), PENDING("pending"), UNDEFINED("undefined");
 
     private String value;
 
@@ -207,7 +207,7 @@ public final class Preauthorization {
           return status;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Preauthorization.Status" );
+      return Status.UNDEFINED;
     }
   }
 

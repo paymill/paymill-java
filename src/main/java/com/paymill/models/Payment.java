@@ -352,7 +352,7 @@ public final class Payment {
   public enum CardType {
     VISA("visa"), MASTERCARD("mastercard"), MASTRO("maestro"), AMEX("amex"), JCB("jcb"),
 
-    DINERS("diners"), DISCOVER("discover"), CHINA_UNION_PAY("china_union_pay"), UNKNOWN("unknown");
+    DINERS("diners"), DISCOVER("discover"), CHINA_UNION_PAY("china_union_pay"), UNKNOWN("unknown"), UNDEFINDED("undefined");
 
     private String value;
 
@@ -366,13 +366,13 @@ public final class Payment {
     }
 
     @JsonCreator
-    public static Type create( final String value ) {
-      for( Type type : Type.values() ) {
+    public static CardType create( final String value ) {
+      for( CardType type : CardType.values() ) {
         if( type.getValue().equals( value ) ) {
           return type;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Payment.CardType" );
+      return CardType.UNDEFINDED;
     }
   }
 
@@ -380,7 +380,9 @@ public final class Payment {
 
     CREDITCARD("creditcard"),
 
-    DEBIT("debit");
+    DEBIT("debit"),
+
+    UNDEFINDED("undefined");
 
     private String value;
 
@@ -400,7 +402,7 @@ public final class Payment {
           return type;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Payment.Type" );
+      return Type.UNDEFINDED;
     }
   }
 
