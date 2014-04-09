@@ -1,6 +1,10 @@
 package com.paymill.services;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -8,6 +12,7 @@ import org.testng.annotations.Test;
 import com.paymill.context.PaymillContext;
 import com.paymill.models.Fee;
 import com.paymill.models.Payment;
+import com.paymill.models.PaymillList;
 import com.paymill.models.Transaction;
 
 public class TransactionServiceTest {
@@ -34,7 +39,7 @@ public class TransactionServiceTest {
     this.fee.setAmount( this.feeAmount );
     this.fee.setPayment( this.feePayment );
 
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext( "c8e7b68f25bb5c04a9a73c09bdd726c6" );
     this.transactionService = paymill.getTransactionService();
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
@@ -173,6 +178,29 @@ public class TransactionServiceTest {
     Assert.assertEquals( transaction.getDescription(), this.description );
     Assert.assertEquals( transaction.getPayment().getId(), this.payment.getId() );
     Assert.assertNull( transaction.getPreauthorization() );
+  }
+
+  @Test
+  public void testListWithFilterByExactCreatedAt() {
+    Date date = new Date( 1397066729000L );
+    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, null );
+    PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
+
+    Assert.assertEquals( wrapper.getDataCount(), 1 );
+    Assert.assertEquals( wrapper.getData().size(), 1 );
+  }
+
+  @Test
+  public void testListWithFilterByCreatedAtPeriod() throws ParseException {
+    Date date = DateUtils.parseDate( "2014-04-09 08:00", "yyyy-MM-dd hh:mm" );
+    Date endDate = DateUtils.parseDate( "2014-04-09 14:00", "yyyy-MM-dd hh:mm" );
+
+    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, endDate );
+    PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
+
+    Assert.assertEquals( wrapper.getDataCount(), 27 );
+    Assert.assertEquals( wrapper.getData().size(), 20 );
+
   }
 
 }
