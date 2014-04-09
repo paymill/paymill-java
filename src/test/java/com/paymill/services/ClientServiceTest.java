@@ -1,9 +1,11 @@
 package com.paymill.services;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -16,7 +18,7 @@ import com.paymill.models.PaymillList;
 
 public class ClientServiceTest {
 
-  private String        email       = "john.rambo@qaiware.com";
+  private String        email       = "zz.john.rambo@qaiware.com";
   private String        description = "Boom, boom, shake the room";
 
   private ClientService clientService;
@@ -92,19 +94,18 @@ public class ClientServiceTest {
 
   @Test( dependsOnMethods = "testCreate_WithDescription_shouldSecceed" )
   public void testUpdate_shouldSecceed() {
-    this.clientWithDescriptionAndEmail.setEmail( "john.firstblood.rambo@qaiware.com" );
+    this.clientWithDescriptionAndEmail.setEmail( "zz.john.firstblood.rambo@qaiware.com" );
     this.clientWithDescriptionAndEmail.setDescription( "Boom, boom, update the room" );
     this.clientWithDescriptionAndEmail.setCreatedAt( new Date( System.currentTimeMillis() * 100 ) );
     this.clientService.update( this.clientWithDescriptionAndEmail );
 
     this.validateClient( this.clientWithDescriptionAndEmail );
-    Assert.assertEquals( this.clientWithDescriptionAndEmail.getEmail(), "john.firstblood.rambo@qaiware.com" );
+    Assert.assertEquals( this.clientWithDescriptionAndEmail.getEmail(), "zz.john.firstblood.rambo@qaiware.com" );
     Assert.assertEquals( this.clientWithDescriptionAndEmail.getDescription(), "Boom, boom, update the room" );
     Assert.assertNull( this.clientWithDescriptionAndEmail.getAppId() );
   }
 
-  //  @Test( dependsOnMethods = "testUpdate_shouldSecceed" )
-  // TODO[VNi]: uncomment when API returns null instead of empty array
+  @Test( dependsOnMethods = "testUpdate_shouldSecceed" )
   public void testListOrderByEmailDesc() {
     Client.Order order = Client.createOrder().byEmail().desc();
 
@@ -113,13 +114,14 @@ public class ClientServiceTest {
 
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );
-    Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
+    Assert.assertEquals( clients.get( 0 ).getEmail(), "zz.john.rambo@qaiware.com" );
   }
 
-  //  @Test( dependsOnMethods = "testListOrderByEmailDesc" )
-  // TODO[VNi]: uncomment when API returns null instead of empty array
-  public void testListFilterByEmail() {
-    Client.Filter filter = Client.createFilter().byEmail( "john.rambo@qaiware.com" );
+  @Test( dependsOnMethods = "testListOrderByEmailDesc" )
+  public void testListFilterByEmailAndCreatedAt() throws ParseException {
+    Date startCreatedAt = DateUtils.parseDate( "2014-03-13", "yyyy-MM-dd" );
+    Date endCreatedAt = DateUtils.parseDate( "2014-03-14", "yyyy-MM-dd" );
+    Client.Filter filter = Client.createFilter().byEmail( "john.rambo@qaiware.com" ).byCreatedAt( startCreatedAt, endCreatedAt );
 
     PaymillList<Client> wrapper = this.clientService.list( filter, null );
     List<Client> clients = wrapper.getData();
@@ -129,6 +131,21 @@ public class ClientServiceTest {
 
     Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
     Assert.assertEquals( clients.get( 1 ).getEmail(), "john.rambo@qaiware.com" );
+    Assert.assertEquals( clients.size(), 11 );
+  }
+
+  @Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
+  public void testListFilterByStartCreatedAt() throws ParseException {
+    Date startCreatedAt = new Date( 1394183537000L );
+    System.out.println( startCreatedAt );
+    Client.Filter filter = Client.createFilter().byCreatedAt( startCreatedAt, null );
+
+    PaymillList<Client> wrapper = this.clientService.list( filter, null );
+    List<Client> clients = wrapper.getData();
+
+    Assert.assertNotNull( clients );
+    Assert.assertFalse( clients.isEmpty() );
+    Assert.assertEquals( clients.size(), 1 );
   }
 
   private void validateClient( final Client client ) {

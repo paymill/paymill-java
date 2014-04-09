@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -57,23 +56,6 @@ public class SubscriptionServiceTest {
     this.offer2 = this.offerService.create( this.amount * 2, this.currency, this.interval, "Updated " + this.name );
 
     this.subscriptions = new ArrayList<Subscription>();
-  }
-
-  @AfterClass
-  public void tearDown() {
-    //    for( Subscription subscription : this.subscriptions ) {
-    //      Assert.assertNull( subscription.getCanceledAt() );
-    //      this.subscriptionService.delete( subscription );
-    //    }
-
-    //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
-    //    PaymillList<Payment> wrapper = this.paymentService.list();
-    //    for( Payment payment : wrapper.getData() ) {
-    //      this.paymentService.delete( payment );
-    //    }
-    //    this.clientService.delete( this.client );
-    //    this.offerService.delete( this.offer1 );
-    //    this.offerService.delete( this.offer2 );
   }
 
   @Test
@@ -165,7 +147,8 @@ public class SubscriptionServiceTest {
     Assert.assertTrue( this.subscription.getCancelAtPeriodEnd() );
   }
 
-  //  @Test( dependsOnMethods = "testUpdate" )
+  //TODO[VNi]: uncomment when API returns null instead of empty array
+  //@Test( dependsOnMethods = "testUpdate" )
   public void testListOrderByOffer() {
     // TODO[VNi]: There is an API error: No sorting by offer.
     Subscription.Order orderDesc = Subscription.createOrder().byOffer().desc();
@@ -181,7 +164,8 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscriptionsDesc.get( 1 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
   }
 
-  // @Test( dependsOnMethods = "testUpdate" )
+  //TODO[VNi]: uncomment when API returns null instead of empty array
+  //@Test( dependsOnMethods = "testUpdate" )
   public void testListOrderByCreatedAt() {
     Subscription.Order orderDesc = Subscription.createOrder().byCreatedAt().desc();
     Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();

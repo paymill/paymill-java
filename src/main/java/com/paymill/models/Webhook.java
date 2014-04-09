@@ -176,7 +176,8 @@ public final class Webhook {
    *          Creation date representation is seconds.
    */
   public void setCreatedAt( final long seconds ) {
-    this.createdAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.createdAt = new Date( seconds * 1000 );
   }
 
   /**
@@ -203,7 +204,8 @@ public final class Webhook {
    *          Last update representation is seconds.
    */
   public void setUpdatedAt( final long seconds ) {
-    this.updatedAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Webhook.Filter createFilter() {
@@ -239,8 +241,19 @@ public final class Webhook {
       return this;
     }
 
-    public Webhook.Filter byCreatedAt( Date startCreatedAt, Date endCreatedAt ) {
-      this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
+    /**
+     * Creates filter for createdAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Webhook.Filter} object with populated filter for createdAt.
+     */
+    public Webhook.Filter byCreatedAt( Date date, Date endDate ) {
+      this.createdAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
   }

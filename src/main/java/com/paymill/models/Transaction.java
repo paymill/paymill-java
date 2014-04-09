@@ -233,7 +233,8 @@ public final class Transaction {
    *          Creation date representation is seconds.
    */
   public void setCreatedAt( final long seconds ) {
-    this.createdAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.createdAt = new Date( seconds * 1000 );
   }
 
   /**
@@ -260,7 +261,8 @@ public final class Transaction {
    *          Last update representation is seconds.
    */
   public void setUpdatedAt( final long seconds ) {
-    this.updatedAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Transaction.Filter createFilter() {
@@ -328,13 +330,35 @@ public final class Transaction {
       return this;
     }
 
-    public Transaction.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
-      this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
+    /**
+     * Creates filter for createdAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Transaction.Filter} object with populated filter for createdAt.
+     */
+    public Transaction.Filter byCreatedAt( final Date date, final Date endDate ) {
+      this.createdAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
 
-    public Transaction.Filter byUpdatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
-      this.updatedAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
+    /**
+     * Creates filter for updatedAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Transaction.Filter} object with populated filter for updatedAt.
+     */
+    public Transaction.Filter byUpdatedAt( final Date date, final Date endDate ) {
+      this.updatedAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
 

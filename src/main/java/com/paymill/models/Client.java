@@ -263,13 +263,35 @@ public final class Client {
       return this;
     }
 
-    public Client.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
-      this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
+    /**
+     * Creates filter for createdAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Client.Filter} object with populated filter for createdAt.
+     */
+    public Client.Filter byCreatedAt( final Date date, final Date endDate ) {
+      this.createdAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
 
-    public Client.Filter byUpdatedAt( final Date startUpdatedAt, final Date endUpdatedAt ) {
-      this.updatedAt = String.valueOf( startUpdatedAt.getTime() ) + "-" + String.valueOf( endUpdatedAt.getTime() );
+    /**
+     * Creates filter for updatedAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Client.Filter} object with populated filter for updatedAt.
+     */
+    public Client.Filter byUpdatedAt( final Date date, final Date endDate ) {
+      this.updatedAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
   }

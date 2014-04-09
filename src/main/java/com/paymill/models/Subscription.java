@@ -262,7 +262,8 @@ public final class Subscription {
    *          Creation date representation is seconds.
    */
   public void setCreatedAt( final long seconds ) {
-    this.createdAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.createdAt = new Date( seconds * 1000 );
   }
 
   /**
@@ -289,7 +290,8 @@ public final class Subscription {
    *          Last update representation is seconds.
    */
   public void setUpdatedAt( final long seconds ) {
-    this.updatedAt = new Date( seconds * 1000 );
+    if( seconds > 0 )
+      this.updatedAt = new Date( seconds * 1000 );
   }
 
   public static Subscription.Filter createFilter() {
@@ -317,8 +319,19 @@ public final class Subscription {
       return this;
     }
 
-    public Subscription.Filter byCreatedAt( final Date startCreatedAt, final Date endCreatedAt ) {
-      this.createdAt = String.valueOf( startCreatedAt.getTime() ) + "-" + String.valueOf( endCreatedAt.getTime() );
+    /**
+     * Creates filter for createdAt date. If endDate is given the filter is set for range from date to endDate. If endDate is
+     * <code>null</code> the filter search for exact match.
+     * @param date
+     *          Start or exact date
+     * @param endDate
+     *          End date for the period or <code>null</code>.
+     * @throws IllegalArgumentException
+     *           When date is <code>null</code>.
+     * @return {@link Subscription.Filter} object with populated filter for createdAt.
+     */
+    public Subscription.Filter byCreatedAt( final Date date, final Date endDate ) {
+      this.createdAt = DateRangeBuilder.execute( date, endDate );
       return this;
     }
 
