@@ -157,7 +157,7 @@ public class ClientController {
 ## Changelog
 
 ### 3.1.2
-* fix: #47 TransacionService list with filter for createdAt doesn't work.
+* fix: [#47](https://github.com/paymill/paymill-java/issues/42) TransacionService list with filter for createdAt doesn't work.
 * fix: typo in Webhook.EventType.TRANSACTION_FAILED
 * improvement: missing enumeration value will not cause parsing error, but will be mapped to UNDEFINED
 * update project dependencies
