@@ -117,7 +117,7 @@ public class ClientServiceTest {
     Assert.assertEquals( clients.get( 0 ).getEmail(), "zz.john.rambo@qaiware.com" );
   }
 
-  //@Test( dependsOnMethods = "testListOrderByEmailDesc" )
+  @Test( dependsOnMethods = "testListOrderByEmailDesc" )
   public void testListFilterByEmailAndCreatedAt() throws ParseException {
     Date startCreatedAt = DateUtils.parseDate( "2014-03-13", "yyyy-MM-dd" );
     Date endCreatedAt = DateUtils.parseDate( "2014-03-14", "yyyy-MM-dd" );
@@ -131,11 +131,11 @@ public class ClientServiceTest {
 
     Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
     Assert.assertEquals( clients.get( 1 ).getEmail(), "john.rambo@qaiware.com" );
-    Assert.assertEquals( clients.size(), 11 ); // with dev key
-    //Assert.assertEquals( clients.size(), 5 ); // with travis key
+    //Assert.assertEquals( clients.size(), 11 ); // with dev key
+    Assert.assertEquals( clients.size(), 5 ); // with travis key
   }
 
-  //@Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
+  @Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
   public void testListFilterByStartCreatedAt() throws ParseException {
     Date startCreatedAt = new Date( 1394183537000L );
     Client.Filter filter = Client.createFilter().byCreatedAt( startCreatedAt, null );
@@ -144,9 +144,9 @@ public class ClientServiceTest {
     List<Client> clients = wrapper.getData();
 
     Assert.assertNotNull( clients );
-    Assert.assertFalse( clients.isEmpty() ); // with dev key
-    Assert.assertEquals( clients.size(), 1 ); // with dev key
-    //Assert.assertTrue( clients.isEmpty() ); // with travis key
+    //Assert.assertFalse( clients.isEmpty() ); // with dev key
+    //Assert.assertEquals( clients.size(), 1 ); // with dev key
+    Assert.assertTrue( clients.isEmpty() ); // with travis key
   }
 
   private void validateClient( final Client client ) {
