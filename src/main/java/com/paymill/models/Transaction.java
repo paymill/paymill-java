@@ -51,7 +51,7 @@ public final class Transaction {
   private Date               updatedAt;
 
   @JsonProperty( "response_code" )
-  private Integer            responseCode;
+  private String             responseCode;
 
   @JsonProperty( "short_id" )
   private String             shortId;
@@ -160,11 +160,11 @@ public final class Transaction {
     this.preauthorization = preauthorization;
   }
 
-  public Integer getResponseCode() {
+  public String getResponseCode() {
     return this.responseCode;
   }
 
-  public void setResponseCode( final Integer responseCode ) {
+  public void setResponseCode( final String responseCode ) {
     this.responseCode = responseCode;
   }
 
