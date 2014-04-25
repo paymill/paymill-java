@@ -135,10 +135,9 @@ public class ClientServiceTest {
     Assert.assertEquals( clients.size(), 5 ); // with travis key
   }
 
-  //@Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
+  @Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
   public void testListFilterByStartCreatedAt() throws ParseException {
     Date startCreatedAt = new Date( 1394183537000L );
-    System.out.println( startCreatedAt );
     Client.Filter filter = Client.createFilter().byCreatedAt( startCreatedAt, null );
 
     PaymillList<Client> wrapper = this.clientService.list( filter, null );
