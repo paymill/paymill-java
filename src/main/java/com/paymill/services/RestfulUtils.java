@@ -84,10 +84,7 @@ final class RestfulUtils {
       if( wrappedNode.has( "data" ) ) {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( !dataNode.isArray() ) {
-          //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
-          //TODO[VNi]: Remove this line after fix
-          String dump = dataNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );
-          return (T) PaymillContext.PARSER.readValue( dump, clazz );
+          return (T) PaymillContext.PARSER.readValue( dataNode.toString(), clazz );
         }
       }
       if( wrappedNode.has( "error" ) ) {
@@ -108,10 +105,7 @@ final class RestfulUtils {
         JsonNode dataNode = wrappedNode.get( "data" );
         if( dataNode.isArray() ) {
           List<T> objects = new ArrayList<T>();
-          //TODO[VNi]: API error: when an offer is deleted, the subscription can not be serialized, because offer is empty array instead of null.
-          //TODO[VNi]: Remove this line after fix
-          String dump = wrappedNode.toString().replaceAll( "offer\":\\[\\]", "offer\":null" );
-          for( Object object : PaymillContext.PARSER.readValue( dump, PaymillList.class ).getData() ) {
+          for( Object object : PaymillContext.PARSER.readValue( wrappedNode.toString(), PaymillList.class ).getData() ) {
             try {
               objects.add( (T) PaymillContext.PARSER.readValue( PaymillContext.PARSER.writeValueAsString( object ), clazz ) );
             } catch( Exception exc ) {
