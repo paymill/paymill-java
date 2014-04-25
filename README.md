@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.1.2|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.1.2).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.2.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.2.0).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.1.2</version>
+  <version>3.2.0</version>
 </dependency>
 ```
 
@@ -156,8 +156,14 @@ public class ClientController {
 
 ## Changelog
 
+### 3.2.0
+* improvement: remove workaround for subscriptions without offer.
+* improvement: [#23](https://github.com/paymill/paymill-java/issues/23) now preauthorizations can be created with description.
+* fix: after update of the offer the PAYMILL API does not returns 0 days trial period any more.
+* update project dependencies
+
 ### 3.1.2
-* fix: [#47](https://github.com/paymill/paymill-java/issues/42) TransacionService list with filter for createdAt doesn't work.
+* fix: [#47](https://github.com/paymill/paymill-java/issues/47) TransacionService list with filter for createdAt doesn't work.
 * fix: typo in Webhook.EventType.TRANSACTION_FAILED
 * improvement: missing enumeration value will not cause parsing error, but will be mapped to UNDEFINED
 * update project dependencies
