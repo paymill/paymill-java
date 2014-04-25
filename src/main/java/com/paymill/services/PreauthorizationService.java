@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.paymill.context.PaymillContext;
 import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
@@ -20,7 +22,7 @@ public class PreauthorizationService extends AbstractService {
 
   private final static String PATH = "/preauthorizations";
 
-  private PreauthorizationService( com.sun.jersey.api.client.Client httpClient ) {
+  private PreauthorizationService( final com.sun.jersey.api.client.Client httpClient ) {
     super( httpClient );
   }
 
@@ -40,7 +42,7 @@ public class PreauthorizationService extends AbstractService {
    *          {@link Integer} to start from.
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
-  public PaymillList<Preauthorization> list( Integer count, Integer offset ) {
+  public PaymillList<Preauthorization> list( final Integer count, final Integer offset ) {
     return this.list( null, null, count, offset );
   }
 
@@ -53,7 +55,7 @@ public class PreauthorizationService extends AbstractService {
    *          {@link Preauthorization.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
-  public PaymillList<Preauthorization> list( Preauthorization.Filter filter, Preauthorization.Order order ) {
+  public PaymillList<Preauthorization> list( final Preauthorization.Filter filter, final Preauthorization.Order order ) {
     return this.list( filter, order, null, null );
   }
 
@@ -71,7 +73,7 @@ public class PreauthorizationService extends AbstractService {
    *          {@link Integer} to start from.
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
-  public PaymillList<Preauthorization> list( Preauthorization.Filter filter, Preauthorization.Order order, Integer count, Integer offset ) {
+  public PaymillList<Preauthorization> list( final Preauthorization.Filter filter, final Preauthorization.Order order, final Integer count, final Integer offset ) {
     return RestfulUtils.list( PreauthorizationService.PATH, filter, order, count, offset, Preauthorization.class, super.httpClient );
   }
 
@@ -81,7 +83,7 @@ public class PreauthorizationService extends AbstractService {
    *          A {@link Preauthorization} with Id.
    * @return Refreshed instance of the given {@link Preauthorization}.
    */
-  public Preauthorization get( Preauthorization preauthorization ) {
+  public Preauthorization get( final Preauthorization preauthorization ) {
     return RestfulUtils.show( PreauthorizationService.PATH, preauthorization, Preauthorization.class, super.httpClient );
   }
 
@@ -91,7 +93,7 @@ public class PreauthorizationService extends AbstractService {
    *          Id of the {@link Preauthorization}.
    * @return {@link Preauthorization} object, which represents a PAYMILL preauthorization.
    */
-  public Preauthorization get( String preauthorizationId ) {
+  public Preauthorization get( final String preauthorizationId ) {
     return this.get( new Preauthorization( preauthorizationId ) );
   }
 
@@ -103,9 +105,27 @@ public class PreauthorizationService extends AbstractService {
    *          Amount (in cents) which will be charged.
    * @param currency
    *          ISO 4217 formatted currency code.
+   * @param description
+   *          A short description for the preauthorization.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithToken( String token, Integer amount, String currency ) {
+  public Transaction createWithToken( final String token, final Integer amount, final String currency ) {
+    return this.createWithToken( token, amount, currency, null );
+  }
+
+  /**
+   * Creates Use either a token or an existing payment to Authorizes the given amount with the given token.
+   * @param token
+   *          The identifier of a token.
+   * @param amount
+   *          Amount (in cents) which will be charged.
+   * @param currency
+   *          ISO 4217 formatted currency code.
+   * @param description
+   *          A short description for the preauthorization.
+   * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
+   */
+  public Transaction createWithToken( final String token, final Integer amount, final String currency, final String description ) {
     ValidationUtils.validatesToken( token );
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
@@ -116,6 +136,9 @@ public class PreauthorizationService extends AbstractService {
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
     params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
+
+    if( StringUtils.isNotBlank( description ) )
+      params.add( "description", description );
 
     return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
   }
@@ -131,7 +154,24 @@ public class PreauthorizationService extends AbstractService {
    *          ISO 4217 formatted currency code.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithPayment( Payment payment, Integer amount, String currency ) {
+  public Transaction createWithPayment( final Payment payment, final Integer amount, final String currency ) {
+    return this.createWithPayment( payment, amount, currency, null );
+  }
+
+  /**
+   * Authorizes the given amount with the given {@link Payment}.<br />
+   * <strong>Works only for credit cards. Direct debit not supported.</strong>
+   * @param payment
+   *          The {@link Payment} itself (only creditcard-object)
+   * @param amount
+   *          Amount (in cents) which will be charged.
+   * @param currency
+   *          ISO 4217 formatted currency code.
+   * @param description
+   *          A short description for the preauthorization.
+   * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
+   */
+  public Transaction createWithPayment( final Payment payment, final Integer amount, final String currency, final String description ) {
     ValidationUtils.validatesPayment( payment );
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
@@ -143,6 +183,9 @@ public class PreauthorizationService extends AbstractService {
     params.add( "currency", currency );
     params.add( "source", String.format( "%s-%s", PaymillContext.getProjectName(), PaymillContext.getProjectVersion() ) );
 
+    if( StringUtils.isNotBlank( description ) )
+      params.add( "description", description );
+
     return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
   }
 
@@ -151,7 +194,7 @@ public class PreauthorizationService extends AbstractService {
    * @param preauthorization
    *          The {@link Preauthorization} object to be deleted.
    */
-  public void delete( Preauthorization preauthorization ) {
+  public void delete( final Preauthorization preauthorization ) {
     RestfulUtils.delete( PreauthorizationService.PATH, preauthorization, Preauthorization.class, super.httpClient );
   }
 
@@ -160,7 +203,7 @@ public class PreauthorizationService extends AbstractService {
    * @param preauthorizationId
    *          The Id of the {@link Preauthorization}.
    */
-  public void delete( String preauthorizationId ) {
+  public void delete( final String preauthorizationId ) {
     this.delete( new Preauthorization( preauthorizationId ) );
   }
 
@@ -169,7 +212,7 @@ public class PreauthorizationService extends AbstractService {
    * @param transaction
    *          A {@link Transaction} which should have a {@link Preauthorization} as a sub object.
    */
-  public void delete( Transaction transaction ) {
+  public void delete( final Transaction transaction ) {
     this.delete( transaction.getPreauthorization() );
   }
 

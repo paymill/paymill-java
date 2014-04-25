@@ -19,6 +19,7 @@ public class PreauthorizationServiceTest {
   private String                  token    = "098f6bcd4621d373cade4e832627b4f6";
   private Integer                 amount   = 4202;
   private String                  currency = "EUR";
+  private String                  description = "shake the preauthorization";
   private Payment                 payment;
 
   private List<Transaction>       preauthorizations;
@@ -50,12 +51,29 @@ public class PreauthorizationServiceTest {
     this.preauthorizations.add( transaction );
   }
 
+  @Test
+  public void testCreateWithTokenAndDescription_shouldSucceed() {
+    Transaction transaction = this.preauthorizationService.createWithToken( this.token, this.amount, this.currency, this.description );
+    this.validateTransaction( transaction );
+    Assert.assertEquals( transaction.getDescription(), this.description );
+    this.preauthorizations.add( transaction );
+  }
+
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
   public void testCreateWithPayment_shouldSucceed() throws Exception {
     Thread.sleep( 1000 );
     Transaction transaction = this.preauthorizationService.createWithPayment( this.payment, this.amount, this.currency );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), null );
+    this.preauthorizations.add( transaction );
+  }
+
+  @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
+  public void testCreateWithPaymentAndDescription_shouldSucceed() throws Exception {
+    Thread.sleep( 1000 );
+    Transaction transaction = this.preauthorizationService.createWithPayment( this.payment, this.amount, this.currency, this.description );
+    this.validateTransaction( transaction );
+    Assert.assertEquals( transaction.getDescription(), this.description );
     this.preauthorizations.add( transaction );
   }
 
