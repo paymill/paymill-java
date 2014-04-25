@@ -25,31 +25,31 @@ public class RefundServiceTest {
     PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.refundService = paymill.getRefundService();
     this.transactionService = paymill.getTransactionService();
-    this.transaction = this.transactionService.createWithToken( token, amount, "EUR" );
+    this.transaction = this.transactionService.createWithToken( this.token, this.amount, "EUR" );
   }
 
   @Test
   public void testRefundTransaction_WithoutDescruption_shouldSucceed() {
-    Refund refund = this.refundService.refundTransaction( transaction, 1000 );
+    Refund refund = this.refundService.refundTransaction( this.transaction, 1000 );
     this.validatesRefund( refund );
     Assert.assertNull( refund.getDescription() );
   }
 
   @Test
   public void testRefundTransaction_WithDescruption_shouldSucceed() {
-    this.refund = this.refundService.refundTransaction( transaction, 1000, description );
-    this.validatesRefund( refund );
-    Assert.assertEquals( refund.getDescription(), this.description );
+    this.refund = this.refundService.refundTransaction( this.transaction, 1000, this.description );
+    this.validatesRefund( this.refund );
+    Assert.assertEquals( this.refund.getDescription(), this.description );
   }
 
   @Test
   public void testShow_shouldSucceed() {
     this.refund = this.refundService.get( this.refund );
-    this.validatesRefund( refund );
-    Assert.assertEquals( refund.getDescription(), this.description );
+    this.validatesRefund( this.refund );
+    Assert.assertEquals( this.refund.getDescription(), this.description );
   }
 
-  private void validatesRefund( Refund refund ) {
+  private void validatesRefund( final Refund refund ) {
     Assert.assertNotNull( refund );
     Assert.assertNotNull( refund.getId() );
     Assert.assertEquals( refund.getAmount(), Integer.valueOf( 1000 ) );

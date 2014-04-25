@@ -32,7 +32,7 @@ public class OfferServiceTest {
 
   @Test
   public void testCreate_WithoutTrial_shouldSecceed() {
-    Offer offer = this.offerService.create( amount, currency, interval, name );
+    Offer offer = this.offerService.create( this.amount, this.currency, this.interval, this.name );
     this.validatesOffer( offer );
     Assert.assertEquals( offer.getAmount(), this.amount );
     Assert.assertEquals( offer.getTrialPeriodDays(), Integer.valueOf( 0 ) );
@@ -41,7 +41,7 @@ public class OfferServiceTest {
 
   @Test
   public void testCreate_WithTrial_shouldSecceed() {
-    Offer offer = this.offerService.create( this.amount + 1, currency, interval, name, trialPeriodDays );
+    Offer offer = this.offerService.create( this.amount + 1, this.currency, this.interval, this.name, this.trialPeriodDays );
     this.validatesOffer( offer );
     Assert.assertEquals( offer.getAmount(), Integer.valueOf( this.amount + 1 ) );
     Assert.assertEquals( offer.getName(), this.name );
@@ -62,11 +62,10 @@ public class OfferServiceTest {
   public void testUpdate_shouldSucceed() {
     this.offerWithTrial.setName( "Charles A. 'Chuck' Testa" );
     this.offerService.update( this.offerWithTrial );
-    this.validatesOffer( offerWithTrial );
-    Assert.assertEquals( offerWithTrial.getName(), "Charles A. 'Chuck' Testa" );
+    this.validatesOffer( this.offerWithTrial );
 
-    //TODO[VNi]: after update api returns 0 days trial period
-    //    Assert.assertEquals( offer.getTrialPeriodDays(), this.trialPeriodDays );
+    Assert.assertEquals( this.offerWithTrial.getName(), "Charles A. 'Chuck' Testa" );
+    Assert.assertEquals( this.offerWithTrial.getTrialPeriodDays(), this.trialPeriodDays );
   }
 
   @Test( dependsOnMethods = "testUpdate_shouldSucceed" )
@@ -93,7 +92,7 @@ public class OfferServiceTest {
     Assert.assertEquals( offers.get( 0 ).getAmount(), this.amount );
   }
 
-  private void validatesOffer( Offer offer ) {
+  private void validatesOffer( final Offer offer ) {
     Assert.assertNotNull( offer );
     Assert.assertNotNull( offer.getId() );
     Assert.assertEquals( offer.getCurrency(), this.currency );
