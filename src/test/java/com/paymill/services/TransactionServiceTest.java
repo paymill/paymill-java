@@ -198,8 +198,8 @@ public class TransactionServiceTest {
     Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, endDate );
     PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
 
-    //Assert.assertEquals( wrapper.getDataCount(), 27 ); // with dev key
-    Assert.assertEquals( wrapper.getDataCount(), 18 ); // with travis key
+    Assert.assertEquals( wrapper.getDataCount(), 27 ); // with dev key
+    //Assert.assertEquals( wrapper.getDataCount(), 18 ); // with travis key
   }
 
 }

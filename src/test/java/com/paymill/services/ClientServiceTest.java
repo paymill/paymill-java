@@ -131,8 +131,8 @@ public class ClientServiceTest {
 
     Assert.assertEquals( clients.get( 0 ).getEmail(), "john.rambo@qaiware.com" );
     Assert.assertEquals( clients.get( 1 ).getEmail(), "john.rambo@qaiware.com" );
-    //Assert.assertEquals( clients.size(), 11 ); // with dev key
-    Assert.assertEquals( clients.size(), 5 ); // with travis key
+    Assert.assertEquals( clients.size(), 11 ); // with dev key
+    //Assert.assertEquals( clients.size(), 5 ); // with travis key
   }
 
   @Test( dependsOnMethods = "testListFilterByEmailAndCreatedAt" )
