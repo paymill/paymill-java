@@ -92,7 +92,7 @@ public class PaymentServiceTest {
     List<Payment> paymentsAsc = this.paymentService.list( null, orderAsc ).getData();
     List<Payment> paymentsDesc = this.paymentService.list( null, orderDesc ).getData();
 
-    //TODO[VNi]: There is an API error, creating a payment results in 2 payments in paymill
+    //TODO[VNi]: There is an API error, creating a payment results in 2 payments in PAYMILL
     Assert.assertNotNull( paymentsAsc );
     Assert.assertNotNull( paymentsDesc );
     Assert.assertFalse( paymentsAsc.isEmpty() );
