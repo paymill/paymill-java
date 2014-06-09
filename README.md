@@ -153,6 +153,39 @@ public class ClientController {
   }
 }
 ```
+## Scala and Groovy integration
+
+The wrapper can be used easily in Scala and Groovy projects. Note, that it depends on 3rd party libraries, thus usage with a dependecy managment tool like maven is recommended.
+
+### Scala example:
+
+```scala
+import com.paymill.context.PaymillContext
+
+object HelloPaymill {
+  def main(args: Array[String]) {
+    val context = new PaymillContext("<YOUR PRIVATE API KEY>")
+    val client = context.getClientService().createWithEmail("lovely-client@example.com")
+    println(client.getId())
+  }
+}
+```
+
+### Groovy example:
+
+```groovy
+import com.paymill.context.PaymillContext
+
+class HelloPaymill {
+
+    public static void main(String[] args) {
+        def context = new PaymillContext("<YOUR PRIVATE API KEY>");
+        def client = context.getClientService().createWithEmail("lovely-client@example.com");
+        println(client.getId());
+    }
+}
+
+```
 
 ## Changelog
 
