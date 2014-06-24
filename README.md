@@ -179,9 +179,9 @@ import com.paymill.context.PaymillContext
 class HelloPaymill {
 
     public static void main(String[] args) {
-        def context = new PaymillContext("<YOUR PRIVATE API KEY>");
-        def client = context.getClientService().createWithEmail("lovely-client@example.com");
-        println(client.getId());
+        def context = new PaymillContext("<YOUR PRIVATE API KEY>")
+        def client = context.getClientService().createWithEmail("lovely-client@example.com")
+        println(client.getId())
     }
 }
 
