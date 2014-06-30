@@ -89,6 +89,8 @@ or with the instance itself, which also refreshes it:
 ```
 This method throws an ApiException if there is no client under the given id.
 
+*Important*: If you use a nested object (e.g. ` paymet = transaction.getClient().getPayments().get(0) ` ) you should always "refresh", as the nested object will contain only the id, and all other properties will be null. 
+
 ### Retrieving lists
 
 To retrieve a list you may simply use the list() method:
