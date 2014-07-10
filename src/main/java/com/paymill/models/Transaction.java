@@ -168,6 +168,103 @@ public final class Transaction {
     this.responseCode = responseCode;
   }
 
+  /**
+   * Returns the response code as detailed message.
+   * @return the message or <code>null</code> if no message is available.
+   */
+  public String getResponseCodeDetail() {
+    if( getResponseCode() == 10001 ) {
+      return "General undefined response";
+    } else if( getResponseCode() == 10002 ) {
+      return "Still waiting on something.";
+    } else if( getResponseCode() == 20000 ) {
+      return "General success response.";
+    } else if( getResponseCode() == 40000 ) {
+      return "General problem with data.";
+    } else if( getResponseCode() == 40001 ) {
+      return "General problem with payment data.";
+    } else if( getResponseCode() == 40100 ) {
+      return "Problem with credit card data.";
+    } else if( getResponseCode() == 40101 ) {
+      return "Problem with cvv.";
+    } else if( getResponseCode() == 40102 ) {
+      return "Card expired or not yet valid.";
+    } else if( getResponseCode() == 40103 ) {
+      return "Limit exceeded.";
+    } else if( getResponseCode() == 40104 ) {
+      return "Card invalid.";
+    } else if( getResponseCode() == 40105 ) {
+      return "Expiry date not valid.";
+    } else if( getResponseCode() == 40106 ) {
+      return "Credit card brand required.";
+    } else if( getResponseCode() == 40200 ) {
+      return "Problem with bank account data.";
+    } else if( getResponseCode() == 40201 ) {
+      return "Bank account data combination mismatch.";
+    } else if( getResponseCode() == 40202 ) {
+      return "User authentication failed.";
+    } else if( getResponseCode() == 40300 ) {
+      return "Problem with 3d secure data.";
+    } else if( getResponseCode() == 40301 ) {
+      return "Currency / amount mismatch";
+    } else if( getResponseCode() == 40400 ) {
+      return "Problem with input data.";
+    } else if( getResponseCode() == 40401 ) {
+      return "Amount too low or zero.";
+    } else if( getResponseCode() == 40402 ) {
+      return "Usage field too long.";
+    } else if( getResponseCode() == 40403 ) {
+      return "Currency not allowed.";
+    } else if( getResponseCode() == 50000 ) {
+      return "General problem with backend.";
+    } else if( getResponseCode() == 50001 ) {
+      return "Country blacklisted.";
+    } else if( getResponseCode() == 50002 ) {
+      return "IP address blacklisted.";
+    } else if( getResponseCode() == 50003 ) {
+      return "Anonymous IP proxy used.";
+    } else if( getResponseCode() == 50100 ) {
+      return "Technical error with credit card.";
+    } else if( getResponseCode() == 50101 ) {
+      return "Error limit exceeded.";
+    } else if( getResponseCode() == 50102 ) {
+      return "Card declined by authorization system.";
+    } else if( getResponseCode() == 50103 ) {
+      return "Manipulation or stolen card.";
+    } else if( getResponseCode() == 50104 ) {
+      return "Card restricted.";
+    } else if( getResponseCode() == 50105 ) {
+      return "Invalid card configuration data.";
+    } else if( getResponseCode() == 50200 ) {
+      return "Technical error with bank account.";
+    } else if( getResponseCode() == 50201 ) {
+      return "Card blacklisted.";
+    } else if( getResponseCode() == 50300 ) {
+      return "Technical error with 3D secure.";
+    } else if( getResponseCode() == 50400 ) {
+      return "Decline because of risk issues.";
+    } else if( getResponseCode() == 50500 ) {
+      return "General timeout.";
+    } else if( getResponseCode() == 50501 ) {
+      return "Timeout on side of the acquirer.";
+    } else if( getResponseCode() == 50502 ) {
+      return "Risk management transaction timeout.";
+    } else if( getResponseCode() == 50600 ) {
+      return "Duplicate transaction.";
+    } else {
+      return null;
+    }
+
+  }
+
+  /**
+   * Checks if the transaction was successful. Utility method, checks if the response_code is 20000.
+   * @return true if successful, false otherwise
+   */
+  public boolean isSuccessful() {
+    return getResponseCode() == 20000;
+  }
+
   public String getShortId() {
     return this.shortId;
   }
