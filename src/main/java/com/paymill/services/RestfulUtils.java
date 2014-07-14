@@ -58,6 +58,12 @@ final class RestfulUtils {
     return RestfulUtils.refreshInstance( source, target );
   }
 
+  static <T> T update( String path, T target, MultivaluedMap<String, String> params, Class<?> clazz, Client httpClient ) {
+    String id = RestfulUtils.getIdByReflection( target );
+    T source = RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
+    return RestfulUtils.refreshInstance( source, target );
+  }
+
   static <T> T delete( String path, T target, Class<?> clazz, Client httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
     return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, httpClient ), clazz );

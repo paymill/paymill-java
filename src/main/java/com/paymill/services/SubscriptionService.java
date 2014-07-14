@@ -222,14 +222,65 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function updates the {@link Subscription} of a {@link Client}. You can change e.g. the cancelAtPeriodEnd attribute to
-   * terminate a {@link Subscription} at a special point of time. Or you can change the {@link Payment}. All other edited
-   * properties will be set back to its source defined in PAYMILL.
+   * Temporary pauses a subscription. <br />
+   * <strong>NOTE</strong><br />
+   * Pausing is permitted until one day (24 hours) before the next charge date.
    * @param subscription
-   *          A {@link Subscription} with cancelAtPeriodEnd or {@link Payment}.
+   *          the subscription
+   * @return the updated subscription
    */
-  public void update( Subscription subscription ) {
-    RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
+  public Subscription pause( Subscription subscription ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "pause", String.valueOf( true ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Temporary pauses a subscription.<br />
+   * <strong>NOTE</strong><br />
+   * Pausing is permitted until one day (24 hours) before the next charge date.
+   * @param subscriptionId
+   *          the Id of the subscription
+   * @return the updated subscription
+   */
+  public Subscription pause( String subscriptionId ) {
+    return this.pause( new Subscription( subscriptionId ) );
+  }
+
+  /**
+   * Unpauses a subscription. Next charge will occur according to the defined interval.<br />
+   * <strong>NOTE</strong><br />
+   * if the nextCaptureAt is the date of reactivation: a charge will happen<br />
+   * if the next_capture_at is in the past: it will be set to: reactivationdate + interval <br/>
+   * <br />
+   * <strong>IMPORTANT</strong><br />
+   * An inactive subscription can reactivated within 13 month from the date of pausing. After this period, the subscription will
+   * expire and cannot be re-activated.<br />
+   * @param subscription
+   *          the subscription
+   * @return the updated subscription
+   */
+  public Subscription unpause( Subscription subscription ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "pause", String.valueOf( false ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Unpauses a subscription. Next charge will occur according to the defined interval.<br />
+   * <strong>NOTE</strong><br />
+   * if the nextCaptureAt is the date of reactivation: a charge will happen<br />
+   * if the next_capture_at is in the past: it will be set to: reactivationdate + interval <br/>
+   * <br />
+   * <strong>IMPORTANT</strong><br />
+   * An inactive subscription can reactivated within 13 month from the date of pausing. After this period, the subscription will
+   * expire and cannot be re-activated.<br />
+   * @param subscriptionId
+   *          the Id of the subscription
+   * @return the updated subscription
+   */
+  public Subscription unpause( String subscriptionId ) {
+    return this.pause( new Subscription( subscriptionId ) );
   }
 
   /**

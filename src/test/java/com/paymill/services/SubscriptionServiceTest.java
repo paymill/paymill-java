@@ -118,6 +118,8 @@ public class SubscriptionServiceTest {
     Subscription subscriptionNoTrial = subscriptionService.create( Subscription.create( payment.getId(), offer ).withClient( client.getId() ) );
     Assert.assertNull( subscriptionNoTrial.getTrialStart() );
     Assert.assertNull( subscriptionNoTrial.getTrialEnd() );
+
+    this.subscriptions.add( subscriptionNoTrial );
   }
 
   @Test
@@ -130,6 +132,8 @@ public class SubscriptionServiceTest {
     Assert.assertNotNull( subscriptionWithOfferTrial.getTrialStart() );
     Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getTrialEnd(), DateUtils.addDays( new Date(), 2 ) ) );
     Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getNextCaptureAt(), DateUtils.addDays( new Date(), 2 ) ) );
+
+    this.subscriptions.add( subscriptionWithOfferTrial );
   }
 
   @Test
@@ -143,6 +147,19 @@ public class SubscriptionServiceTest {
     Assert.assertNotNull( subscriptionWithOfferTrial.getTrialStart() );
     Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getTrialEnd(), DateUtils.addDays( new Date(), 5 ) ) );
     Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getNextCaptureAt(), DateUtils.addDays( new Date(), 5 ) ) );
+
+    this.subscriptions.add( subscriptionWithOfferTrial );
+  }
+
+  @Test
+  public void testPauseAndUnpauseSubscription() {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    subscriptionService.pause( subscription );
+    Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
+    subscriptionService.unpause( subscription );
+    Assert.assertEquals( subscription.getStatus(), Subscription.Status.ACTIVE );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), DateUtils.addWeeks( new Date(), 1 ) ) );
+    this.subscriptions.add( subscription );
   }
 
   /*
