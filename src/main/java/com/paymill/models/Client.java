@@ -154,7 +154,7 @@ public final class Client {
   }
 
   /**
-   * Returns {@link List} of credit card/direct depit
+   * Returns {@link List} of credit card/direct debit. Please note, that the payment objects might only contain valid ids.
    * @return {@link List} of {@link Payment}
    */
   public List<Payment> getPayments() {

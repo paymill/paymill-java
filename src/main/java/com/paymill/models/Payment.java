@@ -50,7 +50,7 @@ public final class Payment {
   private String           holder;
 
   // Credit card attributes
-  private String           client;
+  private Client           client;
 
   @JsonProperty( "card_type" )
   private Payment.CardType cardType;
@@ -169,10 +169,10 @@ public final class Payment {
   }
 
   /**
-   * The {@link Client}
+   * The {@link Client}. Please note, that the client object might only contain a valid id.
    * @return {@link Client} or <code>null</code>.
    */
-  public String getClient() {
+  public Client getClient() {
     return this.client;
   }
 
@@ -181,7 +181,7 @@ public final class Payment {
    * @param client
    *          {@link Client} or <code>null</code>
    */
-  public void setClient( final String client ) {
+  public void setClient( final Client client ) {
     this.client = client;
   }
 
