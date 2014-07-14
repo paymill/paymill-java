@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -60,13 +60,53 @@ public class SubscriptionServiceTest {
   }
 
   @Test
-  public void testCreateWithPayment() {
-    this.subscription = this.subscriptionService.createWithOfferAndPayment( offer1, payment );
-    Assert.assertNotNull( this.subscription );
-    Assert.assertNotNull( this.subscription.getClient() );
-    Assert.assertFalse( this.subscription.getCancelAtPeriodEnd() );
+  public void testCreateWithPaymentAndOffer() {
+    Subscription subscription = this.subscriptionService.create( Subscription.create( this.payment, this.offer1 ) );
+    this.subscription = subscription;
+    Assert.assertNotNull( subscription );
+    Assert.assertNotNull( subscription.getClient() );
+    Assert.assertEquals( subscription.getPayment().getId(), this.payment.getId() );
+    Assert.assertEquals( subscription.getOffer().getId(), this.offer1.getId() );
+    this.subscriptions.add( subscription );
+  }
 
-    this.subscriptions.add( this.subscription );
+  @Test
+  public void testCreateWithPaymentAndOfferComplex() {
+    Date tomorrow = DateUtils.addDays( new Date(), 1 );
+    Subscription subscription = this.subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withClient( this.client )
+        .withAmount( this.amount * 5 ).withCurrency( "EUR" ).withInterval( "2 WEEK,monday" ).withName( "test sub" ).withOffer( this.offer2 )
+        .withPeriodOfValidity( "1 YEAR" ).withStartDate( tomorrow ) );
+    Assert.assertNotNull( subscription );
+    Assert.assertNotNull( subscription.getClient() );
+    Assert.assertEquals( subscription.getPayment().getId(), this.payment.getId() );
+    Assert.assertEquals( subscription.getClient().getId(), this.client.getId() );
+    Assert.assertEquals( subscription.getAmount(), (Integer) (this.amount * 5) );
+    Assert.assertEquals( subscription.getCurrency(), "EUR" );
+    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 2 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.WEEK );
+    Assert.assertEquals( subscription.getInterval().getWeekday(), Interval.Weekday.MONDAY );
+
+    Assert.assertEquals( subscription.getName(), "test sub" );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getInterval(), (Integer) 1 );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.YEAR );
+    Assert.assertTrue( subscription.getNextCaptureAt().getTime() > new Date().getTime() );
+    Assert.assertEquals( subscription.getStatus(), Subscription.Status.ACTIVE );
+    Assert.assertFalse( subscription.isCanceled() );
+    Assert.assertFalse( subscription.isDeleted() );
+    Assert.assertFalse( subscription.getLivemode() );
+
+    Assert.assertNull( subscription.getCanceledAt() );
+    Assert.assertTrue( datesAroundSame( subscription.getCreatedAt(), new Date() ) );
+    Assert.assertTrue( datesAroundSame( subscription.getTrialStart(), new Date() ) );
+    Assert.assertTrue( datesAroundSame( subscription.getTrialEnd(), tomorrow ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), tomorrow ) );
+    Assert.assertNull( subscription.getTempAmount() );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test( expectedExceptions = IllegalArgumentException.class )
+  public void testCreateWithoutOfferAndAmount_shouldFail() {
+    this.subscriptionService.create( this.payment, this.client, null, null, null, null, null, null, null );
   }
 
   @Test
@@ -75,21 +115,9 @@ public class SubscriptionServiceTest {
     Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
     Offer offer = offerService.create( 2223, "EUR", Interval.period( 1, Interval.Unit.WEEK ), "Offer No Trial" );
 
-    Subscription subscriptionNoTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client );
+    Subscription subscriptionNoTrial = subscriptionService.create( Subscription.create( payment.getId(), offer ).withClient( client.getId() ) );
     Assert.assertNull( subscriptionNoTrial.getTrialStart() );
     Assert.assertNull( subscriptionNoTrial.getTrialEnd() );
-  }
-
-  @Test
-  public void testCreateWithPaymentClientAndTrial_WithOfferWithoutTrial_shouldReturnSubscriptionWithTrialEqualsTrialInSubscription() {
-    Client client = clientService.createWithEmail( "zendest@example.com" );
-    Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
-    Offer offer = offerService.create( 2224, "EUR", Interval.period( 1, Interval.Unit.WEEK ), "Offer No Trial" );
-
-    long trialStart = System.currentTimeMillis() + SubscriptionServiceTest.TWO_WEEKS_FROM_NOW;
-    Subscription subscriptionWithTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client, new Date( trialStart ) );
-    Assert.assertNotNull( subscriptionWithTrial.getTrialStart() );
-    Assert.assertEquals( subscriptionWithTrial.getTrialEnd().getTime(), ((trialStart / 1000) * 1000) - 1000 );
   }
 
   @Test
@@ -97,29 +125,33 @@ public class SubscriptionServiceTest {
     Client client = clientService.createWithEmail( "zendest@example.com" );
     Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
     Offer offer = offerService.create( 2225, "EUR", Interval.period( 1, Interval.Unit.WEEK ), "Offer With Trial", 2 );
+    Subscription subscriptionWithOfferTrial = subscriptionService.create( Subscription.create( payment.getId(), offer ).withClient( client.getId() ) );
 
-    Subscription subscription = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client );
-    Assert.assertNotNull( subscription.getTrialStart() );
-    Assert.assertEquals( subscription.getTrialEnd().getTime(), (subscription.getTrialStart().getTime() + SubscriptionServiceTest.TWO_DAYS_FROM_NOW) );
+    Assert.assertNotNull( subscriptionWithOfferTrial.getTrialStart() );
+    Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getTrialEnd(), DateUtils.addDays( new Date(), 2 ) ) );
+    Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getNextCaptureAt(), DateUtils.addDays( new Date(), 2 ) ) );
   }
 
   @Test
-  public void testCreateWithPaymentClientAndTrial_WithOfferWithTrial_shouldReturnSubscriptionWithTrialEqualsTrialInSubscription() {
+  public void testCreateWithPaymentClientAndStartat_WithOfferWithTrial_shouldReturnSubscriptionWithTrialEqualsTrialInSubscription() {
     Client client = clientService.createWithEmail( "zendest@example.com" );
     Payment payment = paymentService.createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
     Offer offer = offerService.create( 2224, "EUR", Interval.period( 1, Interval.Unit.WEEK ), "Offer No Trial", 2 );
+    Subscription subscriptionWithOfferTrial = subscriptionService.create( Subscription.create( payment.getId(), offer ).withClient( client.getId() )
+        .withStartDate( DateUtils.addDays( new Date(), 5 ) ) );
 
-    long trialStart = System.currentTimeMillis() + SubscriptionServiceTest.TWO_WEEKS_FROM_NOW;
-    Subscription subscriptionWithTrial = subscriptionService.createWithOfferPaymentAndClient( offer, payment, client, new Date( trialStart ) );
-    Assert.assertNotNull( subscriptionWithTrial.getTrialStart() );
-    Assert.assertEquals( subscriptionWithTrial.getTrialEnd().getTime(), ((trialStart / 1000) * 1000) - 1000 );
+    Assert.assertNotNull( subscriptionWithOfferTrial.getTrialStart() );
+    Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getTrialEnd(), DateUtils.addDays( new Date(), 5 ) ) );
+    Assert.assertTrue( datesAroundSame( subscriptionWithOfferTrial.getNextCaptureAt(), DateUtils.addDays( new Date(), 5 ) ) );
   }
 
+  /*
   @Test( expectedExceptions = PaymillException.class )
   public void testCreateWithPaymentAndClient_shouldFail() {
-    this.subscriptionService.createWithOfferPaymentAndClient( offer1, payment, client );
+    this.subscriptionService.create( Subscription.Creator.create( payment.getId(), client.getId() ).withOffer( offer1 ) );
   }
 
+  
   @Test( dependsOnMethods = "testCreateWithPayment" )
   public void testCreateWithPaymentAndClient_shouldSecceed() throws Exception {
     Thread.sleep( 1000 );
@@ -127,7 +159,6 @@ public class SubscriptionServiceTest {
     Subscription subscription = this.subscriptionService.createWithOfferPaymentAndClient( offer2, payment, client );
     Assert.assertNotNull( subscription );
     Assert.assertNotNull( subscription.getClient() );
-    Assert.assertFalse( subscription.getCancelAtPeriodEnd() );
 
     this.subscriptions.add( subscription );
   }
@@ -138,14 +169,12 @@ public class SubscriptionServiceTest {
     String subscriptionId = this.subscription.getId();
     Assert.assertEquals( this.subscription.getOffer().getId(), this.offer1.getId() );
 
-    this.subscription.setCancelAtPeriodEnd( true );
     this.subscription.setOffer( this.offer2 );
     this.subscriptionService.update( this.subscription );
 
     Assert.assertFalse( StringUtils.equals( this.subscription.getOffer().getId(), offerId ) );
     Assert.assertEquals( this.subscription.getOffer().getId(), this.offer2.getId() );
     Assert.assertEquals( this.subscription.getId(), subscriptionId );
-    Assert.assertTrue( this.subscription.getCancelAtPeriodEnd() );
   }
 
   //TODO[VNi]: uncomment when API returns null instead of empty array
@@ -182,5 +211,13 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscriptionsDesc.get( 0 ).getId(), subscriptionsAsc.get( subscriptionsAsc.size() - 1 ).getId() );
     Assert.assertEquals( subscriptionsDesc.get( subscriptionsDesc.size() - 1 ).getId(), subscriptionsAsc.get( 0 ).getId() );
   }
+  */
+  public static boolean datesAroundSame( Date first, Date second, int minutes ) {
+    long timespan = minutes * 60 * 1000;
+    return Math.abs( first.getTime() - second.getTime() ) < timespan;
+  }
 
+  public static boolean datesAroundSame( Date first, Date second ) {
+    return datesAroundSame( first, second, 10 );
+  }
 }

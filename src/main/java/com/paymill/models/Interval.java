@@ -23,8 +23,8 @@ public class Interval {
   @JsonIgnoreProperties( ignoreUnknown = true )
   public static class Period {
 
-    protected Integer interval;
-    protected Unit    unit;
+    private Integer interval;
+    private Unit    unit;
 
     public Period( final String interval ) {
       try {
@@ -34,9 +34,6 @@ public class Interval {
       } catch( ArrayIndexOutOfBoundsException e ) {
         throw new IllegalArgumentException( "Invalid period:" + interval );
       }
-    }
-
-    private Period() {
     }
 
     private Period( Integer interval, Unit unit ) {
@@ -67,8 +64,10 @@ public class Interval {
   }
 
   @JsonIgnoreProperties( ignoreUnknown = true )
-  public static class PeriodWithChargeDay extends Period {
+  public static class PeriodWithChargeDay {
 
+    private Integer interval;
+    private Unit    unit;
     private Weekday weekday;
 
     public PeriodWithChargeDay( String interval ) {
@@ -78,7 +77,7 @@ public class Interval {
         if( weekdayParts.length > 1 ) {
           this.weekday = Weekday.create( weekdayParts[1] );
         }
-        String[] intervalParts = StringUtils.split( interval );
+        String[] intervalParts = StringUtils.split( weekdayParts[0] );
         this.interval = Integer.parseInt( intervalParts[0] );
         this.unit = Unit.create( intervalParts[1] );
       } catch( ArrayIndexOutOfBoundsException e ) {
@@ -104,9 +103,25 @@ public class Interval {
       this.weekday = weekday;
     }
 
+    public Integer getInterval() {
+      return interval;
+    }
+
+    public void setInterval( Integer interval ) {
+      this.interval = interval;
+    }
+
+    public Unit getUnit() {
+      return unit;
+    }
+
+    public void setUnit( Unit unit ) {
+      this.unit = unit;
+    }
+
     @Override
     public String toString() {
-      return (getWeekday() == null) ? super.toString() : super.toString() + "," + getWeekday();
+      return (getWeekday() == null) ? this.interval + " " + this.unit : this.interval + " " + this.unit + "," + getWeekday();
     }
   }
 
@@ -127,11 +142,11 @@ public class Interval {
     @JsonCreator
     public static Unit create( final String value ) {
       for( Unit unit : Unit.values() ) {
-        if( unit.getValue().equals( value ) ) {
+        if( unit.getValue().equals( value.toUpperCase() ) ) {
           return unit;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Interval.Unit" );
+      throw new IllegalArgumentException( "Invalid value for Interval.Unit:" + value );
     }
 
     @Override
@@ -157,11 +172,11 @@ public class Interval {
     @JsonCreator
     public static Weekday create( final String value ) {
       for( Weekday weekday : Weekday.values() ) {
-        if( weekday.getValue().equals( value ) ) {
+        if( weekday.getValue().equals( value.toUpperCase() ) ) {
           return weekday;
         }
       }
-      throw new IllegalArgumentException( "Invalid value for Interval.Unit" );
+      throw new IllegalArgumentException( "Invalid value for Interval.Weekday" + value );
     }
 
     @Override

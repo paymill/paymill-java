@@ -49,6 +49,15 @@ final class ValidationUtils {
     }
   }
 
+  static void validatesIntervalPeriodWithChargeDay( Interval.PeriodWithChargeDay interval ) {
+    if( interval.getInterval() < 1 ) {
+      throw new IllegalArgumentException( "Interval must be greater than zero" );
+    }
+    if( interval.getUnit() == null ) {
+      throw new IllegalArgumentException( "Interval unit cannot be null" );
+    }
+  }
+
   static void validatesFee( Fee fee ) {
     if( fee != null ) {
       if( fee.getAmount() != null && StringUtils.isBlank( fee.getPayment() ) )

@@ -24,7 +24,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 final class RestfulUtils {
 
-  private final static String ENDPOINT = "https://api.paymill.com/v2";
+  private final static String ENDPOINT = "https://api.paymill.com/v2.1";
 
   static <T> PaymillList<T> list( String path, Object filter, Object order, Integer count, Integer offset, Class<?> clazz, Client httpClient ) {
     MultivaluedMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );

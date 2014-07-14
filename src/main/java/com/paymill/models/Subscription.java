@@ -2,9 +2,12 @@ package com.paymill.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.paymill.models.Fee.Type;
 
 /**
  * Subscriptions allow you to charge recurring payments on a client’s credit card / to a client’s direct debit. A subscription
@@ -16,42 +19,62 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties( ignoreUnknown = true )
 public final class Subscription {
 
-  private String  id;
+  private String                       id;
 
-  @Updateable( "offer" )
-  private Offer   offer;
+  private Offer                        offer;
 
-  private Boolean livemode;
+  private Boolean                      livemode;
 
-  @Updateable( "cancel_at_period_end" )
-  @JsonProperty( "cancel_at_period_end" )
-  private Boolean cancelAtPeriodEnd;
+  private Integer                      amount;
+
+  @JsonProperty( "temp_amount" )
+  private Integer                      tempAmount;
+
+  private String                       currency;
+
+  private String                       name;
+
+  private Interval.PeriodWithChargeDay interval;
 
   @JsonProperty( "trial_start" )
-  private Date    trialStart;
+  private Date                         trialStart;
 
   @JsonProperty( "trial_end" )
-  private Date    trialEnd;
+  private Date                         trialEnd;
+
+  @JsonProperty( "period_of_validity" )
+  private Interval.Period              periodOfValidity;
+
+  @JsonProperty( "end_of_period" )
+  private Date                         endOfPeriod;
 
   @JsonProperty( "next_capture_at" )
-  private Date    nextCaptureAt;
+  private Date                         nextCaptureAt;
 
   @JsonProperty( "created_at" )
-  private Date    createdAt;
+  private Date                         createdAt;
 
   @JsonProperty( "updated_at" )
-  private Date    updatedAt;
+  private Date                         updatedAt;
 
   @JsonProperty( "canceled_at" )
-  private Date    canceledAt;
+  private Date                         canceledAt;
 
   @Updateable( "payment" )
-  private Payment payment;
+  private Payment                      payment;
 
-  private Client  client;
+  private Client                       client;
 
   @JsonProperty( "app_id" )
-  private String  appId;
+  private String                       appId;
+
+  private Subscription.Status          status;
+
+  @JsonProperty( "is_canceled" )
+  private Boolean                      isCanceled;
+
+  @JsonProperty( "is_deleted" )
+  private Boolean                      isDeleted;
 
   public Subscription() {
     super();
@@ -85,12 +108,44 @@ public final class Subscription {
     this.livemode = livemode;
   }
 
-  public Boolean getCancelAtPeriodEnd() {
-    return this.cancelAtPeriodEnd;
+  public Integer getAmount() {
+    return amount;
   }
 
-  public void setCancelAtPeriodEnd( final Boolean cancelAtPeriodEnd ) {
-    this.cancelAtPeriodEnd = cancelAtPeriodEnd;
+  public void setAmount( Integer amount ) {
+    this.amount = amount;
+  }
+
+  public Integer getTempAmount() {
+    return tempAmount;
+  }
+
+  public void setTempAmount( Integer tempAmount ) {
+    this.tempAmount = tempAmount;
+  }
+
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency( String currency ) {
+    this.currency = currency;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName( String name ) {
+    this.name = name;
+  }
+
+  public Interval.PeriodWithChargeDay getInterval() {
+    return interval;
+  }
+
+  public void setInterval( Interval.PeriodWithChargeDay interval ) {
+    this.interval = interval;
   }
 
   public Payment getPayment() {
@@ -107,6 +162,46 @@ public final class Subscription {
 
   public void setClient( final Client client ) {
     this.client = client;
+  }
+
+  public Interval.Period getPeriodOfValidity() {
+    return periodOfValidity;
+  }
+
+  public void setPeriodOfValidity( Interval.Period periodOfValidity ) {
+    this.periodOfValidity = periodOfValidity;
+  }
+
+  public Date getEndOfPeriod() {
+    return endOfPeriod;
+  }
+
+  public void setEndOfPeriod( Date endOfPeriod ) {
+    this.endOfPeriod = endOfPeriod;
+  }
+
+  public Subscription.Status getStatus() {
+    return status;
+  }
+
+  public void setStatus( Subscription.Status status ) {
+    this.status = status;
+  }
+
+  public Boolean isCanceled() {
+    return isCanceled;
+  }
+
+  public void setCanceled( Boolean isCanceled ) {
+    this.isCanceled = isCanceled;
+  }
+
+  public Boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setIsDeleted( Boolean isDeleted ) {
+    this.isDeleted = isDeleted;
   }
 
   /**
@@ -393,4 +488,228 @@ public final class Subscription {
 
   }
 
+  public enum Status {
+
+    ACTIVE("active"), INACTIVE("inactive");
+
+    private String value;
+
+    private Status( final String value ) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return this.value;
+    }
+
+    @JsonCreator
+    public static Type create( final String value ) {
+      for( Type type : Type.values() ) {
+        if( type.getValue().equals( value ) ) {
+          return type;
+        }
+      }
+      throw new IllegalArgumentException( "Invalid value for Subscription.status:" + value + ". An update of paymill-java is recommended" );
+    }
+  }
+
+  public static Creator create( Payment payment, Integer amount, String currency, String interval ) {
+    return new Creator( payment, amount, currency, new Interval.PeriodWithChargeDay( interval ) );
+
+  }
+
+  public static Creator create( String paymentId, Integer amount, String currency, String interval ) {
+    return new Creator( new Payment( paymentId ), amount, currency, new Interval.PeriodWithChargeDay( interval ) );
+
+  }
+
+  public static Creator create( Payment payment, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
+    return new Creator( payment, amount, currency, interval );
+
+  }
+
+  public static Creator create( String paymentId, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
+    return new Creator( new Payment( paymentId ), amount, currency, interval );
+  }
+
+  public static Creator create( Payment payment, Offer offer ) {
+    return new Creator( payment, offer );
+  }
+
+  public static Creator create( String paymentId, Offer offer ) {
+    return new Creator( new Payment( paymentId ), offer );
+
+  }
+
+  public static Creator create( String paymentId, String offerId ) {
+    return new Creator( new Payment( paymentId ), new Offer( offerId ) );
+
+  }
+
+  public static Creator create( Payment payment, String offerId ) {
+    return new Creator( payment, new Offer( offerId ) );
+
+  }
+
+  /**
+   * Due to the large number of optional parameters, this class is the recommended way to create subscriptions
+   */
+  public static class Creator {
+
+    private Payment                      payment;
+    private Client                       client;
+    private Offer                        offer;
+    private Integer                      amount;
+    private String                       currency;
+    private Interval.PeriodWithChargeDay interval;
+    private Date                         startAt;
+    private String                       name;
+    private Interval.Period              periodOfValidity;
+
+    private Creator( Payment payment, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
+      this.payment = payment;
+      this.amount = amount;
+      this.currency = currency;
+      this.interval = interval;
+    }
+
+    private Creator( Payment payment, Offer offer ) {
+      this.payment = payment;
+      this.offer = offer;
+    }
+
+    public Creator withClient( Client client ) {
+      this.client = client;
+      return this;
+    }
+
+    public Creator withClient( String clientId ) {
+      this.client = new Client( clientId );
+      return this;
+    }
+
+    public Creator withOffer( Offer offer ) {
+      this.offer = offer;
+      return this;
+    }
+
+    public Creator withOffer( String offerId ) {
+      this.offer = new Offer( offerId );
+      return this;
+    }
+
+    public Creator withAmount( Integer amount ) {
+      this.amount = amount;
+      return this;
+    }
+
+    public Creator withCurrency( String currency ) {
+      this.currency = currency;
+      return this;
+    }
+
+    public Creator withInterval( Interval.PeriodWithChargeDay interval ) {
+      this.interval = interval;
+      return this;
+    }
+
+    public Creator withInterval( String interval ) {
+      this.interval = new Interval.PeriodWithChargeDay( interval );
+      return this;
+    }
+
+    public Creator withStartDate( Date startAt ) {
+      this.startAt = startAt;
+      return this;
+    }
+
+    public Creator withName( String name ) {
+      this.name = name;
+      return this;
+    }
+
+    public Creator withPeriodOfValidity( Interval.Period period ) {
+      this.periodOfValidity = period;
+      return this;
+    }
+
+    public Creator withPeriodOfValidity( String period ) {
+      this.periodOfValidity = new Interval.Period( period );
+      return this;
+    }
+
+    public Payment getPayment() {
+      return payment;
+    }
+
+    public void setPayment( Payment payment ) {
+      this.payment = payment;
+    }
+
+    public Client getClient() {
+      return client;
+    }
+
+    public void setClient( Client client ) {
+      this.client = client;
+    }
+
+    public Offer getOffer() {
+      return offer;
+    }
+
+    public void setOffer( Offer offer ) {
+      this.offer = offer;
+    }
+
+    public Integer getAmount() {
+      return amount;
+    }
+
+    public void setAmount( Integer amount ) {
+      this.amount = amount;
+    }
+
+    public String getCurrency() {
+      return currency;
+    }
+
+    public void setCurrency( String currency ) {
+      this.currency = currency;
+    }
+
+    public Interval.PeriodWithChargeDay getInterval() {
+      return interval;
+    }
+
+    public void setInterval( Interval.PeriodWithChargeDay interval ) {
+      this.interval = interval;
+    }
+
+    public Date getStartAt() {
+      return startAt;
+    }
+
+    public void setStartAt( Date startAt ) {
+      this.startAt = startAt;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName( String name ) {
+      this.name = name;
+    }
+
+    public Interval.Period getPeriodOfValidity() {
+      return periodOfValidity;
+    }
+
+    public void setPeriodOfValidity( Interval.Period periodOfValidity ) {
+      this.periodOfValidity = periodOfValidity;
+    }
+
+  }
 }
