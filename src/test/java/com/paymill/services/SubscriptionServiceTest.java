@@ -162,6 +162,22 @@ public class SubscriptionServiceTest {
     this.subscriptions.add( subscription );
   }
 
+  @Test
+  public void testChangeSubscriptionAmountPermanently() {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
+    subscriptionService.changeAmount( subscription, 2000 );
+    Assert.assertEquals( subscription.getAmount(), (Integer) 2000 );
+    Assert.assertNull( subscription.getTempAmount() );
+  }
+
+  @Test
+  public void testChangeSubscriptionAmountTemp() {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
+    subscriptionService.changeAmountTemporary( subscription, 2000 );
+    Assert.assertEquals( subscription.getAmount(), (Integer) 1200 );
+    Assert.assertEquals( subscription.getTempAmount(), (Integer) 2000 );
+  }
+
   /*
   @Test( expectedExceptions = PaymillException.class )
   public void testCreateWithPaymentAndClient_shouldFail() {

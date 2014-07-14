@@ -284,6 +284,66 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
+   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
+   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * @param subscriptionId
+   *          the Id of the subscription.
+   * @param amount
+   *          the new amount.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmount( String subscriptionId, Integer amount ) {
+    return this.changeAmount( new Subscription( subscriptionId ), amount );
+  }
+
+  /**
+   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
+   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * @param subscription
+   *          the subscription.
+   * @param amount
+   *          the new amount.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmount( Subscription subscription, Integer amount ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "amount", String.valueOf( amount ) );
+    params.add( "amount_change_type", "1" );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Changes the amount of a subscription. The new amount is valid one-time only after which the original subscription amount will
+   * be charged again. If you want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}
+   * .
+   * @param subscription
+   *          the subscription.
+   * @param amount
+   *          the new amount.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmountTemporary( Subscription subscription, Integer amount ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "amount", String.valueOf( amount ) );
+    params.add( "amount_change_type", "0" );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Changes the amount of a subscription. The new amount is valid one-time only after which the original subscription amount will
+   * be charged again. If you want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}
+   * .
+   * @param subscriptionId
+   *          the Id of the subscription.
+   * @param amount
+   *          the new amount.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmountTemporary( String subscriptionId, Integer amount ) {
+    return this.changeAmountTemporary( new Subscription( subscriptionId ), amount );
+  }
+
+  /**
    * This function removes an existing subscription. If you set the attribute cancelAtPeriodEnd parameter to the value
    * <code>true</code>, the subscription will remain active until the end of the period. The subscription will not be renewed
    * again. If the value is set to <code>false</code> it is directly terminated, but pending {@link Transaction}s will still be
