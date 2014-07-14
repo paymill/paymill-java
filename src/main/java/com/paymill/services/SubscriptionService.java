@@ -404,6 +404,18 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
+   * Stop the trial period of a subscription and charge immediately.
+   * @param subscription
+   *          the subscription.
+   * @return the updated subscription.
+   */
+  public Subscription endTrial( Subscription subscription ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "trial_end", String.valueOf( false ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
    * This function removes an existing subscription. If you set the attribute cancelAtPeriodEnd parameter to the value
    * <code>true</code>, the subscription will remain active until the end of the period. The subscription will not be renewed
    * again. If the value is set to <code>false</code> it is directly terminated, but pending {@link Transaction}s will still be

@@ -215,6 +215,18 @@ public class SubscriptionServiceTest {
     this.subscriptions.add( subscription );
   }
 
+  @Test
+  public void testEndTrial() {
+    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
+    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withStartDate( inTwoWeeks ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
+    subscriptionService.endTrial( subscription );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), new Date() ) );
+    Assert.assertNull( subscription.getTrialEnd() );
+    this.subscriptions.add( subscription );
+  }
+
   /*
   @Test( expectedExceptions = PaymillException.class )
   public void testCreateWithPaymentAndClient_shouldFail() {
