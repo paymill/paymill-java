@@ -368,6 +368,26 @@ public final class Webhook {
     SUBSCRIPTION_FAILED("subscription.failed"),
 
     /**
+     * Returns a {@link Subscription}.
+     */
+    SUBSCRIPTION_EXPIRING("subscription.expiring"),
+    
+    /**
+     * Returns a {@link Subscription}.
+     */
+    SUBSCRIPTION_DEACTIVATED("subscription.deactivated"),
+    
+    /**
+     * Returns a {@link Subscription}.
+     */
+    SUBSCRIPTION_ACTIVATED("subscription.activated"),
+    
+    /**
+     * Returns a {@link Subscription}.
+     */
+    SUBSCRIPTION_CANCELED("subscription.canceled"),
+
+    /**
      * Returns a refund.
      */
     REFUND_CREATED("refund.created"),
