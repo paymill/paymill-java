@@ -168,6 +168,7 @@ public class SubscriptionServiceTest {
     subscriptionService.changeAmount( subscription, 2000 );
     Assert.assertEquals( subscription.getAmount(), (Integer) 2000 );
     Assert.assertNull( subscription.getTempAmount() );
+    this.subscriptions.add( subscription );
   }
 
   @Test
@@ -176,6 +177,42 @@ public class SubscriptionServiceTest {
     subscriptionService.changeAmountTemporary( subscription, 2000 );
     Assert.assertEquals( subscription.getAmount(), (Integer) 1200 );
     Assert.assertEquals( subscription.getTempAmount(), (Integer) 2000 );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testChangeOfferKeepNextCaptureNoRefund() {
+    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
+    subscriptionService.changeOfferKeepCaptureDateNoRefund( subscription, this.offer1 );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testChangeOfferKeepNextCaptureAndRefund() {
+    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
+    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
+    subscriptionService.changeOfferKeepCaptureDateAndRefund( subscription, this.offer1 );
+    //TODO cannot be tested correctly as there 
+    //Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testChangeOfferChangeNextCaptureAndRefund() {
+    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
+    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
+    Date inAMonth = DateUtils.addMonths( new Date(), 1 );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withStartDate( inTwoWeeks ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
+    subscriptionService.changeOfferChangeCaptureDateAndRefund( subscription, this.offer1 );
+    // when we call the above we trigger a transaction, so the nextCapture moves to offer1 interval - 1 month
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAMonth ) );
+    this.subscriptions.add( subscription );
   }
 
   /*

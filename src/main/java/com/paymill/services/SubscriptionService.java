@@ -306,10 +306,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription changeAmount( Subscription subscription, Integer amount ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    params.add( "amount", String.valueOf( amount ) );
-    params.add( "amount_change_type", "1" );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return changeAmount( subscription, amount, 1 );
   }
 
   /**
@@ -323,10 +320,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription changeAmountTemporary( Subscription subscription, Integer amount ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    params.add( "amount", String.valueOf( amount ) );
-    params.add( "amount_change_type", "0" );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return changeAmount( subscription, amount, 0 );
   }
 
   /**
@@ -341,6 +335,72 @@ public class SubscriptionService extends AbstractService {
    */
   public Subscription changeAmountTemporary( String subscriptionId, Integer amount ) {
     return this.changeAmountTemporary( new Subscription( subscriptionId ), amount );
+  }
+
+  private Subscription changeAmount( Subscription subscription, Integer amount, Integer type ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "amount", String.valueOf( amount ) );
+    params.add( "amount_change_type", String.valueOf( type ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
+   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund will be
+   * given if due. <br />
+   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e. the
+   * current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date is immediate
+   * i.e. the current date. <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferChangeCaptureDateAndRefund( Subscription subscription, Offer offer ) {
+    return changeOffer( subscription, offer, 2 );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
+   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if due. <br />
+   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not change. If
+   * the new amount is less then the old one, a refund happens. The next charge date will not change. <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferKeepCaptureDateAndRefund( Subscription subscription, Offer offer ) {
+    return changeOffer( subscription, offer, 1 );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
+   * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferKeepCaptureDateNoRefund( Subscription subscription, Offer offer ) {
+    return changeOffer( subscription, offer, 0 );
+  }
+
+  private Subscription changeOffer( Subscription subscription, Offer offer, Integer type ) {
+    ValidationUtils.validatesOffer( offer );
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "offer", offer.getId() );
+    params.add( "offer_change_type", String.valueOf( type ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
   }
 
   /**
