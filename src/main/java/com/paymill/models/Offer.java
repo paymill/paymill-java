@@ -2,13 +2,9 @@ package com.paymill.models;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * An offer is a recurring plan which a user can subscribe to. You can create different offers with different plan attributes e.g.
@@ -34,7 +30,7 @@ public final class Offer {
 
   private Integer                 amount;
 
-  private Interval                interval;
+  private Interval.Period         interval;
 
   @JsonProperty( "trial_period_days" )
   private Integer                 trialPeriodDays;
@@ -110,12 +106,12 @@ public final class Offer {
     this.appId = appId;
   }
 
-  public Interval getInterval() {
+  public Interval.Period getInterval() {
     return interval;
   }
 
   public void setInterval( String interval ) {
-    this.interval = new Interval( interval );
+    this.interval = new Interval.Period( interval );
   }
 
   public Offer.SubscriptionCount getSubscriptionCount() {
@@ -186,66 +182,6 @@ public final class Offer {
 
   public static Offer.Order createOrder() {
     return new Offer.Order();
-  }
-
-  @JsonIgnoreProperties( ignoreUnknown = true )
-  public class Interval {
-
-    private Integer    interval;
-    private Offer.Unit unit;
-
-    public Interval( final String interval ) {
-      String[] parts = StringUtils.split( interval );
-      this.interval = Integer.parseInt( parts[0] );
-      this.unit = Offer.Unit.create( parts[1] );
-    }
-
-    public Integer getInterval() {
-      return this.interval;
-    }
-
-    public void setInterval( final Integer interval ) {
-      this.interval = interval;
-    }
-
-    public Offer.Unit getUnit() {
-      return this.unit;
-    }
-
-    public void setUnit( final Offer.Unit unit ) {
-      this.unit = unit;
-    }
-
-    @Override
-    public String toString() {
-      return this.interval + " " + this.unit;
-    }
-
-  }
-
-  public enum Unit {
-    DAY("DAY"), WEEK("WEEK"), MONTH("MONTH"), YEAR("YEAR");
-
-    private String value;
-
-    private Unit( final String value ) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return this.value;
-    }
-
-    @JsonCreator
-    public static Unit create( final String value ) {
-      for( Unit unit : Unit.values() ) {
-        if( unit.getValue().equals( value ) ) {
-          return unit;
-        }
-      }
-      throw new IllegalArgumentException( "Invalid value for Interval.Unit" );
-    }
   }
 
   @JsonIgnoreProperties( ignoreUnknown = true )

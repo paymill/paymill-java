@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Client;
 import com.paymill.models.Fee;
+import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
 
@@ -39,9 +40,13 @@ final class ValidationUtils {
       throw new IllegalArgumentException( "Name can not be blank" );
   }
 
-  static void validatesInterval( String interval ) {
-    if( StringUtils.isBlank( interval ) )
-      throw new IllegalArgumentException( "Interval can not be blank" );
+  static void validatesIntervalPeriod( Interval.Period interval ) {
+    if( interval.getInterval() < 1 ) {
+      throw new IllegalArgumentException( "Interval must be greater than zero" );
+    }
+    if( interval.getUnit() == null ) {
+      throw new IllegalArgumentException( "Interval unit cannot be null" );
+    }
   }
 
   static void validatesFee( Fee fee ) {

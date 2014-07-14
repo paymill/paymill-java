@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.paymill.models.Client;
+import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.PaymillList;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -105,7 +106,7 @@ public class OfferService extends AbstractService {
    *          Your name for this offer
    * @return {@link Offer} object with id, which represents a PAYMILL offer.
    */
-  public Offer create( Integer amount, String currency, String interval, String name ) {
+  public Offer create( Integer amount, String currency, Interval.Period interval, String name ) {
     return this.create( amount, currency, interval, name, null );
   }
 
@@ -116,24 +117,24 @@ public class OfferService extends AbstractService {
    * @param currency
    *          ISO 4217 formatted currency code.
    * @param interval
-   *          Defining how often the {@link Client} should be charged. Format: number DAY | WEEK | MONTH | YEAR
+   *          Defining how often the {@link Client} should be charged.
    * @param name
    *          Your name for this offer
    * @param trialPeriodDays
    *          Give it a try or charge directly. Can be <code>null</code>.
    * @return {@link Offer} object with id, which represents a PAYMILL offer.
    */
-  public Offer create( Integer amount, String currency, String interval, String name, Integer trialPeriodDays ) {
+  public Offer create( Integer amount, String currency, Interval.Period interval, String name, Integer trialPeriodDays ) {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
-    ValidationUtils.validatesInterval( interval );
+    ValidationUtils.validatesIntervalPeriod( interval );
     ValidationUtils.validatesName( name );
     ValidationUtils.validatesTrialPeriodDays( trialPeriodDays );
 
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
-    params.add( "interval", interval );
+    params.add( "interval", interval.toString() );
     params.add( "name", name );
     if( trialPeriodDays != null )
       params.add( "trial_period_days", String.valueOf( trialPeriodDays ) );

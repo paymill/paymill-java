@@ -8,25 +8,27 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
+import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.PaymillList;
 
 public class OfferServiceTest {
 
-  private Integer      amount          = 10000;
-  private String       currency        = "EUR";
-  private String       interval        = "1 MONTH";
-  private String       name            = "Chuck Testa";
-  private Integer      trialPeriodDays = 14;
+  private Integer         amount          = 10000;
+  private String          currency        = "EUR";
+  private Interval.Period interval        = Interval.period( 1, Interval.Unit.MONTH );
+  private String          name            = "Chuck Testa";
+  private Integer         trialPeriodDays = 14;
 
-  private OfferService offerService;
+  private OfferService    offerService;
 
-  private List<Offer>  offers          = new ArrayList<Offer>();
-  private Offer        offerWithTrial;
+  private List<Offer>     offers          = new ArrayList<Offer>();
+  private Offer           offerWithTrial;
 
   @BeforeClass
   public void setUp() {
     PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+
     this.offerService = paymill.getOfferService();
   }
 
@@ -98,7 +100,7 @@ public class OfferServiceTest {
     Assert.assertEquals( offer.getCurrency(), this.currency );
     Assert.assertNotNull( offer.getInterval() );
     Assert.assertEquals( offer.getInterval().getInterval(), Integer.valueOf( 1 ) );
-    Assert.assertEquals( offer.getInterval().getUnit(), Offer.Unit.MONTH );
+    Assert.assertEquals( offer.getInterval().getUnit(), Interval.Unit.MONTH );
     Assert.assertNotNull( offer.getCreatedAt() );
     Assert.assertNotNull( offer.getUpdatedAt() );
     Assert.assertNull( offer.getAppId() );
