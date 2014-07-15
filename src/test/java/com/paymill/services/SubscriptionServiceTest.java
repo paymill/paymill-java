@@ -227,6 +227,19 @@ public class SubscriptionServiceTest {
     this.subscriptions.add( subscription );
   }
 
+  @Test
+  public void testChangePeriodValidity() {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, offer1 ).withPeriodOfValidity( "1 YEAR" ) );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getInterval(), (Integer) 1 );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.YEAR );
+    subscriptionService.limitValidity( subscription, "2 MONTH" );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getInterval(), (Integer) 2 );
+    Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.MONTH );
+    subscriptionService.unlimitValidity( subscription );
+    Assert.assertNull( subscription.getPeriodOfValidity() );
+    this.subscriptions.add( subscription );
+  }
+
   /*
   @Test( expectedExceptions = PaymillException.class )
   public void testCreateWithPaymentAndClient_shouldFail() {

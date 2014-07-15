@@ -41,6 +41,10 @@ final class ValidationUtils {
   }
 
   static void validatesIntervalPeriod( Interval.Period interval ) {
+
+    if( interval == null ) {
+      throw new IllegalArgumentException( "Interval cannot be null" );
+    }
     if( interval.getInterval() < 1 ) {
       throw new IllegalArgumentException( "Interval must be greater than zero" );
     }
@@ -50,6 +54,10 @@ final class ValidationUtils {
   }
 
   static void validatesIntervalPeriodWithChargeDay( Interval.PeriodWithChargeDay interval ) {
+
+    if( interval == null ) {
+      throw new IllegalArgumentException( "Interval cannot be null" );
+    }
     if( interval.getInterval() < 1 ) {
       throw new IllegalArgumentException( "Interval must be greater than zero" );
     }

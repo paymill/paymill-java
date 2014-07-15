@@ -416,6 +416,46 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
+   * Change the period of validity for a subscription.
+   * @param subscription
+   *          the subscription.
+   * @param newValidity
+   *          the new validity.
+   * @return the updated subscription.
+   */
+  public Subscription limitValidity( Subscription subscription, Interval.Period newValidity ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ValidationUtils.validatesIntervalPeriod( newValidity );
+    params.add( "period_of_validity", newValidity.toString() );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Change the period of validity for a subscription.
+   * @param subscription
+   *          the subscription.
+   * @param newValidity
+   *          the new validity .
+   * @return the updated subscription.
+   */
+  public Subscription limitValidity( Subscription subscription, String newValidity ) {
+    return limitValidity( subscription, new Interval.Period( newValidity ) );
+  }
+
+  /**
+   * Change the validity of a subscription to unlimited
+   * @param subscription
+   *          the subscription.
+   * @return the updated subscription.
+   */
+  public Subscription unlimitValidity( Subscription subscription ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "period_of_validity", "remove" );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+
+  }
+
+  /**
    * This function removes an existing subscription. If you set the attribute cancelAtPeriodEnd parameter to the value
    * <code>true</code>, the subscription will remain active until the end of the period. The subscription will not be renewed
    * again. If the value is set to <code>false</code> it is directly terminated, but pending {@link Transaction}s will still be
