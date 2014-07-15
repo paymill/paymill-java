@@ -91,8 +91,8 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.YEAR );
     Assert.assertTrue( subscription.getNextCaptureAt().getTime() > new Date().getTime() );
     Assert.assertEquals( subscription.getStatus(), Subscription.Status.ACTIVE );
-    Assert.assertFalse( subscription.isCanceled() );
-    Assert.assertFalse( subscription.isDeleted() );
+    Assert.assertFalse( subscription.getCanceled() );
+    Assert.assertFalse( subscription.getCanceled() );
     Assert.assertFalse( subscription.getLivemode() );
 
     Assert.assertNull( subscription.getCanceledAt() );
@@ -237,6 +237,28 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.MONTH );
     subscriptionService.unlimitValidity( subscription );
     Assert.assertNull( subscription.getPeriodOfValidity() );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testCancelSubscription() throws InterruptedException {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    subscriptionService.cancel( subscription );
+    //TODO this seems to be an API bug, as the subscription is not updated immediately. we "refresh"
+    Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
+    Assert.assertEquals( subscription.getCanceled(), Boolean.TRUE );
+    Assert.assertEquals( subscription.getDeleted(), Boolean.FALSE );
+    this.subscriptions.add( subscription );
+  }
+  
+  @Test
+  public void testDeleteSubscription() throws InterruptedException {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    subscriptionService.delete( subscription );
+    //TODO this seems to be an API bug, as the subscription is not updated immediately. we "refresh"
+    Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
+    Assert.assertEquals( subscription.getCanceled(), Boolean.TRUE );
+    Assert.assertEquals( subscription.getDeleted(), Boolean.TRUE );
     this.subscriptions.add( subscription );
   }
 

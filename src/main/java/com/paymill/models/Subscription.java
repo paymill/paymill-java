@@ -71,10 +71,10 @@ public final class Subscription {
   private Subscription.Status          status;
 
   @JsonProperty( "is_canceled" )
-  private Boolean                      isCanceled;
+  private Boolean                      canceled;
 
   @JsonProperty( "is_deleted" )
-  private Boolean                      isDeleted;
+  private Boolean                      deleted;
 
   public Subscription() {
     super();
@@ -188,20 +188,20 @@ public final class Subscription {
     this.status = status;
   }
 
-  public Boolean isCanceled() {
-    return isCanceled;
+  public Boolean getCanceled() {
+    return canceled;
   }
 
-  public void setCanceled( Boolean isCanceled ) {
-    this.isCanceled = isCanceled;
+  public void setCanceled( Boolean canceled ) {
+    this.canceled = canceled;
   }
 
-  public Boolean isDeleted() {
-    return isDeleted;
+  public Boolean getDeleted() {
+    return deleted;
   }
 
-  public void setIsDeleted( Boolean isDeleted ) {
-    this.isDeleted = isDeleted;
+  public void setDeleted( Boolean deleted ) {
+    this.deleted = deleted;
   }
 
   /**

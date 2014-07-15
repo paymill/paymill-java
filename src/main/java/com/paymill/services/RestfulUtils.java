@@ -64,9 +64,16 @@ final class RestfulUtils {
     return RestfulUtils.refreshInstance( source, target );
   }
 
+  static <T> T delete( String path, T target, MultivaluedMap<String, String> params, Class<?> clazz, Client httpClient ) {
+    String id = RestfulUtils.getIdByReflection( target );
+    T source = RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, params, httpClient ), clazz );
+    return RestfulUtils.refreshInstance( source, target );
+  }
+
   static <T> T delete( String path, T target, Class<?> clazz, Client httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
-    return RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, null, httpClient ), clazz );
+    return RestfulUtils.refreshInstance( source, target );
   }
 
   private static String getIdByReflection( Object instance ) {
@@ -179,9 +186,9 @@ final class RestfulUtils {
     return response.getEntity( String.class );
   }
 
-  private static String delete( String path, Client httpClient ) {
+  private static String delete( String path, MultivaluedMap<String, String> params, Client httpClient ) {
     WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path );
-    ClientResponse response = webResource.delete( ClientResponse.class );
+    ClientResponse response = webResource.delete( ClientResponse.class, params );
     return response.getEntity( String.class );
   }
 
@@ -227,6 +234,9 @@ final class RestfulUtils {
   }
 
   private static <T> T refreshInstance( T source, T target ) {
+    if( source == null ) {
+      return target;
+    }
     try {
       BeanUtils.copyProperties( target, source );
     } catch( Exception exc ) {

@@ -456,27 +456,53 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function removes an existing subscription. If you set the attribute cancelAtPeriodEnd parameter to the value
-   * <code>true</code>, the subscription will remain active until the end of the period. The subscription will not be renewed
-   * again. If the value is set to <code>false</code> it is directly terminated, but pending {@link Transaction}s will still be
-   * charged.
+   * This function removes an existing subscription. The subscription will be deleted and no pending transactions will be charged.
+   * Deleted subscriptions will not be displayed.
    * @param subscription
    *          A {@link Subscription} with Id to be deleted.
+   * @return the deleted subscription.
    */
-  public void delete( Subscription subscription ) {
-    RestfulUtils.delete( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
+  public Subscription delete( Subscription subscription ) {
+    return this.delete( subscription, true );
   }
 
   /**
-   * This function removes an existing subscription. If you set the attribute cancelAtPeriodEnd parameter to the value
-   * <code>true</code>, the subscription will remain active until the end of the period. The subscription will not be renewed
-   * again. If the value is set to <code>false</code> it is directly terminated, but pending {@link Transaction}s will still be
-   * charged.
+   * This function removes an existing subscription. The subscription will be deleted and no pending transactions will be charged.
+   * Deleted subscriptions will not be displayed.
    * @param subscriptionId
-   *          Id of the {@link Subscription}, which have to be deleted.
+   *          Id of the {@link Subscription}, which has to be deleted.
+   * @return the deleted subscription.
    */
-  public void delete( String subscriptionId ) {
-    this.delete( new Subscription( subscriptionId ) );
+  public Subscription delete( String subscriptionId ) {
+    return this.delete( new Subscription( subscriptionId ) );
+  }
+
+  /**
+   * This function cancels an existing subscription. The subscription will be directly terminated and no pending transactions will
+   * be charged.
+   * @param subscription
+   *          A {@link Subscription} with Id to be canceled.
+   * @return the canceled subscription.
+   */
+  public Subscription cancel( Subscription subscription ) {
+    return this.delete( subscription, false );
+  }
+
+  /**
+   * This function cancels an existing subscription. The subscription will be directly terminated and no pending transactions will
+   * be charged.
+   * @param subscriptionId
+   *          Id of the {@link Subscription}, which has to be canceled.
+   * @return the canceled subscription.
+   */
+  public Subscription cancel( String subscriptionId ) {
+    return this.cancel( new Subscription( subscriptionId ) );
+  }
+
+  private Subscription delete( Subscription subscription, boolean remove ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "remove", String.valueOf( remove ) );
+    return RestfulUtils.delete( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
   }
 
 }
