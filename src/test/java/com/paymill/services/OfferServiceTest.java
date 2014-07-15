@@ -8,28 +8,36 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
+import com.paymill.models.Client;
 import com.paymill.models.Interval;
 import com.paymill.models.Offer;
+import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
+import com.paymill.models.Subscription;
 
 public class OfferServiceTest {
 
-  private Integer         amount          = 10000;
-  private String          currency        = "EUR";
-  private Interval.Period interval        = Interval.period( 1, Interval.Unit.MONTH );
-  private String          name            = "Chuck Testa";
-  private Integer         trialPeriodDays = 14;
+  private Integer             amount          = 10000;
+  private String              currency        = "EUR";
+  private Interval.Period     interval        = Interval.period( 1, Interval.Unit.MONTH );
+  private String              name            = "Chuck Testa";
+  private Integer             trialPeriodDays = 14;
 
-  private OfferService    offerService;
+  private OfferService        offerService;
+  private SubscriptionService subscriptionService;
+  private Payment             payment;
 
-  private List<Offer>     offers          = new ArrayList<Offer>();
-  private Offer           offerWithTrial;
+  private List<Offer>         offers          = new ArrayList<Offer>();
+  private Offer               offerWithTrial;
 
   @BeforeClass
   public void setUp() {
     PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
 
     this.offerService = paymill.getOfferService();
+    this.subscriptionService = paymill.getSubscriptionService();
+    Client client = paymill.getClientService().createWithDescription( "temp user" );
+    this.payment = paymill.getPaymentService().createWithTokenAndClient( "098f6bcd4621d373cade4e832627b4f6", client );
   }
 
   @Test
@@ -63,7 +71,7 @@ public class OfferServiceTest {
   @Test( dependsOnMethods = "testShow_shouldSecceed" )
   public void testUpdate_shouldSucceed() {
     this.offerWithTrial.setName( "Charles A. 'Chuck' Testa" );
-    this.offerService.update( this.offerWithTrial );
+    this.offerService.update( this.offerWithTrial, false );
     this.validatesOffer( this.offerWithTrial );
 
     Assert.assertEquals( this.offerWithTrial.getName(), "Charles A. 'Chuck' Testa" );
@@ -92,6 +100,25 @@ public class OfferServiceTest {
     Assert.assertNotNull( offers );
     Assert.assertFalse( offers.isEmpty() );
     Assert.assertEquals( offers.get( 0 ).getAmount(), this.amount );
+  }
+
+  @Test
+  public void testUpdateOfferAndSubscritions() {
+    Offer offer = this.offerService.create( this.amount, this.currency, "1 MONTH", "test update subs" );
+    validatesOffer( offer );
+    Subscription subscription = this.subscriptionService.create( Subscription.create( payment, offer ) );
+    Assert.assertEquals( subscription.getOffer().getId(), offer.getId() );
+    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 1 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.MONTH );
+    offer.setInterval( "2 WEEK" );
+    this.offerService.update( offer, true );
+    Assert.assertEquals( offer.getId(), offer.getId() );
+    Assert.assertEquals( offer.getInterval().getInterval(), (Integer) 2 );
+    Assert.assertEquals( offer.getInterval().getUnit(), Interval.Unit.WEEK );
+    this.subscriptionService.get( subscription );
+    Assert.assertEquals( subscription.getOffer().getId(), offer.getId() );
+    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 2 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.WEEK );
   }
 
   private void validatesOffer( final Offer offer ) {

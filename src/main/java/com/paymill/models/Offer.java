@@ -28,13 +28,16 @@ public final class Offer {
   @Updateable( "name" )
   private String                  name;
 
+  @Updateable( "amount" )
   private Integer                 amount;
 
+  @Updateable( "interval" )
   private Interval.Period         interval;
 
   @JsonProperty( "trial_period_days" )
   private Integer                 trialPeriodDays;
 
+  @Updateable( "currency" )
   private String                  currency;
 
   @JsonProperty( "created_at" )

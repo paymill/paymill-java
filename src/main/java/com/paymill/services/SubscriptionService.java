@@ -231,7 +231,7 @@ public class SubscriptionService extends AbstractService {
   public Subscription pause( Subscription subscription ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "pause", String.valueOf( true ) );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -262,7 +262,7 @@ public class SubscriptionService extends AbstractService {
   public Subscription unpause( Subscription subscription ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "pause", String.valueOf( false ) );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -382,7 +382,7 @@ public class SubscriptionService extends AbstractService {
       ValidationUtils.validatesIntervalPeriodWithChargeDay( interval );
       params.add( "interval", interval.toString() );
     }
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -441,7 +441,7 @@ public class SubscriptionService extends AbstractService {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "offer", offer.getId() );
     params.add( "offer_change_type", String.valueOf( type ) );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -453,7 +453,7 @@ public class SubscriptionService extends AbstractService {
   public Subscription endTrial( Subscription subscription ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "trial_end", String.valueOf( false ) );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -468,7 +468,7 @@ public class SubscriptionService extends AbstractService {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     ValidationUtils.validatesIntervalPeriod( newValidity );
     params.add( "period_of_validity", newValidity.toString() );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
 
   /**
@@ -492,7 +492,7 @@ public class SubscriptionService extends AbstractService {
   public Subscription unlimitValidity( Subscription subscription ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "period_of_validity", "remove" );
-    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
 
   }
 

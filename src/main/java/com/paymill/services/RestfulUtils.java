@@ -58,8 +58,11 @@ final class RestfulUtils {
     return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T update( String path, T target, MultivaluedMap<String, String> params, Class<?> clazz, Client httpClient ) {
+  static <T> T update( String path, T target, MultivaluedMap<String, String> params, boolean includeTargetUpdateables, Class<?> clazz, Client httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
+    if( includeTargetUpdateables ) {
+      params.putAll( RestfulUtils.prepareEditableParameters( target ) );
+    }
     T source = RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }

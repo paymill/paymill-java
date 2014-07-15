@@ -19,27 +19,29 @@ import com.paymill.models.Subscription;
 
 public class SubscriptionServiceTest {
 
-  private final static long   TWO_WEEKS_FROM_NOW = 1000 * 60 * 60 * 24 * 14;
-  private final static long   TWO_DAYS_FROM_NOW  = 1000 * 60 * 60 * 24 * 2;
-
+  private Date                inAWeek           = DateUtils.addWeeks( new Date(), 1 );
+  private Date                inTwoWeeks        = DateUtils.addWeeks( new Date(), 2 );
+  private Date                inAMonth          = DateUtils.addMonths( new Date(), 1 );
   private SubscriptionService subscriptionService;
   private PaymentService      paymentService;
   private ClientService       clientService;
   private OfferService        offerService;
 
-  private String              clientEmail        = "john.rambo@qaiware.com";
-  private String              clientDescription  = "Boom, boom, shake the room";
-  private String              token              = "098f6bcd4621d373cade4e832627b4f6";
-  private Integer             amount             = 900;
-  private String              currency           = "EUR";
-  private Interval.Period     interval           = Interval.period( 1, Interval.Unit.MONTH );
-  private String              name               = "Chuck Testa";
+  private String              clientEmail       = "john.rambo@qaiware.com";
+  private String              clientDescription = "Boom, boom, shake the room";
+  private String              token             = "098f6bcd4621d373cade4e832627b4f6";
+  private Integer             amount            = 900;
+  private String              currency          = "EUR";
+  private Interval.Period     interval          = Interval.period( 1, Interval.Unit.MONTH );
+  private String              name              = "Chuck Testa";
 
   private Client              client;
   private Payment             payment;
   private Offer               offer1;
   private Offer               offer2;
   private Offer               offer3;
+  private Offer               offer4;
+  private Offer               offer5;
   private List<Subscription>  subscriptions;
 
   @BeforeClass
@@ -56,6 +58,8 @@ public class SubscriptionServiceTest {
     this.offer1 = this.offerService.create( this.amount, this.currency, this.interval, this.name );
     this.offer2 = this.offerService.create( this.amount * 2, this.currency, this.interval, "Updated " + this.name );
     this.offer3 = this.offerService.create( this.amount * 3, this.currency, this.interval, "Updated " + this.name );
+    this.offer4 = this.offerService.create( this.amount * 4, this.currency, this.interval, "SubsOffer4" );
+    this.offer5 = this.offerService.create( this.amount * 6, this.currency, this.interval, "SubsOffer5" );
 
     this.subscriptions = new ArrayList<Subscription>();
   }
@@ -65,6 +69,13 @@ public class SubscriptionServiceTest {
     for( Subscription subscription : this.subscriptions ) {
       this.subscriptionService.delete( subscription );
     }
+    this.offerService.delete( offer1, true );
+    this.offerService.delete( offer2, true );
+    this.offerService.delete( offer3, true );
+    this.offerService.delete( offer4, true );
+    this.offerService.delete( offer5, true );
+    this.paymentService.delete( payment );
+    this.clientService.delete( client );
   }
 
   @Test
@@ -189,7 +200,6 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testChangeOfferKeepNextCaptureNoRefund() {
-    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
     subscriptionService.changeOfferKeepCaptureDateNoRefund( subscription, this.offer1 );
@@ -199,8 +209,6 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testChangeOfferKeepNextCaptureAndRefund() {
-    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
-    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
     subscriptionService.changeOfferKeepCaptureDateAndRefund( subscription, this.offer1 );
@@ -211,9 +219,6 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testChangeOfferChangeNextCaptureAndRefund() {
-    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
-    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
-    Date inAMonth = DateUtils.addMonths( new Date(), 1 );
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withStartDate( inTwoWeeks ) );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
     subscriptionService.changeOfferChangeCaptureDateAndRefund( subscription, this.offer1 );
@@ -224,8 +229,6 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testEndTrial() {
-    Date inAWeek = DateUtils.addWeeks( new Date(), 1 );
-    Date inTwoWeeks = DateUtils.addWeeks( new Date(), 2 );
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withStartDate( inTwoWeeks ) );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
     subscriptionService.endTrial( subscription );
@@ -270,7 +273,6 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testUpdateSubscription() {
-    Date inTwoMonths = DateUtils.addMonths( new Date(), 2 );
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 2000, "EUR", "1 WEEK" ).withName( "test1" ) );
     subscription.setCurrency( "USD" );
     subscription.setInterval( Interval.periodWithChargeDay( 2, Interval.Unit.MONTH ) );
@@ -282,57 +284,24 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscription.getName(), "test2" );
   }
 
-  /*
-  @Test( expectedExceptions = PaymillException.class )
-  public void testCreateWithPaymentAndClient_shouldFail() {
-    this.subscriptionService.create( Subscription.Creator.create( payment.getId(), client.getId() ).withOffer( offer1 ) );
-  }
-
-  
-  @Test( dependsOnMethods = "testCreateWithPayment" )
-  public void testCreateWithPaymentAndClient_shouldSecceed() throws Exception {
-    Thread.sleep( 1000 );
-
-    Subscription subscription = this.subscriptionService.createWithOfferPaymentAndClient( offer2, payment, client );
-    Assert.assertNotNull( subscription );
-    Assert.assertNotNull( subscription.getClient() );
-
-    this.subscriptions.add( subscription );
-  }
-
-  @Test( dependsOnMethods = "testCreateWithPaymentAndClient_shouldSecceed" )
-  public void testUpdate() {
-    String offerId = this.subscription.getOffer().getId();
-    String subscriptionId = this.subscription.getId();
-    Assert.assertEquals( this.subscription.getOffer().getId(), this.offer1.getId() );
-
-    this.subscription.setOffer( this.offer2 );
-    this.subscriptionService.update( this.subscription );
-
-    Assert.assertFalse( StringUtils.equals( this.subscription.getOffer().getId(), offerId ) );
-    Assert.assertEquals( this.subscription.getOffer().getId(), this.offer2.getId() );
-    Assert.assertEquals( this.subscription.getId(), subscriptionId );
-  }
-
-  //TODO[VNi]: uncomment when API returns null instead of empty array
-  //@Test( dependsOnMethods = "testUpdate" )
+  // TODO[VNi]: There is an API error: No sorting by offer.
+  //@Test( )
   public void testListOrderByOffer() {
-    // TODO[VNi]: There is an API error: No sorting by offer.
+
+    subscriptionService.create( Subscription.create( payment, offer4 ) );
+    subscriptionService.create( Subscription.create( payment, offer5 ) );
+
     Subscription.Order orderDesc = Subscription.createOrder().byOffer().desc();
     Subscription.Order orderAsc = Subscription.createOrder().byOffer().asc();
 
     List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc ).getData();
-    Assert.assertEquals( subscriptionsDesc.size(), this.subscriptions.size() );
 
     List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc ).getData();
-    Assert.assertEquals( subscriptionsAsc.size(), this.subscriptions.size() );
 
-    Assert.assertEquals( subscriptionsDesc.get( 0 ).getOffer().getId(), subscriptionsAsc.get( 1 ).getOffer().getId() );
-    Assert.assertEquals( subscriptionsDesc.get( 1 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
+    Assert.assertNotEquals( subscriptionsDesc.get( 0 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
   }
 
-  //TODO[VNi]: uncomment when API returns null instead of empty array
-  //@Test( dependsOnMethods = "testUpdate" )
+  @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
   public void testListOrderByCreatedAt() {
     Subscription.Order orderDesc = Subscription.createOrder().byCreatedAt().desc();
     Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();
@@ -348,7 +317,7 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscriptionsDesc.get( 0 ).getId(), subscriptionsAsc.get( subscriptionsAsc.size() - 1 ).getId() );
     Assert.assertEquals( subscriptionsDesc.get( subscriptionsDesc.size() - 1 ).getId(), subscriptionsAsc.get( 0 ).getId() );
   }
-  */
+
   public static boolean datesAroundSame( Date first, Date second, int minutes ) {
     long timespan = minutes * 60 * 1000;
     return Math.abs( first.getTime() - second.getTime() ) < timespan;

@@ -143,31 +143,83 @@ public class OfferService extends AbstractService {
   }
 
   /**
-   * Updates the offer. Only the name can be changed all other attributes cannot be edited.
+   * Creates an offer via the API.
+   * @param amount
+   *          Amount in cents > 0.
+   * @param currency
+   *          ISO 4217 formatted currency code.
+   * @param interval
+   *          Defining how often the {@link Client} should be charged. Format: number DAY | WEEK | MONTH | YEAR
+   * @param name
+   *          Your name for this offer
+   * @return {@link Offer} object with id, which represents a PAYMILL offer.
+   */
+  public Offer create( Integer amount, String currency, String interval, String name ) {
+    return this.create( amount, currency, interval, name, null );
+  }
+
+  /**
+   * Creates an offer via the API.
+   * @param amount
+   *          Amount in cents > 0.
+   * @param currency
+   *          ISO 4217 formatted currency code.
+   * @param interval
+   *          Defining how often the {@link Client} should be charged.
+   * @param name
+   *          Your name for this offer
+   * @param trialPeriodDays
+   *          Give it a try or charge directly. Can be <code>null</code>.
+   * @return {@link Offer} object with id, which represents a PAYMILL offer.
+   */
+  public Offer create( Integer amount, String currency, String interval, String name, Integer trialPeriodDays ) {
+    return this.create( amount, currency, new Interval.Period( interval ), name, null );
+  }
+
+  /**
+   * Updates an offer. Following properties will be updated:
+   * <p>
+   * <ul>
+   * <li>name
+   * <li>amount
+   * <li>interval
+   * <li>currency
+   * <ul>
+   * <p>
    * @param offer
    *          {@link Offer} with Id.
+   * @param updateSubscriptions
+   *          when set to true, all associated subscriptions will be updated (except trial_period_days). When set to false, no
+   *          subscriptions will be updated.
+   * @return the updated offer.
    */
-  public void update( Offer offer ) {
-    RestfulUtils.update( OfferService.PATH, offer, Offer.class, super.httpClient );
+  public Offer update( Offer offer, boolean updateSubscriptions ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "update_subscriptions", String.valueOf( updateSubscriptions ) );
+    return RestfulUtils.update( OfferService.PATH, offer, params, true, Offer.class, super.httpClient );
   }
 
   /**
-   * An {@link Offer} can be deleted if no {@link Client} is subscribed to it.
+   * Remove an offer.
    * @param offer
-   *          {@link Offer} with id to be deleted.
+   *          the {@link Offer}.
+   * @param removeWithSubscriptions
+   *          if true, the plan and all subscriptions associated with it will be deleted. If false, only the plan will be deleted.
    */
-  public void delete( Offer offer ) {
-    RestfulUtils.delete( OfferService.PATH, offer, Offer.class, super.httpClient );
+  public void delete( Offer offer, boolean removeWithSubscriptions ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "remove_with_subscriptions", String.valueOf( removeWithSubscriptions ) );
+    RestfulUtils.delete( OfferService.PATH, offer, params, Offer.class, super.httpClient );
   }
 
   /**
-   * An {@link Offer} can be deleted if no {@link Client} is subscribed to it.
+   * Remove an offer.
    * @param offerId
-   *          Id of the {@link Offer}.
+   *          Id of the {@link Offer}
+   * @param removeWithSubscriptions
+   *          if true, the plan and all subscriptions associated with it will be deleted. If false, only the plan will be deleted.
    */
-  public void delete( String offerId ) {
-    ValidationUtils.validatesId( offerId );
-    this.delete( new Offer( offerId ) );
+  public void delete( String offerId, boolean removeWithSubscriptions ) {
+    this.delete( new Offer( offerId ), removeWithSubscriptions );
   }
-
 }
