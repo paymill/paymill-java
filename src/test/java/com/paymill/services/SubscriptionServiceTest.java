@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
-import com.paymill.exceptions.PaymillException;
 import com.paymill.models.Client;
 import com.paymill.models.Interval;
 import com.paymill.models.Offer;
@@ -39,8 +39,8 @@ public class SubscriptionServiceTest {
   private Payment             payment;
   private Offer               offer1;
   private Offer               offer2;
+  private Offer               offer3;
   private List<Subscription>  subscriptions;
-  private Subscription        subscription;
 
   @BeforeClass
   public void setUp() {
@@ -55,18 +55,25 @@ public class SubscriptionServiceTest {
     this.payment = this.paymentService.createWithTokenAndClient( this.token, this.client.getId() );
     this.offer1 = this.offerService.create( this.amount, this.currency, this.interval, this.name );
     this.offer2 = this.offerService.create( this.amount * 2, this.currency, this.interval, "Updated " + this.name );
+    this.offer3 = this.offerService.create( this.amount * 3, this.currency, this.interval, "Updated " + this.name );
 
     this.subscriptions = new ArrayList<Subscription>();
   }
 
+  @AfterClass
+  public void tearDown() {
+    for( Subscription subscription : this.subscriptions ) {
+      this.subscriptionService.delete( subscription );
+    }
+  }
+
   @Test
   public void testCreateWithPaymentAndOffer() {
-    Subscription subscription = this.subscriptionService.create( Subscription.create( this.payment, this.offer1 ) );
-    this.subscription = subscription;
+    Subscription subscription = this.subscriptionService.create( Subscription.create( this.payment, this.offer3 ) );
     Assert.assertNotNull( subscription );
     Assert.assertNotNull( subscription.getClient() );
     Assert.assertEquals( subscription.getPayment().getId(), this.payment.getId() );
-    Assert.assertEquals( subscription.getOffer().getId(), this.offer1.getId() );
+    Assert.assertEquals( subscription.getOffer().getId(), this.offer3.getId() );
     this.subscriptions.add( subscription );
   }
 
@@ -153,7 +160,7 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testPauseAndUnpauseSubscription() {
-    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
     subscriptionService.pause( subscription );
     Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
     subscriptionService.unpause( subscription );
@@ -229,7 +236,7 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testChangePeriodValidity() {
-    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, offer1 ).withPeriodOfValidity( "1 YEAR" ) );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "2 MONTH" ).withPeriodOfValidity( "1 YEAR" ) );
     Assert.assertEquals( subscription.getPeriodOfValidity().getInterval(), (Integer) 1 );
     Assert.assertEquals( subscription.getPeriodOfValidity().getUnit(), Interval.Unit.YEAR );
     subscriptionService.limitValidity( subscription, "2 MONTH" );
@@ -242,7 +249,7 @@ public class SubscriptionServiceTest {
 
   @Test
   public void testCancelSubscription() throws InterruptedException {
-    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withInterval( "1 WEEK" ) );
     subscriptionService.cancel( subscription );
     //TODO this seems to be an API bug, as the subscription is not updated immediately. we "refresh"
     Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
@@ -250,16 +257,29 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscription.getDeleted(), Boolean.FALSE );
     this.subscriptions.add( subscription );
   }
-  
+
   @Test
   public void testDeleteSubscription() throws InterruptedException {
-    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, this.offer1 ).withInterval( "1 WEEK" ) );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withInterval( "1 WEEK" ) );
     subscriptionService.delete( subscription );
     //TODO this seems to be an API bug, as the subscription is not updated immediately. we "refresh"
     Assert.assertEquals( subscription.getStatus(), Subscription.Status.INACTIVE );
     Assert.assertEquals( subscription.getCanceled(), Boolean.TRUE );
     Assert.assertEquals( subscription.getDeleted(), Boolean.TRUE );
-    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testUpdateSubscription() {
+    Date inTwoMonths = DateUtils.addMonths( new Date(), 2 );
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 2000, "EUR", "1 WEEK" ).withName( "test1" ) );
+    subscription.setCurrency( "USD" );
+    subscription.setInterval( Interval.periodWithChargeDay( 2, Interval.Unit.MONTH ) );
+    subscription.setName( "test2" );
+    subscriptionService.update( subscription );
+    Assert.assertEquals( subscription.getCurrency(), "USD" );
+    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 2 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.MONTH );
+    Assert.assertEquals( subscription.getName(), "test2" );
   }
 
   /*

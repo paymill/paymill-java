@@ -30,10 +30,13 @@ public final class Subscription {
   @JsonProperty( "temp_amount" )
   private Integer                      tempAmount;
 
+  @Updateable( "currency" )
   private String                       currency;
 
+  @Updateable( "name" )
   private String                       name;
 
+  @Updateable( "interval" )
   private Interval.PeriodWithChargeDay interval;
 
   @JsonProperty( "trial_start" )

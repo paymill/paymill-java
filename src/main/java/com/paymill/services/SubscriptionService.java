@@ -12,7 +12,6 @@ import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Subscription;
 import com.paymill.models.Subscription.Creator;
-import com.paymill.models.Transaction;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -299,6 +298,23 @@ public class SubscriptionService extends AbstractService {
   /**
    * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
    * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * @param subscriptionId
+   *          the Id of the subscription.
+   * @param amount
+   *          the new amount.
+   * @param currency
+   *          optionally, a new currency or <code>null</code>.
+   * @param interval
+   *          optionally, a new interval or <code>null</code>.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmount( String subscriptionId, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
+    return this.changeAmount( new Subscription( subscriptionId ), amount, currency, interval );
+  }
+
+  /**
+   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
+   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
    * @param subscription
    *          the subscription.
    * @param amount
@@ -306,7 +322,24 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription changeAmount( Subscription subscription, Integer amount ) {
-    return changeAmount( subscription, amount, 1 );
+    return changeAmount( subscription, amount, 1, null, null );
+  }
+
+  /**
+   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
+   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * @param subscription
+   *          the subscription.
+   * @param amount
+   *          the new amount.
+   * @param currency
+   *          optionally, a new currency or <code>null</code>.
+   * @param interval
+   *          optionally, a new interval or <code>null</code>.
+   * @return the updated subscription.
+   */
+  public Subscription changeAmount( Subscription subscription, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
+    return changeAmount( subscription, amount, 1, currency, interval );
   }
 
   /**
@@ -320,7 +353,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription changeAmountTemporary( Subscription subscription, Integer amount ) {
-    return changeAmount( subscription, amount, 0 );
+    return changeAmount( subscription, amount, 0, null, null );
   }
 
   /**
@@ -337,10 +370,18 @@ public class SubscriptionService extends AbstractService {
     return this.changeAmountTemporary( new Subscription( subscriptionId ), amount );
   }
 
-  private Subscription changeAmount( Subscription subscription, Integer amount, Integer type ) {
+  private Subscription changeAmount( Subscription subscription, Integer amount, Integer type, String currency, Interval.PeriodWithChargeDay interval ) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add( "amount", String.valueOf( amount ) );
     params.add( "amount_change_type", String.valueOf( type ) );
+    if( currency != null ) {
+      ValidationUtils.validatesCurrency( currency );
+      params.add( "currency", currency );
+    }
+    if( interval != null ) {
+      ValidationUtils.validatesIntervalPeriodWithChargeDay( interval );
+      params.add( "interval", interval.toString() );
+    }
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
   }
 
@@ -505,4 +546,67 @@ public class SubscriptionService extends AbstractService {
     return RestfulUtils.delete( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
   }
 
+  /**
+   * Updates a subscription.Following fields will be updated:<br />
+   * <p>
+   * <ul>
+   * <li>interval (note, that nextCaptureAt will not change.)
+   * <li>currency
+   * <li>name
+   * <ul>
+   * <p>
+   * To update further properties of a subscription use following methods:<br />
+   * <p>
+   * <ul>
+   * <li>{@link SubscriptionService#cancel(Subscription)} to cancel
+   * <li>{@link SubscriptionService#changeAmount(Subscription, Integer)} to change the amount
+   * <li>{@link SubscriptionService#changeOfferChangeCaptureDateAndRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateAndRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateNoRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#endTrial(Subscription)} to end the trial
+   * <li>{@link SubscriptionService#limitValidity(Subscription, com.paymill.models.Interval.Period} to change the validity.
+   * <li>{@link SubscriptionService#pause(Subscription)} to pause
+   * <li>{@link SubscriptionService#unlimitValidity(Subscription)} to change the validity.
+   * <li>{@link SubscriptionService#unpause(Subscription)} to unpause.
+   * <ul>
+   * <p>
+   * @param subscription
+   *          A {@link Subscription} with Id to be updated.
+   * @return
+   */
+  public Subscription update( Subscription subscription ) {
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Updates a subscription.Following fields will be updated:<br />
+   * <p>
+   * <ul>
+   * <li>interval (note, that nextCaptureAt will not change.)
+   * <li>currency
+   * <li>name
+   * <ul>
+   * <p>
+   * To update further properties of a subscription use following methods:<br />
+   * <p>
+   * <ul>
+   * <li>{@link SubscriptionService#cancel(Subscription)} to cancel
+   * <li>{@link SubscriptionService#changeAmount(Subscription, Integer)} to change the amount
+   * <li>{@link SubscriptionService#changeOfferChangeCaptureDateAndRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateAndRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateNoRefund(Subscription, Offer)} to change the offer.
+   * <li>{@link SubscriptionService#endTrial(Subscription)} to end the trial
+   * <li>{@link SubscriptionService#limitValidity(Subscription, com.paymill.models.Interval.Period} to change the validity.
+   * <li>{@link SubscriptionService#pause(Subscription)} to pause
+   * <li>{@link SubscriptionService#unlimitValidity(Subscription)} to change the validity.
+   * <li>{@link SubscriptionService#unpause(Subscription)} to unpause.
+   * <ul>
+   * <p>
+   * @param subscriptionId
+   *          Id of the {@link Subscription} to be updated.
+   * @return
+   */
+  public Subscription update( String subscriptionId ) {
+    return RestfulUtils.update( SubscriptionService.PATH, new Subscription( subscriptionId ), Subscription.class, super.httpClient );
+  }
 }

@@ -149,9 +149,20 @@ final class RestfulUtils {
           if( value != null ) {
             Class<?> clazz = value.getClass();
             if( ClassUtils.isPrimitiveOrWrapper( clazz ) || ClassUtils.getSimpleName( clazz ).equals( "String" ) ) {
-              params.add( updateable.value(), String.valueOf( field.get( instance ) ) );
+              params.add( updateable.value(), String.valueOf( value ) );
             } else {
-              params.add( updateable.value(), String.valueOf( RestfulUtils.getIdByReflection( field.get( instance ) ) ) );
+              // not primitive type, assume ID
+              String id = null;
+              try {
+                id = RestfulUtils.getIdByReflection( value );
+              } catch( Exception e ) {
+                //that's normal, object does not have an id
+              }
+              if( id != null ) {
+                params.add( updateable.value(), id );
+              } else {
+                params.add( updateable.value(), value.toString() );
+              }
             }
           }
         } catch( Exception exc ) {
