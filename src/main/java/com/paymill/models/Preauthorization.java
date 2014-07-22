@@ -20,7 +20,7 @@ public final class Preauthorization {
 
   private String                  id;
 
-  private String                  amount;
+  private Integer                 amount;
 
   private String                  currency;
 
@@ -33,6 +33,8 @@ public final class Preauthorization {
   private Payment                 payment;
 
   private Client                  client;
+
+  private Transaction             transaction;
 
   @JsonProperty( "created_at" )
   private Date                    createdAt;
@@ -59,11 +61,11 @@ public final class Preauthorization {
     this.id = id;
   }
 
-  public String getAmount() {
+  public Integer getAmount() {
     return this.amount;
   }
 
-  public void setAmount( final String amount ) {
+  public void setAmount( final Integer amount ) {
     this.amount = amount;
   }
 
@@ -105,6 +107,14 @@ public final class Preauthorization {
 
   public void setPayment( final Payment payment ) {
     this.payment = payment;
+  }
+
+  public Transaction getTransaction() {
+    return this.transaction;
+  }
+
+  public void setTransaction( final Transaction transaction ) {
+    this.transaction = transaction;
   }
 
   public Client getClient() {

@@ -80,6 +80,7 @@ public class PaymentServiceTest {
     Assert.assertNotNull( payment.getType() );
     Assert.assertNotNull( payment.getCreatedAt() );
     Assert.assertNotNull( payment.getUpdatedAt() );
+    Assert.assertEquals( payment.getClient().getId(), this.client.getId() );
     Assert.assertNull( payment.getAppId() );
     Assert.assertEquals( payment.getId(), this.paymentWithClient.getId() );
   }

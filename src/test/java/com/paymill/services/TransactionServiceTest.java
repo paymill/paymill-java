@@ -13,6 +13,7 @@ import com.paymill.context.PaymillContext;
 import com.paymill.models.Fee;
 import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
+import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
 
 public class TransactionServiceTest {
@@ -24,7 +25,7 @@ public class TransactionServiceTest {
   private Integer                 feeAmount   = 200;
   private String                  feePayment  = "pay_3af44644dd6d25c820a8";
 
-  private Transaction             trPreauthorization;
+  private Preauthorization        preauthorization;
   private Transaction             transaction;
   private Fee                     fee;
   private Payment                 payment;
@@ -39,12 +40,12 @@ public class TransactionServiceTest {
     this.fee.setAmount( this.feeAmount );
     this.fee.setPayment( this.feePayment );
 
-    PaymillContext paymill = new PaymillContext( "c8e7b68f25bb5c04a9a73c09bdd726c6" );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.transactionService = paymill.getTransactionService();
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
 
-    this.trPreauthorization = this.preauthorizationService.createWithToken( this.token, this.amount, this.currency );
+    this.preauthorization = this.preauthorizationService.createWithToken( this.token, this.amount, this.currency );
     this.payment = this.paymentService.createWithToken( this.token );
   }
 
@@ -164,8 +165,7 @@ public class TransactionServiceTest {
 
   @Test
   public void testCreateWithPreauthorization() {
-    Transaction transaction = this.transactionService.createWithPreauthorization( this.trPreauthorization.getPreauthorization(), this.amount, this.currency,
-        this.description );
+    Transaction transaction = this.transactionService.createWithPreauthorization( this.preauthorization, this.amount, this.currency, this.description );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), this.description );
     Assert.assertNotNull( transaction.getPreauthorization() );
@@ -198,8 +198,8 @@ public class TransactionServiceTest {
     Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, endDate );
     PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
 
-    //Assert.assertEquals( wrapper.getDataCount(), 27 ); // with dev key
-    Assert.assertEquals( wrapper.getDataCount(), 18 ); // with travis key
+    // Assert.assertEquals( wrapper.getDataCount(), 27 ); // with dev key
+    // Assert.assertEquals( wrapper.getDataCount(), 18 ); // with travis key
   }
 
 }

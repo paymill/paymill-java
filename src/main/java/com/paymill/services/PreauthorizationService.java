@@ -109,7 +109,7 @@ public class PreauthorizationService extends AbstractService {
    *          A short description for the preauthorization.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithToken( final String token, final Integer amount, final String currency ) {
+  public Preauthorization createWithToken( final String token, final Integer amount, final String currency ) {
     return this.createWithToken( token, amount, currency, null );
   }
 
@@ -125,7 +125,7 @@ public class PreauthorizationService extends AbstractService {
    *          A short description for the preauthorization.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithToken( final String token, final Integer amount, final String currency, final String description ) {
+  public Preauthorization createWithToken( final String token, final Integer amount, final String currency, final String description ) {
     ValidationUtils.validatesToken( token );
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
@@ -140,7 +140,7 @@ public class PreauthorizationService extends AbstractService {
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
 
-    return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
+    return RestfulUtils.create( PreauthorizationService.PATH, params, Preauthorization.class, super.httpClient );
   }
 
   /**
@@ -154,7 +154,7 @@ public class PreauthorizationService extends AbstractService {
    *          ISO 4217 formatted currency code.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithPayment( final Payment payment, final Integer amount, final String currency ) {
+  public Preauthorization createWithPayment( final Payment payment, final Integer amount, final String currency ) {
     return this.createWithPayment( payment, amount, currency, null );
   }
 
@@ -171,7 +171,7 @@ public class PreauthorizationService extends AbstractService {
    *          A short description for the preauthorization.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
-  public Transaction createWithPayment( final Payment payment, final Integer amount, final String currency, final String description ) {
+  public Preauthorization createWithPayment( final Payment payment, final Integer amount, final String currency, final String description ) {
     ValidationUtils.validatesPayment( payment );
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
@@ -186,7 +186,7 @@ public class PreauthorizationService extends AbstractService {
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
 
-    return RestfulUtils.create( PreauthorizationService.PATH, params, Transaction.class, super.httpClient );
+    return RestfulUtils.create( PreauthorizationService.PATH, params, Preauthorization.class, super.httpClient );
   }
 
   /**
