@@ -84,7 +84,7 @@ public class PreauthorizationServiceTest {
     this.preauthorizations.add( preauthorization.getTransaction() );
   }
 
-  //  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
+  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
   public void testListOrderByOffer() {
     Preauthorization.Order orderDesc = Preauthorization.createOrder().byCreatedAt().desc();
     Preauthorization.Order orderAsc = Preauthorization.createOrder().byCreatedAt().asc();
@@ -97,14 +97,14 @@ public class PreauthorizationServiceTest {
     Assert.assertEquals( preauthorizationDesc.get( preauthorizationDesc.size() - 1 ).getId(), preauthorizationAsc.get( 0 ).getId() );
   }
 
-  // @Test( dependsOnMethods = "testCreateWithPayment_shouldSucceed" )
+  @Test( dependsOnMethods = "testCreateWithPayment_shouldSucceed" )
   public void testListOrderByFilterAmountGreaterThan() {
     Preauthorization.Filter filter = Preauthorization.createFilter().byAmountGreaterThan( amount - 100 );
     List<Preauthorization> preauthorization = this.preauthorizationService.list( filter, null ).getData();
     Assert.assertFalse( preauthorization.isEmpty() );
   }
 
-  // @Test( dependsOnMethods = "testListOrderByFilterAmountGreaterThan" )
+  @Test( dependsOnMethods = "testListOrderByFilterAmountGreaterThan" )
   public void testListOrderByFilterAmountLessThan() {
     Preauthorization.Filter filter = Preauthorization.createFilter().byAmountLessThan( amount + 100 );
     List<Preauthorization> preauthorizations = this.preauthorizationService.list( filter, null ).getData();
