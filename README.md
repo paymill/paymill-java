@@ -16,20 +16,20 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.2.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.2.0).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|4.0.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v4.0.0).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>3.2.0</version>
+  <version>4.0.0</version>
 </dependency>
 ```
 
 
 ## What's new
 
-We have released version 3. This version is not backwards compatible with version 2. Concrete changes in the changelog.
+We have released version 4, which follows version 2.1 of the PAYMILL's REST API. This version is not backwards compatible with version 3, which follows version 2.0 of the PAYMILL's REST API. Concrete changes in the changelog.
 
 ## Usage
 
@@ -89,7 +89,7 @@ or with the instance itself, which also refreshes it:
 ```
 This method throws an ApiException if there is no client under the given id.
 
-*Important*: If you use a nested object (e.g. ` paymet = transaction.getClient().getPayments().get(0) ` ) you should always "refresh", as the nested object will contain only the id, and all other properties will be null. 
+*Important*: If you use a nested object (e.g. ` paymet = transaction.getClient().getPayments().get(0) ` ) you should always "refresh", as the nested object will contain only the id, and all other properties will be null.
 
 ### Retrieving lists
 
@@ -191,6 +191,10 @@ class HelloPaymill {
 
 ## Changelog
 
+### 4.0.0
+* Works with version 2.1 of PAYMILL's REST API.
+* update project dependencies
+
 ### 3.2.0
 * improvement: remove workaround for subscriptions without offer.
 * improvement: [#23](https://github.com/paymill/paymill-java/issues/23) now preauthorizations can be created with description.
@@ -248,4 +252,3 @@ First maven central
 Copyright 2013 PAYMILL GmbH.
 
 MIT License (enclosed)
-
