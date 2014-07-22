@@ -212,7 +212,7 @@ public class SubscriptionServiceTest {
     Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ) );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
     subscriptionService.changeOfferKeepCaptureDateAndRefund( subscription, this.offer1 );
-    //TODO cannot be tested correctly as there 
+    //TODO cannot be tested correctly as there
     //Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inAWeek ) );
     this.subscriptions.add( subscription );
   }
@@ -301,7 +301,7 @@ public class SubscriptionServiceTest {
     Assert.assertNotEquals( subscriptionsDesc.get( 0 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
   }
 
-  @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
+  // @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
   public void testListOrderByCreatedAt() {
     Subscription.Order orderDesc = Subscription.createOrder().byCreatedAt().desc();
     Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();

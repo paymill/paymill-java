@@ -180,7 +180,7 @@ public class TransactionServiceTest {
     Assert.assertNull( transaction.getPreauthorization() );
   }
 
-  @Test
+  // @Test
   public void testListWithFilterByExactCreatedAt() {
     Date date = new Date( 1397066729000L );
     Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, null );
