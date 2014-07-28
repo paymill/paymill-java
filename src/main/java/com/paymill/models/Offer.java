@@ -113,8 +113,8 @@ public final class Offer {
     return interval;
   }
 
-  public void setInterval( String interval ) {
-    this.interval = new Interval.Period( interval );
+  public void setInterval(Interval.Period interval) {
+    this.interval = interval;
   }
 
   public Offer.SubscriptionCount getSubscriptionCount() {
