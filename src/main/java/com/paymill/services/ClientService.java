@@ -2,13 +2,12 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Client;
 import com.paymill.models.PaymillList;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * The {@link ClientService} is used to list, create, edit, delete and update PAYMILL {@link Client}s.
@@ -17,7 +16,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public final class ClientService extends AbstractService {
 
-  private ClientService( com.sun.jersey.api.client.Client httpClient ) {
+  private ClientService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -131,7 +130,7 @@ public final class ClientService extends AbstractService {
    * @return {@link Client} object, which represents a PAYMILL client.
    */
   public Client createWithEmailAndDescription( String email, String description ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     if( StringUtils.isNotBlank( email ) )
       params.add( "email", email );
     if( StringUtils.isNotBlank( description ) )

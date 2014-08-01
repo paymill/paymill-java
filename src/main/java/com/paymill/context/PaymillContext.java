@@ -6,9 +6,10 @@ import java.lang.reflect.Constructor;
 import java.util.Date;
 import java.util.Properties;
 
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.JerseyClient;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
-import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymill.services.ClientService;
@@ -19,8 +20,6 @@ import com.paymill.services.RefundService;
 import com.paymill.services.SubscriptionService;
 import com.paymill.services.TransactionService;
 import com.paymill.services.WebhookService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
  * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key<br />
@@ -44,7 +43,7 @@ public final class PaymillContext {
   public final static ObjectMapper PARSER     = new ObjectMapper();
   private final static Properties  PROPERTIES = new Properties();
 
-  private Client                   httpClient;
+  private final HttpClient         httpClient;
 
   private ClientService            clientService;
   private OfferService             offerService;
@@ -73,14 +72,20 @@ public final class PaymillContext {
    *          of infinity is declared.
    */
   public PaymillContext( final String apiKey, Integer timeout ) {
+    this( new JerseyClient( apiKey, timeout ) );
+  }
+
+  /**
+   * Creates a PAYMILL context with the given HttpClient implementation.
+   * @param client
+   *          Http client implementation.
+   */
+  private PaymillContext( final HttpClient client ) {
     ConvertUtils.register( new DateConverter( null ), Date.class );
     InputStream input = null;
 
     try {
-      this.httpClient = new Client();
-      this.httpClient.setReadTimeout( timeout );
-      this.httpClient.setConnectTimeout( timeout );
-      this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );
+      this.httpClient = client;
 
       this.clientService = this.getPrivateConstructor( ClientService.class ).newInstance( this.httpClient );
       this.offerService = this.getPrivateConstructor( OfferService.class ).newInstance( this.httpClient );
@@ -148,7 +153,7 @@ public final class PaymillContext {
   }
 
   private <T> Constructor<T> getPrivateConstructor( final Class<T> clazz ) throws Exception {
-    Constructor<T> declaredConstructor = clazz.getDeclaredConstructor( Client.class );
+    Constructor<T> declaredConstructor = clazz.getDeclaredConstructor( HttpClient.class );
     declaredConstructor.setAccessible( true );
     return declaredConstructor;
   }

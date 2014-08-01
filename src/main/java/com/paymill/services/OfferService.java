@@ -2,13 +2,12 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.paymill.models.Client;
 import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.PaymillList;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link OfferService} is used to list, create, edit, delete and update PAYMILL {@link Offer}s.
@@ -17,7 +16,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class OfferService extends AbstractService {
 
-  private OfferService( com.sun.jersey.api.client.Client httpClient ) {
+  private OfferService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -131,7 +130,7 @@ public class OfferService extends AbstractService {
     ValidationUtils.validatesName( name );
     ValidationUtils.validatesTrialPeriodDays( trialPeriodDays );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
     params.add( "interval", interval.toString() );
@@ -194,7 +193,7 @@ public class OfferService extends AbstractService {
    * @return the updated offer.
    */
   public Offer update( Offer offer, boolean updateSubscriptions ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "update_subscriptions", String.valueOf( updateSubscriptions ) );
     return RestfulUtils.update( OfferService.PATH, offer, params, true, Offer.class, super.httpClient );
   }
@@ -207,7 +206,7 @@ public class OfferService extends AbstractService {
    *          if true, the plan and all subscriptions associated with it will be deleted. If false, only the plan will be deleted.
    */
   public void delete( Offer offer, boolean removeWithSubscriptions ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "remove_with_subscriptions", String.valueOf( removeWithSubscriptions ) );
     RestfulUtils.delete( OfferService.PATH, offer, params, Offer.class, super.httpClient );
   }

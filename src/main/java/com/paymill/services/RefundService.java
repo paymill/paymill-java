@@ -1,15 +1,13 @@
 package com.paymill.services;
 
-import java.util.List;
-
-import javax.ws.rs.core.MultivaluedMap;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.paymill.models.PaymillList;
 import com.paymill.models.Refund;
 import com.paymill.models.Transaction;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * The {@link RefundService} is used to list and create PAYMILL {@link Refund}s.
@@ -20,7 +18,7 @@ public class RefundService extends AbstractService {
 
   private final static String PATH = "/refunds";
 
-  private RefundService( com.sun.jersey.api.client.Client httpClient ) {
+  private RefundService(  HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -182,7 +180,7 @@ public class RefundService extends AbstractService {
   public Refund refundTransaction( Transaction transaction, Integer amount, String description ) {
     ValidationUtils.validatesAmount( amount );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap();
     params.add( "amount", String.valueOf( amount ) );
     if( StringUtils.isNotBlank( description ) )
       params.add( "description", description );
