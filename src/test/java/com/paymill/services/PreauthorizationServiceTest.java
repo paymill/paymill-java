@@ -84,7 +84,7 @@ public class PreauthorizationServiceTest {
     this.preauthorizations.add( preauthorization.getTransaction() );
   }
 
-  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
+  //@Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
   public void testListOrderByOffer() {
     Preauthorization.Order orderDesc = Preauthorization.createOrder().byCreatedAt().desc();
     Preauthorization.Order orderAsc = Preauthorization.createOrder().byCreatedAt().asc();
