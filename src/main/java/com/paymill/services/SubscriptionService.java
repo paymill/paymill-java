@@ -406,6 +406,25 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the offer of a subscription. <br />
+   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund will be
+   * given if due. <br />
+   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e. the
+   * current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date is immediate
+   * i.e. the current date. <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferChangeCaptureDateAndRefund( String subscription, Offer offer ) {
+    return changeOfferChangeCaptureDateAndRefund( new Subscription( subscription ), offer );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
    * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if due. <br />
    * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not change. If
    * the new amount is less then the old one, a refund happens. The next charge date will not change. <br />
@@ -423,6 +442,23 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the offer of a subscription. <br />
+   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if due. <br />
+   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not change. If
+   * the new amount is less then the old one, a refund happens. The next charge date will not change. <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferKeepCaptureDateAndRefund( String subscription, Offer offer ) {
+    return changeOfferKeepCaptureDateAndRefund( new Subscription( subscription ), offer );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
    * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given <br />
    * <strong>IMPORTANT</strong><br />
    * Permitted up only until one day (24 hours) before the next charge date. <br />
@@ -434,6 +470,21 @@ public class SubscriptionService extends AbstractService {
    */
   public Subscription changeOfferKeepCaptureDateNoRefund( Subscription subscription, Offer offer ) {
     return changeOffer( subscription, offer, 0 );
+  }
+
+  /**
+   * Change the offer of a subscription. <br />
+   * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given <br />
+   * <strong>IMPORTANT</strong><br />
+   * Permitted up only until one day (24 hours) before the next charge date. <br />
+   * @param subscription
+   *          the subscription
+   * @param offer
+   *          the new offer
+   * @return the updated subscription
+   */
+  public Subscription changeOfferKeepCaptureDateNoRefund( String subscription, Offer offer ) {
+    return changeOfferKeepCaptureDateNoRefund( new Subscription( subscription ), offer );
   }
 
   private Subscription changeOffer( Subscription subscription, Offer offer, Integer type ) {
@@ -457,6 +508,16 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
+   * Stop the trial period of a subscription and charge immediately.
+   * @param subscription
+   *          the subscription.
+   * @return the updated subscription.
+   */
+  public Subscription endTrial( String subscription ) {
+    return endTrial( new Subscription( subscription ) );
+  }
+
+  /**
    * Change the period of validity for a subscription.
    * @param subscription
    *          the subscription.
@@ -476,11 +537,35 @@ public class SubscriptionService extends AbstractService {
    * @param subscription
    *          the subscription.
    * @param newValidity
+   *          the new validity.
+   * @return the updated subscription.
+   */
+  public Subscription limitValidity( String subscription, Interval.Period newValidity ) {
+    return limitValidity( new Subscription( subscription ), newValidity );
+  }
+
+  /**
+   * Change the period of validity for a subscription.
+   * @param subscription
+   *          the subscription.
+   * @param newValidity
    *          the new validity .
    * @return the updated subscription.
    */
   public Subscription limitValidity( Subscription subscription, String newValidity ) {
     return limitValidity( subscription, new Interval.Period( newValidity ) );
+  }
+
+  /**
+   * Change the period of validity for a subscription.
+   * @param subscription
+   *          the subscription.
+   * @param newValidity
+   *          the new validity .
+   * @return the updated subscription.
+   */
+  public Subscription limitValidity( String subscription, String newValidity ) {
+    return limitValidity( new Subscription( subscription ), newValidity );
   }
 
   /**
@@ -494,6 +579,16 @@ public class SubscriptionService extends AbstractService {
     params.add( "period_of_validity", "remove" );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
 
+  }
+
+  /**
+   * Change the validity of a subscription to unlimited
+   * @param subscription
+   *          the subscription.
+   * @return the updated subscription.
+   */
+  public Subscription unlimitValidity( String subscription ) {
+    return this.unlimitValidity( new Subscription( subscription ) );
   }
 
   /**
