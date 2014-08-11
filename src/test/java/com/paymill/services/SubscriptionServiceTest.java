@@ -46,7 +46,7 @@ public class SubscriptionServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext( "ef6055df5f1b6f00d2eba5c84a196486" );
 
     this.subscriptionService = paymill.getSubscriptionService();
     this.paymentService = paymill.getPaymentService();
@@ -234,6 +234,16 @@ public class SubscriptionServiceTest {
     subscriptionService.endTrial( subscription );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), new Date() ) );
     Assert.assertNull( subscription.getTrialEnd() );
+    this.subscriptions.add( subscription );
+  }
+
+  @Test
+  public void testEndTrialOnDate() {
+    Subscription subscription = subscriptionService.create( Subscription.create( this.payment, 1200, "EUR", "1 WEEK" ).withStartDate( inTwoWeeks ) );
+    Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
+    subscriptionService.endTrialAt( subscription, inAMonth );
+    Assert.assertNotNull( subscription.getTrialEnd() );
+    Assert.assertTrue( datesAroundSame( subscription.getTrialEnd(), inAMonth ) );
     this.subscriptions.add( subscription );
   }
 

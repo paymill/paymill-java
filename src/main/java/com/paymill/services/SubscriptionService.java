@@ -518,6 +518,32 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
+   * Stop the trial period of a subscription on a specific date.
+   * @param subscription
+   *          the subscription.
+   * @param date
+   *          the date, on which the subscription should end.
+   * @return the updated subscription.
+   */
+  public Subscription endTrialAt( Subscription subscription, Date date ) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    params.add( "trial_end", String.valueOf( date.getTime() / 1000 ) );
+    return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
+  }
+
+  /**
+   * Stop the trial period of a subscription on a specific date.
+   * @param subscription
+   *          the subscription.
+   * @param date
+   *          the date, on which the subscription should end.
+   * @return the updated subscription.
+   */
+  public Subscription endTrialAt( String subscription, Date date ) {
+    return this.endTrialAt( new Subscription( subscription ), date );
+  }
+
+  /**
    * Change the period of validity for a subscription.
    * @param subscription
    *          the subscription.
