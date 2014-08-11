@@ -46,7 +46,7 @@ public class SubscriptionServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( "ef6055df5f1b6f00d2eba5c84a196486" );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
 
     this.subscriptionService = paymill.getSubscriptionService();
     this.paymentService = paymill.getPaymentService();
