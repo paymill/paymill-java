@@ -15,7 +15,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * @author Vassil Nikolov
  * @since 3.0.0
  */
-public final class ClientService extends AbstractService {
+public class ClientService extends AbstractService {
 
   private ClientService( com.sun.jersey.api.client.Client httpClient ) {
     super( httpClient );

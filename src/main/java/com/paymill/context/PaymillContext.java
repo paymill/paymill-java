@@ -39,7 +39,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  * @author Vassil Nikolov
  * @since 3.0.0
  */
-public final class PaymillContext {
+public class PaymillContext {
 
   public final static ObjectMapper PARSER     = new ObjectMapper();
   private final static Properties  PROPERTIES = new Properties();
