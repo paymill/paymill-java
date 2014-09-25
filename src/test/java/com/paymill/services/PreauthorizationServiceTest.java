@@ -22,7 +22,7 @@ public class PreauthorizationServiceTest {
   private String                  description = "shake the preauthorization";
   private Payment                 payment;
 
-  private List<Transaction>       preauthorizations;
+  private List<Preauthorization>  preauthorizations;
 
   private PreauthorizationService preauthorizationService;
   private PaymentService          paymentService;
@@ -33,13 +33,13 @@ public class PreauthorizationServiceTest {
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
 
-    this.preauthorizations = new ArrayList<Transaction>();
+    this.preauthorizations = new ArrayList<Preauthorization>();
     this.payment = this.paymentService.createWithToken( this.token );
   }
 
   @AfterClass
   public void tearDown() {
-    for( Transaction transaction : preauthorizations )
+    for( Preauthorization transaction : preauthorizations )
       this.preauthorizationService.delete( transaction );
   }
 
@@ -49,7 +49,7 @@ public class PreauthorizationServiceTest {
     this.validatePreauthorization( preauthorization );
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), null );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test
@@ -59,7 +59,7 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), this.description );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), this.description );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
@@ -70,7 +70,7 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), null );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), null );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
@@ -81,7 +81,7 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), this.description );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), this.description );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   //@Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )

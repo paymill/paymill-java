@@ -119,21 +119,24 @@ public class ClientServiceTest {
 
   @Test( dependsOnMethods = "testListOrderByEmailDesc" )
   public void testListFilterByEmailAndCreatedAt() throws ParseException {
-    Date startCreatedAt = DateUtils.addMinutes( new Date(), -1 );
-    Date endCreatedAt = DateUtils.addMinutes( new Date(), 2 );
+    Client client = this.clientService.createWithEmailAndDescription( this.descEmail, this.description );
+    this.clients.add( client );
+
+    Date startCreatedAt = DateUtils.addMinutes( client.getCreatedAt(), -1 );
+    Date endCreatedAt = DateUtils.addMinutes( client.getCreatedAt(), 1 );
 
     Client.Filter filter = Client.createFilter().byEmail( this.descEmail ).byCreatedAt( startCreatedAt, endCreatedAt );
 
     PaymillList<Client> wrapper = this.clientService.list( filter, null );
     List<Client> clients = wrapper.getData();
 
+    Assert.assertTrue( wrapper.getDataCount() >= 1 );
     Assert.assertNotNull( clients );
     Assert.assertFalse( clients.isEmpty() );
 
-    Assert.assertEquals( clients.get( 0 ).getEmail(), this.descEmail );
-    Assert.assertEquals( clients.get( 1 ).getEmail(), this.descEmail );
-    //Assert.assertEquals( clients.size(), 11 ); // with dev key
-    Assert.assertEquals( clients.size(), 2 ); // with travis key
+    for( Client listedClient : clients ) {
+      Assert.assertEquals( listedClient.getEmail(), this.descEmail );
+    }
   }
 
   @Test

@@ -74,8 +74,6 @@ public class SubscriptionServiceTest {
     this.offerService.delete( offer3, true );
     this.offerService.delete( offer4, true );
     this.offerService.delete( offer5, true );
-    this.paymentService.delete( payment );
-    this.clientService.delete( client );
   }
 
   @Test
