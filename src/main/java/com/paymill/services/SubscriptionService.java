@@ -697,36 +697,4 @@ public class SubscriptionService extends AbstractService {
   public Subscription update( Subscription subscription ) {
     return RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );
   }
-
-  /**
-   * Updates a subscription.Following fields will be updated:<br />
-   * <p>
-   * <ul>
-   * <li>interval (note, that nextCaptureAt will not change.)
-   * <li>currency
-   * <li>name
-   * <ul>
-   * <p>
-   * To update further properties of a subscription use following methods:<br />
-   * <p>
-   * <ul>
-   * <li>{@link SubscriptionService#cancel(Subscription)} to cancel
-   * <li>{@link SubscriptionService#changeAmount(Subscription, Integer)} to change the amount
-   * <li>{@link SubscriptionService#changeOfferChangeCaptureDateAndRefund(Subscription, Offer)} to change the offer.
-   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateAndRefund(Subscription, Offer)} to change the offer.
-   * <li>{@link SubscriptionService#changeOfferKeepCaptureDateNoRefund(Subscription, Offer)} to change the offer.
-   * <li>{@link SubscriptionService#endTrial(Subscription)} to end the trial
-   * <li>{@link SubscriptionService#limitValidity(Subscription, com.paymill.models.Interval.Period} to change the validity.
-   * <li>{@link SubscriptionService#pause(Subscription)} to pause
-   * <li>{@link SubscriptionService#unlimitValidity(Subscription)} to change the validity.
-   * <li>{@link SubscriptionService#unpause(Subscription)} to unpause.
-   * <ul>
-   * <p>
-   * @param subscriptionId
-   *          Id of the {@link Subscription} to be updated.
-   * @return
-   */
-  public Subscription update( String subscriptionId ) {
-    return RestfulUtils.update( SubscriptionService.PATH, new Subscription( subscriptionId ), Subscription.class, super.httpClient );
-  }
 }

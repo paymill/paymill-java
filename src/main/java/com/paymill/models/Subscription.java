@@ -493,7 +493,7 @@ public final class Subscription {
 
   public enum Status {
 
-    ACTIVE("active"), INACTIVE("inactive");
+    ACTIVE("active"), INACTIVE("inactive"), FAILED("failed"), EXPIRED("expired");
 
     private String value;
 
