@@ -2,8 +2,8 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.context.PaymillContext;
@@ -13,7 +13,6 @@ import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * The {@link TransactionService} is used to list, create, edit and update PAYMILL {@link Transaction}s.
@@ -24,7 +23,7 @@ public class TransactionService extends AbstractService {
 
   private final static String PATH = "/transactions";
 
-  private TransactionService( com.sun.jersey.api.client.Client httpClient ) {
+  private TransactionService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -165,7 +164,7 @@ public class TransactionService extends AbstractService {
     ValidationUtils.validatesCurrency( currency );
     ValidationUtils.validatesFee( fee );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "token", token );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
@@ -216,7 +215,7 @@ public class TransactionService extends AbstractService {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "payment", payment.getId() );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );
@@ -296,7 +295,7 @@ public class TransactionService extends AbstractService {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "payment", payment.getId() );
     params.add( "client", client.getId() );
     params.add( "amount", String.valueOf( amount ) );
@@ -388,7 +387,7 @@ public class TransactionService extends AbstractService {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "preauthorization", preauthorizationId );
     params.add( "amount", String.valueOf( amount ) );
     params.add( "currency", currency );

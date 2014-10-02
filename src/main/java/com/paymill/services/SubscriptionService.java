@@ -3,8 +3,6 @@ package com.paymill.services;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.paymill.models.Client;
 import com.paymill.models.Interval;
 import com.paymill.models.Offer;
@@ -12,7 +10,8 @@ import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Subscription;
 import com.paymill.models.Subscription.Creator;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link SubscriptionService} is used to list, create, edit, delete and update PAYMILL {@link Subscription}s.
@@ -23,7 +22,7 @@ public class SubscriptionService extends AbstractService {
 
   private final static String PATH = "/subscriptions";
 
-  private SubscriptionService( com.sun.jersey.api.client.Client httpClient ) {
+  private SubscriptionService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -152,7 +151,7 @@ public class SubscriptionService extends AbstractService {
       throw new IllegalArgumentException( "Either an offer or amount, currency and interval must be set, when creating a subscription" );
     }
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     ValidationUtils.validatesPayment( payment );
     params.add( "payment", payment.getId() );
     if( client != null ) {
@@ -229,7 +228,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription
    */
   public Subscription pause( Subscription subscription ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "pause", String.valueOf( true ) );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
@@ -260,7 +259,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription
    */
   public Subscription unpause( Subscription subscription ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "pause", String.valueOf( false ) );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
@@ -371,7 +370,7 @@ public class SubscriptionService extends AbstractService {
   }
 
   private Subscription changeAmount( Subscription subscription, Integer amount, Integer type, String currency, Interval.PeriodWithChargeDay interval ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "amount", String.valueOf( amount ) );
     params.add( "amount_change_type", String.valueOf( type ) );
     if( currency != null ) {
@@ -489,7 +488,7 @@ public class SubscriptionService extends AbstractService {
 
   private Subscription changeOffer( Subscription subscription, Offer offer, Integer type ) {
     ValidationUtils.validatesOffer( offer );
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "offer", offer.getId() );
     params.add( "offer_change_type", String.valueOf( type ) );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
@@ -502,7 +501,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription endTrial( Subscription subscription ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "trial_end", String.valueOf( false ) );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
@@ -526,7 +525,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription endTrialAt( Subscription subscription, Date date ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "trial_end", String.valueOf( date.getTime() / 1000 ) );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
   }
@@ -552,7 +551,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription limitValidity( Subscription subscription, Interval.Period newValidity ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     ValidationUtils.validatesIntervalPeriod( newValidity );
     params.add( "period_of_validity", newValidity.toString() );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
@@ -601,7 +600,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription.
    */
   public Subscription unlimitValidity( Subscription subscription ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "period_of_validity", "remove" );
     return RestfulUtils.update( SubscriptionService.PATH, subscription, params, false, Subscription.class, super.httpClient );
 
@@ -662,7 +661,7 @@ public class SubscriptionService extends AbstractService {
   }
 
   private Subscription delete( Subscription subscription, boolean remove ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "remove", String.valueOf( remove ) );
     return RestfulUtils.delete( SubscriptionService.PATH, subscription, params, Subscription.class, super.httpClient );
   }

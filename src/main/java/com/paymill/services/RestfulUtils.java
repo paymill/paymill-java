@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,17 +17,13 @@ import com.paymill.exceptions.PaymillException;
 import com.paymill.models.PaymillList;
 import com.paymill.models.SnakeCase;
 import com.paymill.models.Updateable;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 final class RestfulUtils {
 
   private final static String ENDPOINT = "https://api.paymill.com/v2.1";
 
-  static <T> PaymillList<T> list( String path, Object filter, Object order, Integer count, Integer offset, Class<?> clazz, Client httpClient ) {
-    MultivaluedMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );
+  static <T> PaymillList<T> list( String path, Object filter, Object order, Integer count, Integer offset, Class<?> clazz, HttpClient httpClient ) {
+    ParameterMap<String, String> params = RestfulUtils.prepareFilterParameters( filter );
     String param = RestfulUtils.prepareOrderParameter( order );
     if( StringUtils.isNotBlank( param ) && !StringUtils.startsWith( param, "_" ) ) {
       params.add( "order", param );
@@ -38,44 +34,44 @@ final class RestfulUtils {
     if( offset != null && offset >= 0 ) {
       params.add( "offset", String.valueOf( offset ) );
     }
-    return RestfulUtils.deserializeList( RestfulUtils.get( path, params, httpClient ), clazz );
+    return RestfulUtils.deserializeList( httpClient.get( ENDPOINT + path, params ), clazz );
   }
 
-  static <T> T show( String path, T target, Class<?> clazz, Client httpClient ) {
+  static <T> T show( String path, T target, Class<?> clazz, HttpClient httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
-    T source = RestfulUtils.deserializeObject( RestfulUtils.get( path + "/" + id, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( httpClient.get( ENDPOINT + path + "/" + id ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T create( String path, MultivaluedMap<String, String> params, Class<T> clazz, Client httpClient ) {
-    return RestfulUtils.deserializeObject( RestfulUtils.post( path, params, httpClient ), clazz );
+  static <T> T create( String path, ParameterMap<String, String> params, Class<T> clazz, HttpClient httpClient ) {
+    return RestfulUtils.deserializeObject( httpClient.post( ENDPOINT + path, params ), clazz );
   }
 
-  static <T> T update( String path, T target, Class<?> clazz, Client httpClient ) {
-    MultivaluedMap<String, String> params = RestfulUtils.prepareEditableParameters( target );
+  static <T> T update( String path, T target, Class<?> clazz, HttpClient httpClient ) {
+    ParameterMap<String, String> params = RestfulUtils.prepareEditableParameters( target );
     String id = RestfulUtils.getIdByReflection( target );
-    T source = RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( httpClient.put( ENDPOINT + path + "/" + id, params ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T update( String path, T target, MultivaluedMap<String, String> params, boolean includeTargetUpdateables, Class<?> clazz, Client httpClient ) {
+  static <T> T update( String path, T target, ParameterMap<String, String> params, boolean includeTargetUpdateables, Class<?> clazz, HttpClient httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
     if( includeTargetUpdateables ) {
       params.putAll( RestfulUtils.prepareEditableParameters( target ) );
     }
-    T source = RestfulUtils.deserializeObject( RestfulUtils.put( path + "/" + id, params, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( httpClient.put( ENDPOINT + path + "/" + id, params ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T delete( String path, T target, MultivaluedMap<String, String> params, Class<?> clazz, Client httpClient ) {
+  static <T> T delete( String path, T target, ParameterMap<String, String> params, Class<?> clazz, HttpClient httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
-    T source = RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, params, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( httpClient.delete( ENDPOINT + path + "/" + id, params ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }
 
-  static <T> T delete( String path, T target, Class<?> clazz, Client httpClient ) {
+  static <T> T delete( String path, T target, Class<?> clazz, HttpClient httpClient ) {
     String id = RestfulUtils.getIdByReflection( target );
-    T source = RestfulUtils.deserializeObject( RestfulUtils.delete( path + "/" + id, null, httpClient ), clazz );
+    T source = RestfulUtils.deserializeObject( httpClient.delete( ENDPOINT + path + "/" + id, null ), clazz );
     return RestfulUtils.refreshInstance( source, target );
   }
 
@@ -141,8 +137,9 @@ final class RestfulUtils {
     return null;
   }
 
-  private static MultivaluedMap<String, String> prepareEditableParameters( Object instance ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  private static ParameterMap<String, String> prepareEditableParameters( Object instance ) {
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
+
     for( Field field : instance.getClass().getDeclaredFields() ) {
       Updateable updateable = field.getAnnotation( Updateable.class );
       if( updateable != null ) {
@@ -176,38 +173,9 @@ final class RestfulUtils {
     return params;
   }
 
-  private static String get( String path, Client httpClient ) {
-    WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path );
-    ClientResponse response = webResource.get( ClientResponse.class );
-    return response.getEntity( String.class );
-  }
+  private static ParameterMap<String, String> prepareFilterParameters( Object instance ) {
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
 
-  private static String get( String path, MultivaluedMap<String, String> params, Client httpClient ) {
-    WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path ).queryParams( params );
-    ClientResponse response = webResource.get( ClientResponse.class );
-    return response.getEntity( String.class );
-  }
-
-  private static String post( String path, MultivaluedMap<String, String> params, Client httpClient ) {
-    WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path );
-    ClientResponse response = webResource.post( ClientResponse.class, params );
-    return response.getEntity( String.class );
-  }
-
-  private static String put( String path, MultivaluedMap<String, String> params, Client httpClient ) {
-    WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path );
-    ClientResponse response = webResource.put( ClientResponse.class, params );
-    return response.getEntity( String.class );
-  }
-
-  private static String delete( String path, MultivaluedMap<String, String> params, Client httpClient ) {
-    WebResource webResource = httpClient.resource( RestfulUtils.ENDPOINT + path );
-    ClientResponse response = webResource.delete( ClientResponse.class, params );
-    return response.getEntity( String.class );
-  }
-
-  private static MultivaluedMap<String, String> prepareFilterParameters( Object instance ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if( instance == null )
       return params;
     try {

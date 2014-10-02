@@ -2,8 +2,8 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.context.PaymillContext;
@@ -11,7 +11,6 @@ import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * The {@link PreauthorizationService} is used to list, create and delete PAYMILL {@link Preauthorization}s.
@@ -22,7 +21,7 @@ public class PreauthorizationService extends AbstractService {
 
   private final static String PATH = "/preauthorizations";
 
-  private PreauthorizationService( final com.sun.jersey.api.client.Client httpClient ) {
+  private PreauthorizationService( final HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -130,7 +129,7 @@ public class PreauthorizationService extends AbstractService {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
 
     params.add( "token", token );
     params.add( "amount", String.valueOf( amount ) );
@@ -176,7 +175,7 @@ public class PreauthorizationService extends AbstractService {
     ValidationUtils.validatesAmount( amount );
     ValidationUtils.validatesCurrency( currency );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
 
     params.add( "payment", payment.getId() );
     params.add( "amount", String.valueOf( amount ) );
