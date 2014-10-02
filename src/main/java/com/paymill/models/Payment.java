@@ -68,6 +68,12 @@ public final class Payment {
 
   private String           last4;
 
+  @JsonProperty( "is_recurring" )
+  private Boolean          recurring;
+
+  @JsonProperty( "is_usable_for_preauthorization" )
+  private Boolean          usableForPreauthorization;
+
   /**
    * Returns unique identifier for this credit card payment.
    * @return {@link String}
@@ -340,6 +346,40 @@ public final class Payment {
    */
   public void setUpdatedAt( final long seconds ) {
     this.updatedAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * The payment is recurring (can be used more than once).
+   * @return true if recurring, false otherwise.
+   */
+  public Boolean getRecurring() {
+    return recurring;
+  }
+
+  /**
+   * Sets recurring. <br/>
+   * <b>Note:</b> This value cannot be modified.
+   * @param recurring
+   */
+  public void setRecurring( Boolean recurring ) {
+    this.recurring = recurring;
+  }
+
+  /**
+   * Shows if the payment is usable for a preauthorization.
+   * @return true if usable for preauthorization, false otherwise.
+   */
+  public Boolean getUsableForPreauthorization() {
+    return usableForPreauthorization;
+  }
+
+  /**
+   * Sets usableForPreauthorization. <br/>
+   * <b>Note:</b> This value cannot be modified.
+   * @param usableForPreauthorization
+   */
+  public void setUsableForPreauthorization( Boolean usableForPreauthorization ) {
+    this.usableForPreauthorization = usableForPreauthorization;
   }
 
   public static Payment.Filter createFilter() {

@@ -54,6 +54,9 @@ public class PaymentServiceTest {
     Assert.assertNotNull( payment.getUpdatedAt() );
     Assert.assertNull( payment.getAppId() );
 
+    // note, that the magic token mimics a credit card payment object
+    Assert.assertTrue( payment.getUsableForPreauthorization() );
+    Assert.assertTrue( payment.getRecurring() );
     this.payments.add( payment );
   }
 
