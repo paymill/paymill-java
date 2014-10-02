@@ -1,12 +1,12 @@
 package com.paymill.services;
 
-import com.sun.jersey.api.client.Client;
+import com.paymill.utils.HttpClient;
 
 class AbstractService {
 
-  protected Client httpClient;
+  protected HttpClient httpClient;
 
-  protected AbstractService( Client httpClient ) {
+  protected AbstractService( HttpClient httpClient ) {
     this.httpClient = httpClient;
   }
 

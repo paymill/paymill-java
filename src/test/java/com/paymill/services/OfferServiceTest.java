@@ -110,7 +110,7 @@ public class OfferServiceTest {
     Assert.assertEquals( subscription.getOffer().getId(), offer.getId() );
     Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 1 );
     Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.MONTH );
-    offer.setInterval( "2 WEEK" );
+    offer.setInterval( new Interval.Period( "2 WEEK" ) );
     this.offerService.update( offer, true );
     Assert.assertEquals( offer.getId(), offer.getId() );
     Assert.assertEquals( offer.getInterval().getInterval(), (Integer) 2 );

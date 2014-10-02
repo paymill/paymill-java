@@ -2,13 +2,11 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.paymill.models.PaymillList;
 import com.paymill.models.Webhook;
 import com.paymill.models.Webhook.EventType;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link WebhookService} is used to list, create, edit and update PAYMILL {@link Webhook}s.
@@ -19,7 +17,7 @@ public class WebhookService extends AbstractService {
 
   private final static String PATH = "/webhooks";
 
-  private WebhookService( Client httpClient ) {
+  private WebhookService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -103,7 +101,7 @@ public class WebhookService extends AbstractService {
    * @return A {@link Webhook}
    */
   public Webhook createUrlWebhook( String url, Webhook.EventType[] eventTypes ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "url", url );
 
     for( Webhook.EventType eventType : eventTypes )
@@ -121,7 +119,7 @@ public class WebhookService extends AbstractService {
    * @return A {@link Webhook}
    */
   public Webhook createEmailWebhook( String email, Webhook.EventType[] eventTypes ) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "email", email );
 
     for( Webhook.EventType eventType : eventTypes )

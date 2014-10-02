@@ -2,12 +2,11 @@ package com.paymill.services;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.paymill.models.Client;
 import com.paymill.models.Payment;
 import com.paymill.models.PaymillList;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link PaymentService} is used to list, create, edit, delete and update PAYMILL {@link Payment}s.
@@ -18,7 +17,7 @@ public class PaymentService extends AbstractService {
 
   private final static String PATH = "/payments";
 
-  private PaymentService( com.sun.jersey.api.client.Client httpClient ) {
+  private PaymentService( HttpClient httpClient ) {
     super( httpClient );
   }
 
@@ -102,7 +101,7 @@ public class PaymentService extends AbstractService {
   public Payment createWithToken( String token ) {
     ValidationUtils.validatesToken( token );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "token", token );
 
     return RestfulUtils.create( PaymentService.PATH, params, Payment.class, super.httpClient );
@@ -136,7 +135,7 @@ public class PaymentService extends AbstractService {
     ValidationUtils.validatesToken( token );
     ValidationUtils.validatesId( clientId );
 
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    ParameterMap<String, String> params = new ParameterMap<String, String>();
     params.add( "token", token );
     params.add( "client", clientId );
 
