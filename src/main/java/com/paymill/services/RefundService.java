@@ -94,9 +94,9 @@ public class RefundService extends AbstractService {
   }
 
   /**
-   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn���t refunded
-   * at all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There
-   * will be some fees for the merchant for every refund. <br />
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
    * <br />
    * Note:
    * <ul>
@@ -115,9 +115,9 @@ public class RefundService extends AbstractService {
   }
 
   /**
-   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn���t refunded
-   * at all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There
-   * will be some fees for the merchant for every refund. <br />
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
    * <br />
    * Note:
    * <ul>
@@ -136,9 +136,9 @@ public class RefundService extends AbstractService {
   }
 
   /**
-   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn���t refunded
-   * at all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There
-   * will be some fees for the merchant for every refund. <br />
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
    * <br />
    * Note:
    * <ul>
@@ -159,9 +159,9 @@ public class RefundService extends AbstractService {
   }
 
   /**
-   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn���t refunded
-   * at all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There
-   * will be some fees for the merchant for every refund. <br />
+   * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
+   * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
+   * be some fees for the merchant for every refund. <br />
    * <br />
    * Note:
    * <ul>
