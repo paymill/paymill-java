@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymill.models.Deserializer;
 import com.paymill.services.ClientService;
 import com.paymill.services.OfferService;
 import com.paymill.services.PaymentService;
@@ -54,6 +55,10 @@ public final class PaymillContext {
   private SubscriptionService      subscriptionService;
   private TransactionService       transactionService;
   private WebhookService           webhookService;
+
+  static {
+    PARSER.registerModule( Deserializer.getDeserializerModule() );
+  }
 
   /**
    * Creates a PAYMILL context with the given apiKey. Connection timeout to PAYMILL by default is set to infinity.

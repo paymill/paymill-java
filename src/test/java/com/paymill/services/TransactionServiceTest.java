@@ -109,7 +109,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void testCreateWithToken_WithoutDescruption_shouldSucceed() {
+  public void testCreateWithToken_WithoutDescription_shouldSucceed() {
     Transaction transaction = this.transactionService.createWithToken( this.token, this.amount, this.currency );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), null );
@@ -180,26 +180,27 @@ public class TransactionServiceTest {
     Assert.assertNull( transaction.getPreauthorization() );
   }
 
-  @Test
+  @Test( dependsOnMethods = "testCreateWithToken_WithDescruption_shouldSucceed" )
   public void testListWithFilterByExactCreatedAt() {
-    Date date = new Date( 1397066729000L );
-    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, null );
+    Date createdAt = this.transaction.getCreatedAt();
+    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( createdAt, null );
     PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
 
-    Assert.assertEquals( wrapper.getDataCount(), 1 );
-    Assert.assertEquals( wrapper.getData().size(), 1 );
+    Assert.assertTrue( wrapper.getDataCount() >= 1 );
+    Assert.assertFalse( wrapper.getData().isEmpty() );
   }
 
   @Test
   public void testListWithFilterByCreatedAtPeriod() throws ParseException {
-    Date date = DateUtils.parseDate( "2014-04-09 08:00", "yyyy-MM-dd hh:mm" );
-    Date endDate = DateUtils.parseDate( "2014-04-09 14:00", "yyyy-MM-dd hh:mm" );
+    Date createdAt = this.transaction.getCreatedAt();
+    Date from = DateUtils.addMinutes( createdAt, -1 );
+    Date to = DateUtils.addMinutes( createdAt, 1 );
 
-    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( date, endDate );
+    Transaction.Filter filter = Transaction.createFilter().byCreatedAt( from, to );
     PaymillList<Transaction> wrapper = this.transactionService.list( filter, null );
 
-    Assert.assertEquals( wrapper.getDataCount(), 27 ); // with dev key
-    // Assert.assertEquals( wrapper.getDataCount(), 18 ); // with travis key
+    Assert.assertTrue( wrapper.getDataCount() >= 1 );
+    Assert.assertFalse( wrapper.getData().isEmpty() );
   }
 
 }

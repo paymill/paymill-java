@@ -1,6 +1,5 @@
 env: 
   global: 
-  - secure: Bg8zM2E4iEVfWerk94wV+78EOzBKgwtMjFSoWFXNh1fuap9O0JOc9RSzqSGSWNoB6N5zxB7Uz/vtHikpfVOW5sgjWrX8ahYFMDOYfnOaC3/aaudVYFF1WnDqwwEIoUFdDmtECseoTSNc2oq5xJH9z7gMzJzr8zMWp+1q95a6Ans=
-  - secure: IzylLIDlYq9Xzz5JxHVEmiXnmSdm1efUzLodgUL4inJkQkvbOUIrrMn3fkZ0pwAxPPdVqfgcjYm6KUfsNjbMPuqGicI8uAXLdtrICBv3C75YtsvoCOBqk/S/AjnxRNztnUVTKM3WKk45vB6YqANih0fY5IjfzfrFFQ9uxx3VlDQ=
+  - secure: "V0ZyyJimvA47fZYclB7QfHzZdrIyjADIUGrucDI6M6/UgR7bWyLcRAgMUl5SejEjSJbuY7AtHfHZs1qFm6Kiro/weWjo8OyClHyPVISl4r1ZjvKL/SQz7B4KIn4NEvopqfk6QSX43RF/IOXjCgLdiaPMFi+2uHgSWNoJ9EHXJSc="
 language: java
 script: mvn test

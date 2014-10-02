@@ -22,7 +22,7 @@ public class PreauthorizationServiceTest {
   private String                  description = "shake the preauthorization";
   private Payment                 payment;
 
-  private List<Transaction>       preauthorizations;
+  private List<Preauthorization>  preauthorizations;
 
   private PreauthorizationService preauthorizationService;
   private PaymentService          paymentService;
@@ -33,14 +33,14 @@ public class PreauthorizationServiceTest {
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
 
-    this.preauthorizations = new ArrayList<Transaction>();
+    this.preauthorizations = new ArrayList<Preauthorization>();
     this.payment = this.paymentService.createWithToken( this.token );
   }
 
   @AfterClass
   public void tearDown() {
-    for( Transaction transaction : preauthorizations )
-      this.preauthorizationService.delete( transaction );
+    for( Preauthorization preauthorization : preauthorizations )
+      this.preauthorizationService.delete( preauthorization );
   }
 
   @Test
@@ -49,7 +49,7 @@ public class PreauthorizationServiceTest {
     this.validatePreauthorization( preauthorization );
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), null );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test
@@ -59,7 +59,7 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), this.description );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), this.description );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
@@ -70,7 +70,7 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), null );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), null );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
@@ -81,20 +81,25 @@ public class PreauthorizationServiceTest {
     this.validateTransaction( preauthorization.getTransaction() );
     Assert.assertEquals( preauthorization.getDescription(), this.description );
     Assert.assertEquals( preauthorization.getTransaction().getDescription(), this.description );
-    this.preauthorizations.add( preauthorization.getTransaction() );
+    this.preauthorizations.add( preauthorization );
   }
 
-  //@Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
-  public void testListOrderByOffer() {
-    Preauthorization.Order orderDesc = Preauthorization.createOrder().byCreatedAt().desc();
-    Preauthorization.Order orderAsc = Preauthorization.createOrder().byCreatedAt().asc();
+  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
+  public void testListOrderByCreatedAsc() {
+    Preauthorization.Order order = Preauthorization.createOrder().byCreatedAt().asc();
+    List<Preauthorization> preauthorizations = this.preauthorizationService.list( null, order ).getData();
+    for( int i = 1; i < preauthorizations.size(); i++ ) {
+      preauthorizations.get( i ).getCreatedAt().after( preauthorizations.get( i - 1 ).getCreatedAt() );
+    }
+  }
 
-    List<Preauthorization> preauthorizationDesc = this.preauthorizationService.list( null, orderDesc ).getData();
-
-    List<Preauthorization> preauthorizationAsc = this.preauthorizationService.list( null, orderAsc ).getData();
-
-    Assert.assertEquals( preauthorizationDesc.get( 0 ).getId(), preauthorizationAsc.get( preauthorizationAsc.size() - 1 ).getId() );
-    Assert.assertEquals( preauthorizationDesc.get( preauthorizationDesc.size() - 1 ).getId(), preauthorizationAsc.get( 0 ).getId() );
+  @Test( dependsOnMethods = "testListOrderByFilterAmountLessThan" )
+  public void testListOrderByCreatedDesc() {
+    Preauthorization.Order order = Preauthorization.createOrder().byCreatedAt().desc();
+    List<Preauthorization> preauthorizations = this.preauthorizationService.list( null, order ).getData();
+    for( int i = 1; i < preauthorizations.size(); i++ ) {
+      preauthorizations.get( i ).getCreatedAt().before( preauthorizations.get( i - 1 ).getCreatedAt() );
+    }
   }
 
   @Test( dependsOnMethods = "testCreateWithPayment_shouldSucceed" )
