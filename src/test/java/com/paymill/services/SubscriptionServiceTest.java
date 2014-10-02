@@ -292,38 +292,22 @@ public class SubscriptionServiceTest {
     Assert.assertEquals( subscription.getName(), "test2" );
   }
 
-  // TODO[VNi]: There is an API error: No sorting by offer.
-  //@Test( )
-  public void testListOrderByOffer() {
-
-    subscriptionService.create( Subscription.create( payment, offer4 ) );
-    subscriptionService.create( Subscription.create( payment, offer5 ) );
-
-    Subscription.Order orderDesc = Subscription.createOrder().byOffer().desc();
-    Subscription.Order orderAsc = Subscription.createOrder().byOffer().asc();
-
-    List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc ).getData();
-
-    List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc ).getData();
-
-    Assert.assertNotEquals( subscriptionsDesc.get( 0 ).getOffer().getId(), subscriptionsAsc.get( 0 ).getOffer().getId() );
+  @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
+  public void testListOrderByCreatedAsc() {
+    Subscription.Order order = Subscription.createOrder().byCreatedAt().asc();
+    List<Subscription> subscriptions = this.subscriptionService.list( null, order ).getData();
+    for( int i = 1; i < subscriptions.size(); i++ ) {
+      subscriptions.get( i ).getCreatedAt().after( subscriptions.get( i - 1 ).getCreatedAt() );
+    }
   }
 
-  // @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
-  public void testListOrderByCreatedAt() {
-    Subscription.Order orderDesc = Subscription.createOrder().byCreatedAt().desc();
-    Subscription.Order orderAsc = Subscription.createOrder().byCreatedAt().asc();
-
-    List<Subscription> subscriptionsDesc = this.subscriptionService.list( null, orderDesc, 100000, 0 ).getData();
-    for( Subscription subscription : subscriptionsDesc ) {
-      if( subscription.getOffer() == null )
-        this.subscriptionService.get( subscription );
+  @Test( dependsOnMethods = "testCreateWithPaymentAndOfferComplex" )
+  public void testListOrderByCreatedDesc() {
+    Subscription.Order order = Subscription.createOrder().byCreatedAt().desc();
+    List<Subscription> subscriptions = this.subscriptionService.list( null, order ).getData();
+    for( int i = 1; i < subscriptions.size(); i++ ) {
+      subscriptions.get( i ).getCreatedAt().before( subscriptions.get( i - 1 ).getCreatedAt() );
     }
-
-    List<Subscription> subscriptionsAsc = this.subscriptionService.list( null, orderAsc, 100000, 0 ).getData();
-
-    Assert.assertEquals( subscriptionsDesc.get( 0 ).getId(), subscriptionsAsc.get( subscriptionsAsc.size() - 1 ).getId() );
-    Assert.assertEquals( subscriptionsDesc.get( subscriptionsDesc.size() - 1 ).getId(), subscriptionsAsc.get( 0 ).getId() );
   }
 
   public static boolean datesAroundSame( Date first, Date second, int minutes ) {
