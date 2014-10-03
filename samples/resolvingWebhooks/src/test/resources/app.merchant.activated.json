@@ -1,0 +1,16 @@
+{
+    "event": {
+        "event_type": "app.merchant.activated",
+        "event_resource": {
+            "identifier_key": "mer_123456789",
+            "email": "mail@example.com",
+            "locale": "de_DE",
+            "country": "DEU",
+            "currencies": ["EUR", "GPB"],
+            "methods": ["visa", "mastercard"]
+        },
+        "created_at": 1412265651,
+        "app_id": null
+    }
+}
+

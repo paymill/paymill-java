@@ -1,0 +1,54 @@
+{
+    "event": {
+        "event_type": "transaction.created",
+        "event_resource": {
+            "id": "tran_656a13cb793ac165f35556f16ce5",
+            "amount": 1200,
+            "origin_amount": 1200,
+            "status": "open",
+            "description": "test",
+            "livemode": false,
+            "refunds": null,
+            "client": {
+                "id": "client_a54402c29a1fe9a59103",
+                "email": null,
+                "description": null,
+                "app_id": null,
+                "updated_at": 1412263822,
+                "created_at": 1412263822,
+                "payment": ["pay_67869563d4c072b201435c07"],
+                "subscription": null
+            },
+            "currency": "EUR",
+            "created_at": 1412263822,
+            "updated_at": 1412263822,
+            "response_code": 10001,
+            "short_id": null,
+            "is_fraud": false,
+            "invoices": [],
+            "app_id": null,
+            "preauthorization": null,
+            "fees": [],
+            "payment": {
+                "id": "pay_67869563d4c072b201435c07",
+                "type": "creditcard",
+                "client": "client_a54402c29a1fe9a59103",
+                "card_type": "visa",
+                "country": "DE",
+                "expire_month": "10",
+                "expire_year": "2020",
+                "card_holder": "Emilian Stoilkov",
+                "last4": "1111",
+                "updated_at": 1412263822,
+                "created_at": 1412263822,
+                "app_id": null,
+                "is_recurring": true,
+                "is_usable_for_preauthorization": true
+            },
+            "is_refundable": false,
+            "is_markable_as_fraud": true
+        },
+        "created_at": 1412263823,
+        "app_id": "app_1234"
+    }
+}

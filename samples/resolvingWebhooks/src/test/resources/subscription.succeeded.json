@@ -1,0 +1,119 @@
+{
+    "event": {
+        "event_type": "subscription.succeeded",
+        "event_resource": {
+            "subscription": {
+                "id": "sub_1dfa3dc813004a11c9d6",
+                "offer": {
+                    "id": "offer_14afd971b218332dd8eb",
+                    "name": "Updated Chuck Testa",
+                    "amount": 2700,
+                    "currency": "EUR",
+                    "interval": "1 MONTH",
+                    "trial_period_days": 0,
+                    "created_at": 1412265649,
+                    "updated_at": 1412265649,
+                    "subscription_count": {
+                        "active": "1",
+                        "inactive": 0
+                    },
+                    "app_id": null
+                },
+                "livemode": false,
+                "amount": 2700,
+                "temp_amount": null,
+                "currency": "EUR",
+                "name": "Updated Chuck Testa",
+                "interval": "1 MONTH",
+                "trial_start": null,
+                "trial_end": null,
+                "period_of_validity": null,
+                "end_of_period": null,
+                "next_capture_at": 1414947650,
+                "created_at": 1412265650,
+                "updated_at": 1412265651,
+                "canceled_at": null,
+                "payment": {
+                    "id": "pay_9a1707fe7953524491132cd6",
+                    "type": "creditcard",
+                    "client": "client_f212728b29c2947ce58a",
+                    "card_type": "visa",
+                    "country": null,
+                    "expire_month": "12",
+                    "expire_year": "2015",
+                    "card_holder": "",
+                    "last4": "1111",
+                    "updated_at": 1412265648,
+                    "created_at": 1412265648,
+                    "app_id": null,
+                    "is_recurring": true,
+                    "is_usable_for_preauthorization": true
+                },
+                "app_id": null,
+                "is_canceled": false,
+                "is_deleted": false,
+                "status": "active",
+                "client": {
+                    "id": "client_f212728b29c2947ce58a",
+                    "email": "john.rambo@qaiware.com",
+                    "description": "Boom, boom, shake the room",
+                    "app_id": null,
+                    "updated_at": 1412265646,
+                    "created_at": 1412265646,
+                    "payment": ["pay_9a1707fe7953524491132cd6"],
+                    "subscription": null
+                }
+            },
+            "transaction": {
+                "id": "tran_59c55c0a7e7d6597f08d55e5981a",
+                "amount": 2700,
+                "origin_amount": 2700,
+                "status": "closed",
+                "description": "Subscription#sub_1dfa3dc813004a11c9d6 Updated Chuck Testa",
+                "livemode": false,
+                "refunds": null,
+                "client": {
+                    "id": "client_f212728b29c2947ce58a",
+                    "email": "john.rambo@qaiware.com",
+                    "description": "Boom, boom, shake the room",
+                    "app_id": null,
+                    "updated_at": 1412265646,
+                    "created_at": 1412265646,
+                    "payment": ["pay_9a1707fe7953524491132cd6"],
+                    "subscription": null
+                },
+                "currency": "EUR",
+                "created_at": 1412265651,
+                "updated_at": 1412265651,
+                "response_code": 20000,
+                "short_id": "7357.7357.7357",
+                "is_fraud": false,
+                "invoices": [],
+                "app_id": null,
+                "preauthorization": null,
+                "fees": [],
+                "payment": {
+                    "id": "pay_9a1707fe7953524491132cd6",
+                    "type": "creditcard",
+                    "client": "client_f212728b29c2947ce58a",
+                    "card_type": "visa",
+                    "country": null,
+                    "expire_month": "12",
+                    "expire_year": "2015",
+                    "card_holder": "",
+                    "last4": "1111",
+                    "updated_at": 1412265648,
+                    "created_at": 1412265648,
+                    "app_id": null,
+                    "is_recurring": true,
+                    "is_usable_for_preauthorization": true
+                },
+                "is_refundable": true,
+                "is_markable_as_fraud": true
+            }
+        },
+        "created_at": 1412265651,
+        "app_id": null
+    }
+}
+

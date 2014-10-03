@@ -1,0 +1,21 @@
+{
+    "event": {
+        "event_type": "invoice.available",
+        "event_resource": {
+            "invoice_nr": "1293724",
+            "netto": 12399,
+            "brutto": 14755,
+            "status": "sent",
+            "period_from": 1349946151,
+            "period_until": 1352538151,
+            "currency": "EUR",
+            "vat_rate": 19,
+            "billing_date": 1353142951,
+            "invoice_type": "paymill",
+            "last_reminder_date": null
+        },
+        "created_at": 1412265651,
+        "app_id": null
+    }
+}
+
