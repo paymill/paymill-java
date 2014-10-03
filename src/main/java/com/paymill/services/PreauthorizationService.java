@@ -49,9 +49,9 @@ public class PreauthorizationService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Preauthorization} objects. In which order this list is returned
    * depends on the optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Preauthorization.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Preauthorization.Filter} or <code>null</code>
    * @param order
-   *          {@link Preauthorization.Order} or <code>null</code>
+   *          {@link com.paymill.models.Preauthorization.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Preauthorization}s and their total count.
    */
   public PaymillList<Preauthorization> list( final Preauthorization.Filter filter, final Preauthorization.Order order ) {
@@ -63,9 +63,9 @@ public class PreauthorizationService extends AbstractService {
    * depends on the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default
    * count and offset.
    * @param filter
-   *          {@link Preauthorization.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Preauthorization.Filter} or <code>null</code>
    * @param order
-   *          {@link Preauthorization.Order} or <code>null</code>
+   *          {@link com.paymill.models.Preauthorization.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -104,8 +104,6 @@ public class PreauthorizationService extends AbstractService {
    *          Amount (in cents) which will be charged.
    * @param currency
    *          ISO 4217 formatted currency code.
-   * @param description
-   *          A short description for the preauthorization.
    * @return {@link Transaction} object with the {@link Preauthorization} as sub object.
    */
   public Preauthorization createWithToken( final String token, final Integer amount, final String currency ) {

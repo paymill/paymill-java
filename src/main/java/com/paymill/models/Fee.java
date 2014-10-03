@@ -49,7 +49,7 @@ public final class Fee {
 
   /**
    * Sets the unique identifier of the application which charges the fee.
-   * @param type
+   * @param application
    *          {@link String}
    */
   public void setApplication( final String application ) {
@@ -66,7 +66,7 @@ public final class Fee {
 
   /**
    * Sets the unique identifier of the payment from which the fee will be charged.
-   * @param type
+   * @param payment
    *          {@link String}
    */
   public void setPayment( final String payment ) {
@@ -83,7 +83,7 @@ public final class Fee {
 
   /**
    * Sets the fee amount in the smallest currency unit e.g. “420” for $4.20.
-   * @param type
+   * @param amount
    *          {@link Integer}
    */
   public void setAmount( final Integer amount ) {
@@ -100,7 +100,7 @@ public final class Fee {
 
   /**
    * Sets the ISO 4217 formatted currency code.
-   * @param type
+   * @param currency
    *          {@link String}
    */
   public void setCurrency( final String currency ) {

@@ -46,9 +46,9 @@ public class ClientService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Client} objects. In which order this list is returned depends on the
    * optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Client.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Client.Filter} or <code>null</code>
    * @param order
-   *          {@link Client.Order} or <code>null</code>
+   *          {@link com.paymill.models.Client.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Client}s and their total count.
    */
   public PaymillList<Client> list( Client.Filter filter, Client.Order order ) {
@@ -60,9 +60,9 @@ public class ClientService extends AbstractService {
    * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
    * offset.
    * @param filter
-   *          {@link Client.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Client.Filter} or <code>null</code>
    * @param order
-   *          {@link Client.Order} or <code>null</code>
+   *          {@link com.paymill.models.Client.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -145,7 +145,6 @@ public class ClientService extends AbstractService {
    * card. The subscription can not be changed by updating the client data. This has to be done in the subscription call.
    * @param client
    *          A {@link Client} with Id.
-   * @return {@link Client} object, which represents a PAYMILL client.
    */
   public void update( Client client ) {
     RestfulUtils.update( ClientService.PATH, client, Client.class, super.httpClient );
@@ -155,7 +154,6 @@ public class ClientService extends AbstractService {
    * This function deletes a client, but its transactions are not deleted.
    * @param client
    *          A {@link Client} with Id.
-   * @return {@link Client} object without id, which represents a deleted PAYMILL client.
    */
   public void delete( Client client ) {
     RestfulUtils.delete( ClientService.PATH, client, Client.class, super.httpClient );

@@ -46,9 +46,9 @@ public class OfferService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Offer} objects. In which order this list is returned depends on the
    * optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Offer.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Offer.Filter} or <code>null</code>
    * @param order
-   *          {@link Offer.Order} or <code>null</code>
+   *          {@link com.paymill.models.Offer.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Offer}s and their total count.
    */
   public PaymillList<Offer> list( Offer.Filter filter, Offer.Order order ) {
@@ -60,9 +60,9 @@ public class OfferService extends AbstractService {
    * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
    * offset.
    * @param filter
-   *          {@link Offer.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Offer.Filter} or <code>null</code>
    * @param order
-   *          {@link Offer.Order} or <code>null</code>
+   *          {@link com.paymill.models.Offer.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset

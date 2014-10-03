@@ -145,7 +145,7 @@ public class Invoice {
 
   /**
    * The type: paymill, wirecard, acceptance etc. Indicates if it's a PAYMILL invoice or an acquirer payout.
-   * @return
+   * @return the type
    */
   public String getInvoiceType() {
     return invoiceType;

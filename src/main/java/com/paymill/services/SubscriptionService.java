@@ -50,9 +50,9 @@ public class SubscriptionService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Subscription} objects. In which order this list is returned depends on
    * the optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Subscription.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Subscription.Filter} or <code>null</code>
    * @param order
-   *          {@link Subscription.Order} or <code>null</code>
+   *          {@link com.paymill.models.Subscription.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list( Subscription.Filter filter, Subscription.Order order ) {
@@ -64,9 +64,9 @@ public class SubscriptionService extends AbstractService {
    * the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
    * offset.
    * @param filter
-   *          {@link Subscription.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Subscription.Filter} or <code>null</code>
    * @param order
-   *          {@link Subscription.Order} or <code>null</code>
+   *          {@link com.paymill.models.Subscription.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -110,7 +110,7 @@ public class SubscriptionService extends AbstractService {
    * 
    * </blockquote>
    * @param creator
-   *          see {@link Subscription.Creator}.
+   *          see {@link com.paymill.models.Subscription.Creator}.
    * @return the subscription.
    */
   public Subscription create( Creator creator ) {
@@ -123,7 +123,7 @@ public class SubscriptionService extends AbstractService {
    * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
    * {@link Client}s is charged for each billing interval entered. <br />
    * <strong>NOTE</strong><br />
-   * As the Subscription create method has a lot of options, we recommend you to use a {@link Subscription.Creator}.
+   * As the Subscription create method has a lot of options, we recommend you to use a {@link com.paymill.models.Subscription.Creator}.
    * @param payment
    *          A {@link Payment} used for charging.
    * @param client
@@ -193,7 +193,7 @@ public class SubscriptionService extends AbstractService {
    * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
    * {@link Client}s is charged for each billing interval entered. <br />
    * <strong>NOTE</strong><br />
-   * As the Subscription create method has a lot of options, we recommend you to use a {@link Subscription.Creator}.
+   * As the Subscription create method has a lot of options, we recommend you to use a {@link com.paymill.models.Subscription.Creator}.
    * @param paymentId
    *          A {@link Payment} used for charging.
    * @param clientId
@@ -684,7 +684,7 @@ public class SubscriptionService extends AbstractService {
    * <li>{@link SubscriptionService#changeOfferKeepCaptureDateAndRefund(Subscription, Offer)} to change the offer.
    * <li>{@link SubscriptionService#changeOfferKeepCaptureDateNoRefund(Subscription, Offer)} to change the offer.
    * <li>{@link SubscriptionService#endTrial(Subscription)} to end the trial
-   * <li>{@link SubscriptionService#limitValidity(Subscription, com.paymill.models.Interval.Period} to change the validity.
+   * <li>{@link SubscriptionService#limitValidity(String, com.paymill.models.Interval.Period)} to limit the validity.
    * <li>{@link SubscriptionService#pause(Subscription)} to pause
    * <li>{@link SubscriptionService#unlimitValidity(Subscription)} to change the validity.
    * <li>{@link SubscriptionService#unpause(Subscription)} to unpause.
@@ -692,7 +692,7 @@ public class SubscriptionService extends AbstractService {
    * <p>
    * @param subscription
    *          A {@link Subscription} with Id to be updated.
-   * @return
+   * @return the updated subscription
    */
   public Subscription update( Subscription subscription ) {
     return RestfulUtils.update( SubscriptionService.PATH, subscription, Subscription.class, super.httpClient );

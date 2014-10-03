@@ -51,9 +51,9 @@ public class TransactionService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Transaction} objects. In which order this list is returned depends on
    * the optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Transaction.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Transaction.Filter} or <code>null</code>
    * @param order
-   *          {@link Transaction.Order} or <code>null</code>
+   *          {@link com.paymill.models.Transaction.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Transaction}s and their total count.
    */
   public PaymillList<Transaction> list( Transaction.Filter filter, Transaction.Order order ) {
@@ -65,9 +65,9 @@ public class TransactionService extends AbstractService {
    * the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
    * offset.
    * @param filter
-   *          {@link Transaction.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Transaction.Filter} or <code>null</code>
    * @param order
-   *          {@link Transaction.Order} or <code>null</code>
+   *          {@link com.paymill.models.Transaction.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -90,7 +90,7 @@ public class TransactionService extends AbstractService {
 
   /**
    * This function refresh and returns the detailed information of the concrete requested {@link Transaction}.
-   * @param transaction
+   * @param transactionId
    *          The Id of an existing {@link Transaction}.
    * @return Refreshed instance of the given {@link Transaction}.
    */

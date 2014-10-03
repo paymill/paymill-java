@@ -159,7 +159,7 @@ public final class Payment {
 
   /**
    * Returns name of the account holder.
-   * @return
+   * @return the account holder
    */
   public String getHolder() {
     return this.holder;

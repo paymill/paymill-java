@@ -46,9 +46,9 @@ public class RefundService extends AbstractService {
    * This function returns a {@link List} of PAYMILL {@link Refund} objects. In which order this list is returned depends on the
    * optional parameters. If <code>null</code> is given, no filter or order will be applied.
    * @param filter
-   *          {@link Refund.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Refund.Filter} or <code>null</code>
    * @param order
-   *          {@link Refund.Order} or <code>null</code>
+   *          {@link com.paymill.models.Refund.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Refund}s and their total count.
    */
   public PaymillList<Refund> list( Refund.Filter filter, Refund.Order order ) {
@@ -60,9 +60,9 @@ public class RefundService extends AbstractService {
    * optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
    * offset.
    * @param filter
-   *          {@link Refund.Filter} or <code>null</code>
+   *          {@link com.paymill.models.Refund.Filter} or <code>null</code>
    * @param order
-   *          {@link Refund.Order} or <code>null</code>
+   *          {@link com.paymill.models.Refund.Order} or <code>null</code>
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -169,7 +169,7 @@ public class RefundService extends AbstractService {
    * for every refund</li>
    * <li>There is no need to define a currency for refunds, because they will be in the same currency as the original transaction</li>
    * </ul>
-   * @param transactionId
+   * @param transaction
    *          The {@link Transaction}, which will be refunded.
    * @param amount
    *          Amount (in cents) which will be charged.
