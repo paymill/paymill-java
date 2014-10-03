@@ -343,6 +343,11 @@ public final class Webhook {
     TRANSACTION_FAILED("transaction.failed"),
 
     /**
+     * Returns a {@link Client} if a {@link Client} was updated.
+     */
+    CLIENT_UPDATED("client.updated"),
+
+    /**
      * Returns a {@link Subscription}.
      */
     SUBSCRIPTION_CREATED("subscription.created"),
@@ -371,17 +376,17 @@ public final class Webhook {
      * Returns a {@link Subscription}.
      */
     SUBSCRIPTION_EXPIRING("subscription.expiring"),
-    
+
     /**
      * Returns a {@link Subscription}.
      */
     SUBSCRIPTION_DEACTIVATED("subscription.deactivated"),
-    
+
     /**
      * Returns a {@link Subscription}.
      */
     SUBSCRIPTION_ACTIVATED("subscription.activated"),
-    
+
     /**
      * Returns a {@link Subscription}.
      */
@@ -428,9 +433,24 @@ public final class Webhook {
     APP_MERCHANT_REJECTED("app.merchant.rejected"),
 
     /**
-     * Returns a {@link Client} if a {@link Client} was updated.
+     * Returns a {@link Merchant} if a connected merchant allows live requests
      */
-    CLIENT_UPDATED("client.updated"),
+    APP_MERCHANT_LIVE_REQUESTS_ALLOWED("app.merchant.live_requests_allowed"),
+
+    /**
+     * Returns a {@link Merchant} if a connected merchant denys live requests
+     */
+    APP_MERCHANT_LIVE_REQUESTS_NOT_ALLOWED("app.merchant.live_requests_not_allowed"),
+    
+    /**
+     * Returns a {@link Merchant} if a connected merchant disabled your app
+     */
+    APP_MERCHANT_APP_DISABLED("app.merchant.app.disabled"),
+
+    /**
+     * Returns a {@link Payment} if if a creditcard is going to expire next month
+     */
+    PAYMENT_EXPIRED("payment.expired"),
 
     UNDEFINED("undefined");
 
@@ -456,5 +476,4 @@ public final class Webhook {
     }
 
   }
-
 }
