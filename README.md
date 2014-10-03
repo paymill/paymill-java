@@ -16,20 +16,21 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|4.0.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v4.0.0).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.0.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.0.0).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>4.0.0</version>
+  <version>5.0.0</version>
 </dependency>
 ```
 
 
 ## What's new
 
-We have released version 4, which follows version 2.1 of the PAYMILL's REST API. This version is not backwards compatible with version 3, which follows version 2.0 of the PAYMILL's REST API. Concrete changes in the changelog.
+We have released version 5, which follows version 2.1 of the PAYMILL's REST API. This version is not backwards compatible with version 4, altough changes are minor. 
+We also added some [examples](/samples/) , how to use an alternative http client and how to  deal with incoming webhooks.
 
 ## Usage
 
@@ -123,8 +124,31 @@ You may delete objects by calling the service's delete() method with an object i
 ```
 or
 ```java
-  clientService.delete( client );
+  clientService.delete( client );    
 ```
+
+### Using an alternative http client
+
+Since version 5.0.0 the wrapper supports alternative http clients. To use one, you need to take these two steps:
+
+1. Exclude the jersey dependecy from your pom like this:
+```xml
+  		<dependency>
+			<groupId>com.paymill</groupId>
+			<artifactId>paymill-java</artifactId>
+			<version>latestversion</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-client</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+```
+2. Implement the HttpClient interface and create a PaymillContext with it.
+
+We have an [example](/samples/jerseyOneHttp) with Jersey 1.X, the client used prior the 5.X release of the wrapper.
+
 ## Spring integration
 
 This example is suitable if you use this wrapper for a single account.
@@ -189,7 +213,34 @@ class HelloPaymill {
 
 ```
 
+## Dealing with webhooks
+
+Take a look at the Webhook [sample](/samples/webhookresolver). It contains an example json deserializer, as well as hints, how to receive webhooks in your app.
+
+## Older API versions
+
+The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Latest stable releases for older API versions:
+
+* API v2.0 : 3.2.0 in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.2.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.2.0).
+
 ## Changelog
+
+### 5.0.0
+
+* Minor, but incompatible changes in the interface
+* fix: [#57](https://github.com/paymill/paymill-java/issues/57) removed final keywords from some classes to allow proper mocking, thanks to @dobermai
+* fix: [#59](https://github.com/paymill/paymill-java/issues/59) added missing subscription status, thanks to @schaebo
+* improved deserialization and fixed test suite to work with arbitary accounts
+* improvement: [#51](https://github.com/paymill/paymill-java/issues/51) isolated jersey dependecy, alternative frameworks can now be used for http, thanks to @basoko
+* fix: [#50](https://github.com/paymill/paymill-java/issues/50) fixed interval deserialization, thanks to @basoko
+* improvement: [#53](https://github.com/paymill/paymill-java/issues/53) added missing payment object fields
+* switched to jersey 2, thanks to Dmitry.
+* updated webhook event types
+* included internal objects 
+* update project dependencies
+
+### 4.0.1
+* improvement: [#54](https://github.com/paymill/paymill-java/issues/54) now is possible to end the trial
 
 ### 4.0.0
 * Works with version 2.1 of PAYMILL's REST API.
