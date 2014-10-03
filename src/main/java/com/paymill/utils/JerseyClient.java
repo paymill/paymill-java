@@ -1,16 +1,24 @@
 package com.paymill.utils;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 public final class JerseyClient implements HttpClient {
+
   private final Client httpClient;
 
   public JerseyClient( final String apiKey ) {
@@ -18,54 +26,62 @@ public final class JerseyClient implements HttpClient {
   }
 
   public JerseyClient( final String apiKey, final Integer timeout ) {
-    this.httpClient = new Client();
+    ClientConfig configuration = new ClientConfig();
     if( timeout != null ) {
-      this.httpClient.setReadTimeout( timeout );
-      this.httpClient.setConnectTimeout( timeout );
+      configuration.property( ClientProperties.CONNECT_TIMEOUT, timeout );
+      configuration.property( ClientProperties.READ_TIMEOUT, timeout );
     }
-    this.httpClient.addFilter( new HTTPBasicAuthFilter( apiKey, StringUtils.EMPTY ) );
+    this.httpClient = ClientBuilder.newClient( configuration );
+
+    HttpAuthenticationFeature authFeature = HttpAuthenticationFeature.basic( apiKey, StringUtils.EMPTY );
+    this.httpClient.register( authFeature );
   }
 
-  @Override
-  public String get( final String path ) {
-    WebResource webResource = this.httpClient.resource( path );
-    ClientResponse response = webResource.get( ClientResponse.class );
-    return response.getEntity( String.class );
+  public String get( String path ) {
+    WebTarget webResource = httpClient.target( path );
+    Response response = webResource.request( MediaType.APPLICATION_JSON_TYPE ).get();
+    return response.readEntity( String.class );
   }
 
-  @Override
-  public String get( final String path, final ParameterMap<String, String> params ) {
-    WebResource webResource = this.httpClient.resource( path ).queryParams( JerseyClient.convertMap( params ) );
-    ClientResponse response = webResource.get( ClientResponse.class );
-    return response.getEntity( String.class );
+  public String get( String path, ParameterMap<String, String> params ) {
+    WebTarget webResource = httpClient.target( path );
+    if( params != null ) {
+      for( String key : params.keySet() ) {
+        webResource = webResource.queryParam( key, params.get( key ).toArray() );
+      }
+    }
+    Response response = webResource.request( MediaType.APPLICATION_JSON_TYPE ).get();
+    return response.readEntity( String.class );
   }
 
-  @Override
-  public String post( final String path, final ParameterMap<String, String> params ) {
-    WebResource webResource = this.httpClient.resource( path );
-    ClientResponse response = webResource.post( ClientResponse.class, JerseyClient.convertMap( params ) );
-    return response.getEntity( String.class );
+  public String post( String path, ParameterMap<String, String> params ) {
+    WebTarget webResource = httpClient.target( path );
+    Response response = webResource.request( MediaType.APPLICATION_JSON_TYPE ).post( Entity.form( convertMap( params ) ) );
+    return response.readEntity( String.class );
   }
 
-  @Override
-  public String put( final String path, final ParameterMap<String, String> params ) {
-    WebResource webResource = this.httpClient.resource( path );
-    ClientResponse response = webResource.put( ClientResponse.class, JerseyClient.convertMap( params ) );
-    return response.getEntity( String.class );
+  public String put( String path, ParameterMap<String, String> params ) {
+    WebTarget webResource = httpClient.target( path );
+    Response response = webResource.request( MediaType.APPLICATION_JSON_TYPE ).put( Entity.form( convertMap( params ) ) );
+    return response.readEntity( String.class );
   }
 
-  @Override
-  public String delete( final String path, final ParameterMap<String, String> params ) {
-    WebResource webResource = this.httpClient.resource( path );
-    ClientResponse response = webResource.delete( ClientResponse.class, JerseyClient.convertMap( params ) );
-    return response.getEntity( String.class );
+  public String delete( String path, ParameterMap<String, String> params ) {
+    WebTarget webResource = httpClient.target( path );
+    if( params != null ) {
+      for( String key : params.keySet() ) {
+        webResource = webResource.queryParam( key, params.get( key ).toArray() );
+      }
+    }
+    Response response = webResource.request( MediaType.APPLICATION_JSON_TYPE ).delete();
+    return response.readEntity( String.class );
   }
 
   private static MultivaluedMap<String, String> convertMap( final ParameterMap<String, String> map ) {
     if( map == null ) {
       return null;
     }
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    MultivaluedMap<String, String> params = new MultivaluedHashMap<String, String>();
     params.putAll( map );
     return params;
   }
