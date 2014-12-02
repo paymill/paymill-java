@@ -323,7 +323,7 @@ public class TransactionService extends AbstractService {
    * @return {@link Transaction} object indicating whether a the call was successful or not.
    */
   public Transaction createWithPaymentAndClient( String paymentId, String clientId, Integer amount, String currency, String description ) {
-    return this.createWithPaymentAndClient( new Payment( paymentId ), new Client( clientId ), amount, currency );
+    return this.createWithPaymentAndClient( new Payment( paymentId ), new Client( clientId ), amount, currency, description );
   }
 
   /**
