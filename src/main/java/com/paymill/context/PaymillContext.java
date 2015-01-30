@@ -22,6 +22,36 @@ import com.paymill.services.SubscriptionService;
 import com.paymill.services.TransactionService;
 import com.paymill.services.WebhookService;
 
+/*
+
+PPPPPPPPPPPPPPPPP        AAA           YYYYYYY       YYYYYYYMMMMMMMM               MMMMMMMMIIIIIIIIIILLLLLLLLLLL             LLLLLLLLLLL
+P::::::::::::::::P      A:::A          Y:::::Y       Y:::::YM:::::::M             M:::::::MI::::::::IL:::::::::L             L:::::::::L
+P::::::PPPPPP:::::P    A:::::A         Y:::::Y       Y:::::YM::::::::M           M::::::::MI::::::::IL:::::::::L             L:::::::::L
+PP:::::P     P:::::P  A:::::::A        Y::::::Y     Y::::::YM:::::::::M         M:::::::::MII::::::IILL:::::::LL             LL:::::::LL
+  P::::P     P:::::P A:::::::::A       YYY:::::Y   Y:::::YYYM::::::::::M       M::::::::::M  I::::I    L:::::L                 L:::::L                           cccccccccccccccc   ooooooooooo      mmmmmmm    mmmmmmm
+  P::::P     P:::::PA:::::A:::::A         Y:::::Y Y:::::Y   M:::::::::::M     M:::::::::::M  I::::I    L:::::L                 L:::::L                         cc:::::::::::::::c oo:::::::::::oo  mm:::::::m  m:::::::mm
+  P::::PPPPPP:::::PA:::::A A:::::A         Y:::::Y:::::Y    M:::::::M::::M   M::::M:::::::M  I::::I    L:::::L                 L:::::L                        c:::::::::::::::::co:::::::::::::::om::::::::::mm::::::::::m
+  P:::::::::::::PPA:::::A   A:::::A         Y:::::::::Y     M::::::M M::::M M::::M M::::::M  I::::I    L:::::L                 L:::::L                       c:::::::cccccc:::::co:::::ooooo:::::om::::::::::::::::::::::m
+  P::::PPPPPPPPP A:::::A     A:::::A         Y:::::::Y      M::::::M  M::::M::::M  M::::::M  I::::I    L:::::L                 L:::::L                       c::::::c     ccccccco::::o     o::::om:::::mmm::::::mmm:::::m
+  P::::P        A:::::AAAAAAAAA:::::A         Y:::::Y       M::::::M   M:::::::M   M::::::M  I::::I    L:::::L                 L:::::L                       c:::::c             o::::o     o::::om::::m   m::::m   m::::m
+  P::::P       A:::::::::::::::::::::A        Y:::::Y       M::::::M    M:::::M    M::::::M  I::::I    L:::::L                 L:::::L                       c:::::c             o::::o     o::::om::::m   m::::m   m::::m
+  P::::P      A:::::AAAAAAAAAAAAA:::::A       Y:::::Y       M::::::M     MMMMM     M::::::M  I::::I    L:::::L         LLLLLL  L:::::L         LLLLLL        c::::::c     ccccccco::::o     o::::om::::m   m::::m   m::::m
+PP::::::PP   A:::::A             A:::::A      Y:::::Y       M::::::M               M::::::MII::::::IILL:::::::LLLLLLLLL:::::LLL:::::::LLLLLLLLL:::::L        c:::::::cccccc:::::co:::::ooooo:::::om::::m   m::::m   m::::m
+P::::::::P  A:::::A               A:::::A  YYYY:::::YYYY    M::::::M               M::::::MI::::::::IL::::::::::::::::::::::LL::::::::::::::::::::::L ......  c:::::::::::::::::co:::::::::::::::om::::m   m::::m   m::::m
+P::::::::P A:::::A                 A:::::A Y:::::::::::Y    M::::::M               M::::::MI::::::::IL::::::::::::::::::::::LL::::::::::::::::::::::L .::::.   cc:::::::::::::::c oo:::::::::::oo m::::m   m::::m   m::::m
+PPPPPPPPPPAAAAAAA                   AAAAAAAYYYYYYYYYYYYY    MMMMMMMM               MMMMMMMMIIIIIIIIIILLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL ......     cccccccccccccccc   ooooooooooo   mmmmmm   mmmmmm   mmmmmm
+
+Become part of the team
+http://jobs.paymill.com
+
+*/
+
+
+
+
+
+
+
 /**
  * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key<br />
  * It creates 8 services, which represents the PAYMILL API:
