@@ -2,11 +2,14 @@ package com.paymill.services;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
@@ -16,9 +19,12 @@ import com.paymill.models.PaymillList;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
 
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.JerseyClient;
+
 public class TransactionServiceTest {
 
-  private String                  token       = "098f6bcd4621d373cade4e832627b4f6";
+  private String                  token       = null;
   private int                     amount      = 3201;
   private String                  currency    = "EUR";
   private String                  description = "Boom, boom, shake the room";
@@ -44,9 +50,22 @@ public class TransactionServiceTest {
     this.transactionService = paymill.getTransactionService();
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
+  }
 
-    this.preauthorization = this.preauthorizationService.createWithToken( this.token, this.amount, this.currency );
-    this.payment = this.paymentService.createWithToken( this.token );
+  @BeforeMethod
+  public void setToken() {
+    HttpClient httpClient = new JerseyClient( "941569045353c8ac2a5689deb88871bb", 0 );
+    String content = httpClient.get("https://test-token.paymill.com/?transaction.mode=CONNECTOR_TEST&channel.id=941569045353c8ac2a5689deb88871bb&jsonPFunction=paymilljstests&account.number=4111111111111111&account.expiry.month=12&account.expiry.year=2015&account.verification=123&account.holder=Max%20Mustermann&presentation.amount3D=3201&presentation.currency3D=EUR");
+
+    Pattern pattern = Pattern.compile( "(tok_)[a-z|0-9]+" );
+    Matcher matcher = pattern.matcher( content );
+
+    if( matcher.find() ) {
+      this.token = matcher.group();
+
+      this.preauthorization = this.preauthorizationService.createWithToken( this.token, this.amount, this.currency );
+      this.payment = this.paymentService.createWithToken( this.token );
+    }
   }
 
   @Test( expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Token can not be blank" )

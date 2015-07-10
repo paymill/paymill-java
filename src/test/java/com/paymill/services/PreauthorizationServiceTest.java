@@ -2,11 +2,14 @@ package com.paymill.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
@@ -14,9 +17,12 @@ import com.paymill.models.Payment;
 import com.paymill.models.Preauthorization;
 import com.paymill.models.Transaction;
 
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.JerseyClient;
+
 public class PreauthorizationServiceTest {
 
-  private String                  token       = "098f6bcd4621d373cade4e832627b4f6";
+  private String                  token       = null;
   private Integer                 amount      = 4202;
   private String                  currency    = "EUR";
   private String                  description = "shake the preauthorization";
@@ -34,7 +40,20 @@ public class PreauthorizationServiceTest {
     this.paymentService = paymill.getPaymentService();
 
     this.preauthorizations = new ArrayList<Preauthorization>();
-    this.payment = this.paymentService.createWithToken( this.token );
+  }
+
+  @BeforeMethod
+  public void setToken() {
+    HttpClient httpClient = new JerseyClient( "941569045353c8ac2a5689deb88871bb", 0 );
+    String content = httpClient.get("https://test-token.paymill.com/?transaction.mode=CONNECTOR_TEST&channel.id=941569045353c8ac2a5689deb88871bb&jsonPFunction=paymilljstests&account.number=4111111111111111&account.expiry.month=12&account.expiry.year=2015&account.verification=123&account.holder=Max%20Mustermann&presentation.amount3D=4202&presentation.currency3D=EUR");
+
+    Pattern pattern = Pattern.compile( "(tok_)[a-z|0-9]+" );
+    Matcher matcher = pattern.matcher( content );
+
+    if( matcher.find() ) {
+      this.token = matcher.group();
+      this.payment = this.paymentService.createWithToken( this.token );
+    }
   }
 
   @AfterClass
@@ -64,7 +83,6 @@ public class PreauthorizationServiceTest {
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
   public void testCreateWithPayment_shouldSucceed() throws Exception {
-    Thread.sleep( 1000 );
     Preauthorization preauthorization = this.preauthorizationService.createWithPayment( this.payment, this.amount, this.currency );
     this.validatePreauthorization( preauthorization );
     this.validateTransaction( preauthorization.getTransaction() );
@@ -75,7 +93,6 @@ public class PreauthorizationServiceTest {
 
   @Test( dependsOnMethods = "testCreateWithToken_shouldSucceed" )
   public void testCreateWithPaymentAndDescription_shouldSucceed() throws Exception {
-    Thread.sleep( 1000 );
     Preauthorization preauthorization = this.preauthorizationService.createWithPayment( this.payment, this.amount, this.currency, this.description );
     this.validatePreauthorization( preauthorization );
     this.validateTransaction( preauthorization.getTransaction() );
@@ -109,7 +126,7 @@ public class PreauthorizationServiceTest {
     Assert.assertFalse( preauthorization.isEmpty() );
   }
   */
-  
+
   /* temp removed
   @Test( dependsOnMethods = "testListOrderByFilterAmountGreaterThan" )
   public void testListOrderByFilterAmountLessThan() {
@@ -118,7 +135,7 @@ public class PreauthorizationServiceTest {
     Assert.assertFalse( preauthorizations.isEmpty() );
   }
   */
-  
+
   private void validatePreauthorization( final Preauthorization preauthorization ) {
     Assert.assertNotNull( preauthorization );
     Assert.assertNotNull( preauthorization.getId() );

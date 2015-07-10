@@ -29,7 +29,7 @@ Java wrapper for PAYMILL API
 
 ## What's new
 
-We have released version 5, which follows version 2.1 of the PAYMILL's REST API. This version is not backwards compatible with version 4, altough changes are minor. 
+We have released version 5, which follows version 2.1 of the PAYMILL's REST API. This version is not backwards compatible with version 4, altough changes are minor.
 We also added some [examples](/samples/) , how to use an alternative http client and how to  deal with incoming webhooks.
 
 ## Usage
@@ -124,7 +124,7 @@ You may delete objects by calling the service's delete() method with an object i
 ```
 or
 ```java
-  clientService.delete( client );    
+  clientService.delete( client );
 ```
 
 ### Using an alternative http client
@@ -225,6 +225,11 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 
 ## Changelog
 
+### 5.1.0
+
+* fix tests: Token is now generated for each request
+* update: projcet dependencies
+
 ### 5.0.0
 
 * Minor, but incompatible changes in the interface
@@ -236,7 +241,7 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 * improvement: [#53](https://github.com/paymill/paymill-java/issues/53) added missing payment object fields
 * switched to jersey 2, thanks to Dmitry.
 * updated webhook event types
-* included internal objects 
+* included internal objects
 * update project dependencies
 
 ### 4.0.1

@@ -3,11 +3,14 @@ package com.paymill.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.paymill.context.PaymillContext;
@@ -16,6 +19,9 @@ import com.paymill.models.Interval;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
 import com.paymill.models.Subscription;
+
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.JerseyClient;
 
 public class SubscriptionServiceTest {
 
@@ -54,7 +60,6 @@ public class SubscriptionServiceTest {
     this.offerService = paymill.getOfferService();
 
     this.client = this.clientService.createWithEmailAndDescription( this.clientEmail, this.clientDescription );
-    this.payment = this.paymentService.createWithTokenAndClient( this.token, this.client.getId() );
     this.offer1 = this.offerService.create( this.amount, this.currency, this.interval, this.name );
     this.offer2 = this.offerService.create( this.amount * 2, this.currency, this.interval, "Updated " + this.name );
     this.offer3 = this.offerService.create( this.amount * 3, this.currency, this.interval, "Updated " + this.name );
@@ -62,6 +67,20 @@ public class SubscriptionServiceTest {
     this.offer5 = this.offerService.create( this.amount * 6, this.currency, this.interval, "SubsOffer5" );
 
     this.subscriptions = new ArrayList<Subscription>();
+  }
+
+  @BeforeMethod
+  public void setToken() {
+    HttpClient httpClient = new JerseyClient( "941569045353c8ac2a5689deb88871bb", 0 );
+    String content = httpClient.get("https://test-token.paymill.com/?transaction.mode=CONNECTOR_TEST&channel.id=941569045353c8ac2a5689deb88871bb&jsonPFunction=paymilljstests&account.number=4111111111111111&account.expiry.month=12&account.expiry.year=2015&account.verification=123&account.holder=Max%20Mustermann&presentation.amount3D=2800&presentation.currency3D=EUR");
+
+    Pattern pattern = Pattern.compile( "(tok_)[a-z|0-9]+" );
+    Matcher matcher = pattern.matcher( content );
+
+    if( matcher.find() ) {
+      this.token = matcher.group();
+      this.payment = this.paymentService.createWithTokenAndClient( this.token, this.client.getId() );
+    }
   }
 
   @AfterClass
@@ -232,7 +251,7 @@ public class SubscriptionServiceTest {
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), inTwoWeeks ) );
     subscriptionService.endTrial( subscription );
     Assert.assertTrue( datesAroundSame( subscription.getNextCaptureAt(), new Date() ) );
-    Assert.assertNull( subscription.getTrialEnd() );
+    Assert.assertNull( subscription.getTrialStart() );
     this.subscriptions.add( subscription );
   }
 
