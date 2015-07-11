@@ -79,6 +79,9 @@ public final class Subscription {
   @JsonProperty( "is_deleted" )
   private Boolean                      deleted;
 
+  @JsonProperty( "mandate_reference" )
+  private String                       mandateReference;
+
   public Subscription() {
     super();
   }
@@ -352,6 +355,23 @@ public final class Subscription {
   @JsonIgnore
   public void setCreatedAt( final Date createdAt ) {
     this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the mandate reference. SEPA mandate reference, can be optionally specified for direct debit transactions.
+   * @param mandateReference
+   *          {@link String}
+   */
+  public void setMandateReference( final String mandateReference ) {
+    this.mandateReference = mandateReference;
+  }
+
+  /**
+   * Returns the mandate reference.
+   * @return {@link String}
+   */
+  public String getMandateReference() {
+    return this.mandateReference;
   }
 
   /**

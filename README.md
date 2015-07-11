@@ -229,6 +229,7 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 
 * fix tests: Token is now generated for each request
 * update: projcet dependencies
+* add SEPA mandate_reference for direct debit transaction and subscription
 
 ### 5.0.0
 

@@ -64,6 +64,9 @@ public final class Transaction {
   @JsonProperty( "app_id" )
   private String             appId;
 
+  @JsonProperty( "mandate_reference" )
+  private String                       mandateReference;
+
   public Transaction() {
     super();
   }
@@ -360,6 +363,23 @@ public final class Transaction {
   public void setUpdatedAt( final long seconds ) {
     if( seconds > 0 )
       this.updatedAt = new Date( seconds * 1000 );
+  }
+
+  /**
+   * Set the mandate reference. SEPA mandate reference, can be optionally specified for direct debit transactions.
+   * @param mandateReference
+   *          {@link String}
+   */
+  public void setMandateReference( final String mandateReference ) {
+    this.mandateReference = mandateReference;
+  }
+
+  /**
+   * Returns the mandate reference.
+   * @return {@link String}
+   */
+  public String getMandateReference() {
+    return this.mandateReference;
   }
 
   public static Transaction.Filter createFilter() {
