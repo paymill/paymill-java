@@ -37,12 +37,12 @@ public class ChecksumServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext("2bb9c4c3f0776ba75cfdc60020d7ea35");
+    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
     this.checksumService = paymill.getChecksumService();
 
     this.items = new ArrayList<ShoppingCartItem>();
-    this.items.add(this.createShopingCardItem("Rambo Poster", "John J. Rambo", 2200, 3, "898-24342-343",
-        "http://www.store.com/items/posters/12121-rambo"));
+    this.items.add(this.createShopingCardItem( "Rambo Poster", "John J. Rambo", 2200, 3, "898-24342-343",
+        "http://www.store.com/items/posters/12121-rambo" ));
     this.items.add(this.createShopingCardItem("Comando Poster", "John Matrix", 3100, 1, "898-24342-341",
         "http://www.store.com/items/posters/12121-comando"));
 
@@ -114,7 +114,6 @@ public class ChecksumServiceTest {
     Checksum checksum = this.checksumService.createChecksumForPaypalWithFee(this.amount, this.currency, this.returnUrl,
         this.cancelUrl, this.fee, "app_fake");
     this.validateChecksum(checksum);
-    System.out.println(URLDecoder.decode(checksum.getData(), "UTF-8"));
     Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains(""));
   }
 
