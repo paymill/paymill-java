@@ -37,12 +37,12 @@ public class ChecksumServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext(System.getProperty("apiKey"));
     this.checksumService = paymill.getChecksumService();
 
     this.items = new ArrayList<ShoppingCartItem>();
-    this.items.add(this.createShopingCardItem( "Rambo Poster", "John J. Rambo", 2200, 3, "898-24342-343",
-        "http://www.store.com/items/posters/12121-rambo" ));
+    this.items.add(this.createShopingCardItem("Rambo Poster", "John J. Rambo", 2200, 3, "898-24342-343",
+        "http://www.store.com/items/posters/12121-rambo"));
     this.items.add(this.createShopingCardItem("Comando Poster", "John Matrix", 3100, 1, "898-24342-341",
         "http://www.store.com/items/posters/12121-comando"));
 
@@ -54,7 +54,6 @@ public class ChecksumServiceTest {
     this.fee = new Fee();
     this.fee.setAmount(this.feeAmount);
     this.fee.setPayment(this.feePayment);
-
   }
 
   @AfterClass
@@ -62,6 +61,9 @@ public class ChecksumServiceTest {
     this.checksumService = null;
 
     this.items = null;
+    this.billingAddress = null;
+    this.shippingAddress = null;
+    this.fee = null;
   }
 
   @Test
@@ -85,8 +87,21 @@ public class ChecksumServiceTest {
         this.returnUrl, this.cancelUrl, this.description, this.items, null, null);
     this.validateChecksum(checksum);
     Assert.assertTrue(checksum.getData().contains(URLEncoder.encode(this.description, "UTF-8")));
-    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains(
-        "items[0][name]=Rambo Poster&items[0][description]=John J. Rambo&items[0][quantity]=3&items[0][amount]=2200&items[0][item_number]=898-24342-343&items[0][url]=http://www.store.com/items/posters/12121-rambo&items[1][url]=http://www.store.com/items/posters/12121-comando&items[1][description]=John Matrix&items[1][quantity]=1&items[1][amount]=3100&items[1][name]=Comando Poster&items[1][item_number]=898-24342-341&amount=9700&description=Bebemen is cool&return_url=http://www.return.com&currency=USD&cancel_url=http://www.cancel.com"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[0][name]=Rambo Poster"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[0][description]=John J. Rambo"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[0][quantity]=3"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[0][amount]=2200"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[0][item_number]=898-24342-343"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8")
+        .contains("items[0][url]=http://www.store.com/items/posters/12121-rambo"));
+
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[1][name]=Comando Poster"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[1][description]=John Matrix"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[1][quantity]=1"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[1][amount]=3100"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("items[1][item_number]=898-24342-341"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8")
+        .contains("items[1][url]=http://www.store.com/items/posters/12121-comando"));
   }
 
   @Test
@@ -95,8 +110,17 @@ public class ChecksumServiceTest {
         this.returnUrl, this.cancelUrl, this.description, this.items, null, this.billingAddress);
     this.validateChecksum(checksum);
     Assert.assertTrue(checksum.getData().contains(URLEncoder.encode(this.description, "UTF-8")));
-    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains(
-        "billing_address[postal_code]=1527&billing_address[name]=John Rambo&billing_address[country]=TH&billing_address[city]=Buriram&billing_address[phone]=+66 32 12-555-23&billing_address[street_address]=Wat Sawai So 2&billing_address[state]=Buriram&billing_address[street_address_addition]=23/4/14"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[postal_code]=1527"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[name]=John Rambo"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[country]=TH"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[city]=Buriram"));
+    Assert
+        .assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[phone]=+66 32 12-555-23"));
+    Assert.assertTrue(
+        URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[street_address]=Wat Sawai So 2"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[state]=Buriram"));
+    Assert.assertTrue(
+        URLDecoder.decode(checksum.getData(), "UTF-8").contains("billing_address[street_address_addition]=23/4/14"));
   }
 
   @Test
@@ -105,8 +129,17 @@ public class ChecksumServiceTest {
         this.returnUrl, this.cancelUrl, this.description, this.items, this.shippingAddress, null);
     this.validateChecksum(checksum);
     Assert.assertTrue(checksum.getData().contains(URLEncoder.encode(this.description, "UTF-8")));
-    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains(
-        "shipping_address[postal_code]=19134&shipping_address[city]=Philadelphia&shipping_address[country]=US&shipping_address[name]=Rocky Balboa&shipping_address[phone]=+1 215 23-555-32&shipping_address[state]=Pennsylvania&shipping_address[street_address]=1818 East Tusculum Street&shipping_address[street_address_addition]=34/2B"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[postal_code]=19134"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[city]=Philadelphia"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[country]=US"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[name]=Rocky Balboa"));
+    Assert.assertTrue(
+        URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[phone]=+1 215 23-555-32"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[state]=Pennsylvania"));
+    Assert.assertTrue(URLDecoder.decode(checksum.getData(), "UTF-8")
+        .contains("shipping_address[street_address]=1818 East Tusculum Street"));
+    Assert.assertTrue(
+        URLDecoder.decode(checksum.getData(), "UTF-8").contains("shipping_address[street_address_addition]=34/2B"));
   }
 
   @Test
