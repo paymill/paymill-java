@@ -40,6 +40,11 @@ final class ValidationUtils {
       throw new IllegalArgumentException( "Name can not be blank" );
   }
 
+  static void validatesUrl( String url ) {
+    if( StringUtils.isBlank( url ) )
+      throw new IllegalArgumentException( "Url can not be blank" );
+  }
+
   static void validatesIntervalPeriod( Interval.Period interval ) {
 
     if( interval == null ) {

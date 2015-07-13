@@ -13,6 +13,7 @@ import org.apache.commons.beanutils.converters.DateConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymill.models.Deserializer;
+import com.paymill.services.ChecksumService;
 import com.paymill.services.ClientService;
 import com.paymill.services.OfferService;
 import com.paymill.services.PaymentService;
@@ -49,9 +50,6 @@ http://jobs.paymill.com
 
 
 
-
-
-
 /**
  * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key<br />
  * It creates 8 services, which represents the PAYMILL API:
@@ -76,6 +74,7 @@ public class PaymillContext {
 
   private final HttpClient         httpClient;
 
+  private ChecksumService          checksumService;
   private ClientService            clientService;
   private OfferService             offerService;
   private PaymentService           paymentService;
@@ -122,6 +121,7 @@ public class PaymillContext {
     try {
       this.httpClient = client;
 
+      this.checksumService = this.getPrivateConstructor( ChecksumService.class ).newInstance( this.httpClient );
       this.clientService = this.getPrivateConstructor( ClientService.class ).newInstance( this.httpClient );
       this.offerService = this.getPrivateConstructor( OfferService.class ).newInstance( this.httpClient );
       this.paymentService = this.getPrivateConstructor( PaymentService.class ).newInstance( this.httpClient );
@@ -153,6 +153,10 @@ public class PaymillContext {
 
   public final static String getProjectVersion() {
     return PaymillContext.PROPERTIES.getProperty( "version" );
+  }
+
+  public ChecksumService getChecksumService() {
+    return this.checksumService;
   }
 
   public ClientService getClientService() {

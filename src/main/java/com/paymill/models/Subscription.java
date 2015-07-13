@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.paymill.models.Fee.Type;
 
 /**
  * Subscriptions allow you to charge recurring payments on a client’s credit card / to a client’s direct debit. A subscription
@@ -527,10 +526,10 @@ public final class Subscription {
     }
 
     @JsonCreator
-    public static Type create( final String value ) {
-      for( Type type : Type.values() ) {
-        if( type.getValue().equals( value ) ) {
-          return type;
+    public static Status create( final String value ) {
+      for( Status status : Status.values() ) {
+        if( status.getValue().equals( value ) ) {
+          return status;
         }
       }
       throw new IllegalArgumentException( "Invalid value for Subscription.status:" + value + ". An update of paymill-java is recommended" );

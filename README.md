@@ -230,6 +230,8 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 * fix tests: Token is now generated for each request
 * update: projcet dependencies
 * add SEPA mandate_reference for direct debit transaction and subscription
+* include internal objects [ShoppingCartItem](https://github.com/paymill/paymill-java/blob/master/src/main/java/com/paymill/models/ShoppingCartItem.java) and [Address](https://github.com/paymill/paymill-java/blob/master/src/main/java/com/paymill/models/Address.java)
+* add ChecksumService to create checksums for transactions that are started client-side, e.g. PayPal checkout.
 
 ### 5.0.0
 
@@ -293,7 +295,7 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 
 ### 3.0.0
 * Improved implementation internally, now most of the configuration uses annotations and reflection.
-* Package name changed from de.paymill to com.paymill .
+* Package name changed from de.paymill to com.paymill.
 - Removed singleton Paymill object and replaced with a PaymillContext object.
 + All services are now directly accessible from PaymillContext.
 + Improved list handling. Now the list method returns a PaymillList, which also contains the dataCount. All models now contain methods to create filter and sort criteria.

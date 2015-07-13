@@ -53,7 +53,7 @@ public final class Offer {
   private Offer.SubscriptionCount subscriptionCount;
 
   public String getId() {
-    return id;
+    return this.id;
   }
 
   public void setId( String id ) {
