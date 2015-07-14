@@ -39,6 +39,7 @@ Initialize the library by providing your api key:
   PaymillContext paymillContext = new PaymillContext( "<YOUR PRIVATE API KEY>" );
 ```
 PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key. It creates 8 services, which represents the PAYMILL API:
+ * ChecksumService
  * ClientService
  * OfferService
  * PaymentService
