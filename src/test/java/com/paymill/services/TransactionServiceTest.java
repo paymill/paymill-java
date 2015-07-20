@@ -123,7 +123,6 @@ public class TransactionServiceTest {
     Transaction transaction = this.transactionService.createWithToken( this.token, this.amount, this.currency, this.description );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), this.description );
-    Assert.assertNull( transaction.getPreauthorization() );
     this.transaction = transaction;
   }
 
@@ -131,8 +130,7 @@ public class TransactionServiceTest {
   public void testCreateWithToken_WithoutDescription_shouldSucceed() {
     Transaction transaction = this.transactionService.createWithToken( this.token, this.amount, this.currency );
     this.validateTransaction( transaction );
-    Assert.assertEquals( transaction.getDescription(), null );
-    Assert.assertNull( transaction.getPreauthorization() );
+    Assert.assertEquals( transaction.getDescription(), "" );
   }
 
   // @Test
@@ -140,8 +138,7 @@ public class TransactionServiceTest {
     Transaction transaction = this.transactionService.createWithTokenAndFee( this.token, this.amount, this.currency, null, this.fee );
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getPayment().getId(), this.feePayment );
-    Assert.assertEquals( transaction.getDescription(), null );
-    Assert.assertNull( transaction.getPreauthorization() );
+    Assert.assertEquals( transaction.getDescription(), "" );
   }
 
   private Transaction validateTransaction( final Transaction transaction ) {
@@ -196,7 +193,6 @@ public class TransactionServiceTest {
     this.validateTransaction( transaction );
     Assert.assertEquals( transaction.getDescription(), this.description );
     Assert.assertEquals( transaction.getPayment().getId(), this.payment.getId() );
-    Assert.assertNull( transaction.getPreauthorization() );
   }
 
   @Test( dependsOnMethods = "testCreateWithToken_WithDescruption_shouldSucceed" )
