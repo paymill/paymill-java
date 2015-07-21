@@ -51,9 +51,10 @@ http://jobs.paymill.com
 
 
 /**
- * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key<br />
+ * PaymillContecxt loads the context of PAYMILL for a single account, by providing a merchants private key <br>
  * It creates 8 services, which represents the PAYMILL API:
  * <ul>
+ * <li>{@link ChecksumService}</li>
  * <li>{@link ClientService}</li>
  * <li>{@link OfferService}</li>
  * <li>{@link PaymentService}</li>

@@ -16,7 +16,7 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.0.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.0.0).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.1.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.1.0).
 
 ```xml
 <dependency>
