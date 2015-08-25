@@ -240,7 +240,7 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 ### 5.0.0
 
 * Minor, but incompatible changes in the interface
-* fix: [#57](https://github.com/paymill/paymill-java/issues/57) removed final keywords from some classes to allow proper mocking, thanks to @dobermai
+* fix: [#57](https://github.com/paymill/paymill-java/issues/57) removed final keywords from some classes to allow proper mocking, thanks to [@dobermai](https://github.com/dobermai)
 * fix: [#59](https://github.com/paymill/paymill-java/issues/59) added missing subscription status, thanks to @schaebo
 * improved deserialization and fixed test suite to work with arbitary accounts
 * improvement: [#51](https://github.com/paymill/paymill-java/issues/51) isolated jersey dependecy, alternative frameworks can now be used for http, thanks to @basoko
