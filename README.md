@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.1.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.1.0).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.1.1|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.1.1).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>5.1.0</version>
+  <version>5.1.1</version>
 </dependency>
 ```
 
@@ -225,6 +225,9 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 * API v2.0 : 3.2.0 in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.2.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.2.0).
 
 ## Changelog
+
+### 5.1.1
+* fix: [#64](https://github.com/paymill/paymill-java/issues/64) Unboxing null always throws NullPointerException, thanks to [@vladaspasic](https://github.com/vladaspasic)
 
 ### 5.1.0
 
