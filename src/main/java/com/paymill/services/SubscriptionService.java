@@ -673,6 +673,7 @@ public class SubscriptionService extends AbstractService {
    * <li>interval (note, that nextCaptureAt will not change.)
    * <li>currency
    * <li>name
+   * <li>payment
    * <ul>
    * <p>
    * To update further properties of a subscription use following methods:<br />
