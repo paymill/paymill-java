@@ -266,7 +266,7 @@ public final class Transaction {
    * @return true if successful, false otherwise
    */
   public boolean isSuccessful() {
-    return getResponseCode() == 20000;
+    return this.responseCode != null && this.responseCode == 20000;
   }
 
   public String getShortId() {
