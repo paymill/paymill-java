@@ -11,7 +11,7 @@
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
   <packaging>jar</packaging>
-  <version>5.1.3</version>
+  <version>5.1.4-SNAPSHOT</version>
 
   <name>paymill-java</name>
   <url>http://www.paymill.com</url>
