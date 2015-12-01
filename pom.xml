@@ -85,7 +85,8 @@
         <version>2.12.3</version>
         <configuration>
           <systemPropertyVariables>
-            <apiKey>${env.API_TEST_KEY}</apiKey>
+            <privateKey>${env.PAYMILL_API_TEST_PRIVATE_KEY}</privateKey>
+            <publicKey>${env.PAYMILL_API_TEST_PUBLIC_KEY}</publicKey>
           </systemPropertyVariables>
         </configuration>
       </plugin>

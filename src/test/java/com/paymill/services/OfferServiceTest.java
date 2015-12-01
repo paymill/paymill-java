@@ -32,7 +32,7 @@ public class OfferServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "privateKey" ) );
 
     this.offerService = paymill.getOfferService();
     this.subscriptionService = paymill.getSubscriptionService();
@@ -119,8 +119,8 @@ public class OfferServiceTest {
     // TODO[VNi]: when will be the subscription updated? The update is not immediately.
     this.subscriptionService.get( subscription );
     Assert.assertEquals( subscription.getOffer().getId(), offer.getId() );
-    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 1 );
-    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.MONTH );
+    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 2 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.WEEK );
   }
 
   private void validatesOffer( final Offer offer ) {

@@ -26,7 +26,7 @@ public class PaymentServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "privateKey" ) );
 
     this.paymentService = paymill.getPaymentService();
     this.clientService = paymill.getClientService();

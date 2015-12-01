@@ -35,7 +35,7 @@ public class PreauthorizationServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext( System.getProperty( "apiKey" ) );
+    PaymillContext paymill = new PaymillContext( System.getProperty( "privateKey" ) );
     this.preauthorizationService = paymill.getPreauthorizationService();
     this.paymentService = paymill.getPaymentService();
 
@@ -44,8 +44,11 @@ public class PreauthorizationServiceTest {
 
   @BeforeMethod
   public void setToken() {
-    HttpClient httpClient = new JerseyClient( "941569045353c8ac2a5689deb88871bb", 0 );
-    String content = httpClient.get("https://test-token.paymill.com/?transaction.mode=CONNECTOR_TEST&channel.id=941569045353c8ac2a5689deb88871bb&jsonPFunction=paymilljstests&account.number=4111111111111111&account.expiry.month=12&account.expiry.year=2015&account.verification=123&account.holder=Max%20Mustermann&presentation.amount3D=4202&presentation.currency3D=EUR");
+    HttpClient httpClient = new JerseyClient( System.getProperty( "publicKey" ), 0 );
+    String content = httpClient.get(
+      "https://test-token.paymill.com/?transaction.mode=CONNECTOR_TEST&channel.id=" + System.getProperty( "publicKey" ) +
+      "&jsonPFunction=paymilljstests&account.number=4111111111111111&account.expiry.month=12&account.expiry.year=2015&" +
+      "account.verification=123&account.holder=Max%20Mustermann&presentation.amount3D=4202&presentation.currency3D=EUR");
 
     Pattern pattern = Pattern.compile( "(tok_)[a-z|0-9]+" );
     Matcher matcher = pattern.matcher( content );

@@ -37,7 +37,7 @@ public class ChecksumServiceTest {
 
   @BeforeClass
   public void setUp() {
-    PaymillContext paymill = new PaymillContext(System.getProperty("apiKey"));
+    PaymillContext paymill = new PaymillContext(System.getProperty("privateKey"));
     this.checksumService = paymill.getChecksumService();
 
     this.items = new ArrayList<ShoppingCartItem>();
