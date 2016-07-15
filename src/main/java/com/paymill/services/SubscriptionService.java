@@ -278,7 +278,7 @@ public class SubscriptionService extends AbstractService {
    * @return the updated subscription
    */
   public Subscription unpause( String subscriptionId ) {
-    return this.pause( new Subscription( subscriptionId ) );
+    return this.unpause( new Subscription( subscriptionId ) );
   }
 
   /**
