@@ -49,6 +49,10 @@ public final class Payment {
 
   private String           holder;
 
+  private String           iban;
+  
+  private String           bic;
+
   // Credit card attributes
   private Client           client;
 
@@ -73,7 +77,7 @@ public final class Payment {
 
   @JsonProperty( "is_usable_for_preauthorization" )
   private Boolean          usableForPreauthorization;
-
+  
   /**
    * Returns unique identifier for this credit card payment.
    * @return {@link String}
@@ -172,6 +176,40 @@ public final class Payment {
    */
   public void setHolder( final String holder ) {
     this.holder = holder;
+  }
+  
+  /**
+   * Returns IBAN of the account.
+   * @return the account iban
+   */
+  public String getIban() {
+    return this.iban;
+  }
+  
+  /**
+   * Sets IBAN of the account.
+   * @param iban
+   *          {@link String}
+   */
+  public void setIban( final String iban ) {
+    this.iban = iban;
+  }
+  
+  /**
+   * Returns BIC of the account.
+   * @return the account bic
+   */
+  public String getBic() {
+    return this.bic;
+  }
+  
+  /**
+   * Sets BIC of the account.
+   * @param bic
+   *          {@link String}
+   */
+  public void setBic( final String bic ) {
+    this.bic = bic;
   }
 
   /**

@@ -2,12 +2,12 @@ package com.paymill.services;
 
 import java.util.List;
 
-import com.paymill.utils.HttpClient;
-import com.paymill.utils.ParameterMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.paymill.models.Client;
 import com.paymill.models.PaymillList;
+import com.paymill.utils.HttpClient;
+import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link ClientService} is used to list, create, edit, delete and update PAYMILL {@link Client}s.
@@ -165,7 +165,7 @@ public class ClientService extends AbstractService {
    *          Id of the {@link Client}
    */
   public void delete( String clientId ) {
-    this.get( new Client( clientId ) );
+    this.delete( new Client( clientId ) );
   }
 
 }
