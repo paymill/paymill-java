@@ -116,11 +116,11 @@ public class OfferServiceTest {
     Assert.assertEquals( offer.getInterval().getInterval(), (Integer) 2 );
     Assert.assertEquals( offer.getInterval().getUnit(), Interval.Unit.WEEK );
 
-    // TODO[VNi]: when will be the subscription updated? The update is not immediately.
+    // Changing a Plan will not change existing Subscriptions
     this.subscriptionService.get( subscription );
     Assert.assertEquals( subscription.getOffer().getId(), offer.getId() );
-    Assert.assertEquals( subscription.getInterval().getInterval(), (Integer) 2 );
-    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.WEEK );
+    Assert.assertEquals(subscription.getInterval().getInterval(), (Integer) 1 );
+    Assert.assertEquals( subscription.getInterval().getUnit(), Interval.Unit.MONTH );
   }
 
   private void validatesOffer( final Offer offer ) {
