@@ -141,7 +141,8 @@ public class PreauthorizationService extends AbstractService {
   }
 
   /**
-   * Authorizes the given amount with the given {@link Payment}.<br />
+   * Authorizes the given amount with the given {@link Payment}.
+   *
    * <strong>Works only for credit cards. Direct debit not supported.</strong>
    * @param payment
    *          The {@link Payment} itself (only creditcard-object)
@@ -156,7 +157,8 @@ public class PreauthorizationService extends AbstractService {
   }
 
   /**
-   * Authorizes the given amount with the given {@link Payment}.<br />
+   * Authorizes the given amount with the given {@link Payment}.
+   *
    * <strong>Works only for credit cards. Direct debit not supported.</strong>
    * @param payment
    *          The {@link Payment} itself (only creditcard-object)

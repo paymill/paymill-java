@@ -35,7 +35,7 @@ public class ShoppingCartItem {
   /**
    * Item name, max. 127 characters
    * 
-   * @param name
+   * @param name The name of this Item
    */
   public void setName(String name) {
     this.name = name;
@@ -53,14 +53,14 @@ public class ShoppingCartItem {
   /**
    * Additional description, max. 127 characters
    * 
-   * @param description
+   * @param description The description of this Item
    */
   public void setDescription(String description) {
     this.description = description;
   }
 
   /**
-   * Price > 0 for a single item, including tax, can also be negative to act as a discount
+   * Price &rsaquo; 0 for a single item, including tax, can also be negative to act as a discount
    * 
    * @return {@link Integer}
    */
@@ -69,9 +69,9 @@ public class ShoppingCartItem {
   }
 
   /**
-   * Price > 0 for a single item, including tax, can also be negative to act as a discount
+   * Price &rsaquo; 0 for a single item, including tax, can also be negative to act as a discount
    * 
-   * @param amount
+   * @param amount The amount
    */
   public void setAmount(Integer amount) {
     this.amount = amount;
@@ -80,7 +80,7 @@ public class ShoppingCartItem {
   /**
    * Quantity of this item
    * 
-   * @return {@link Integer} > 0)
+   * @return {@link Integer} &rsaquo; 0)
    */
   public Integer getQuantity() {
     return this.quantity;
@@ -89,8 +89,7 @@ public class ShoppingCartItem {
   /**
    * Quantity of this item
    * 
-   * @param quantity
-   *          {@link Integer} > 0
+   * @param quantity {@link Integer} &rsaquo; 0
    */
   public void setQuantity(Integer quantity) {
     this.quantity = quantity;
@@ -108,7 +107,7 @@ public class ShoppingCartItem {
   /**
    * Item number or other identifier (SKU/EAN), max. 127 characters
    * 
-   * @param itemNumber
+   * @param itemNumber The Item number or other Identifer
    */
   public void setItemNumber(String itemNumber) {
     this.itemNumber = itemNumber;
@@ -126,7 +125,7 @@ public class ShoppingCartItem {
   /**
    * URL of the item in your store, max. 2000 characters
    * 
-   * @param url
+   * @param url The URL
    */
   public void setUrl(String url) {
     this.url = url;

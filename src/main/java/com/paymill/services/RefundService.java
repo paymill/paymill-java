@@ -96,8 +96,8 @@ public class RefundService extends AbstractService {
   /**
    * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
    * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
-   * be some fees for the merchant for every refund. <br />
-   * <br />
+   * be some fees for the merchant for every refund.
+   * <p>
    * Note:
    * <ul>
    * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
@@ -117,8 +117,8 @@ public class RefundService extends AbstractService {
   /**
    * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
    * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
-   * be some fees for the merchant for every refund. <br />
-   * <br />
+   * be some fees for the merchant for every refund.
+   * <p>
    * Note:
    * <ul>
    * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
@@ -138,8 +138,8 @@ public class RefundService extends AbstractService {
   /**
    * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
    * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
-   * be some fees for the merchant for every refund. <br />
-   * <br />
+   * be some fees for the merchant for every refund.
+   * <p>
    * Note:
    * <ul>
    * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee
@@ -161,8 +161,8 @@ public class RefundService extends AbstractService {
   /**
    * This function refunds a {@link Transaction} that has been created previously and was refunded in parts or wasn't refunded at
    * all. The inserted amount will be refunded to the credit card / direct debit of the original {@link Transaction}. There will
-   * be some fees for the merchant for every refund. <br />
-   * <br />
+   * be some fees for the merchant for every refund.
+   * <p>
    * Note:
    * <ul>
    * <li>You can refund parts of a transaction until the transaction amount is fully refunded. But be careful there will be a fee

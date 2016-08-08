@@ -88,7 +88,8 @@ public final class Payment {
 
   /**
    * Sets unique identifier for this credit card payment.
-   * @param id
+   *
+   * @param id The unique identifier
    */
   public void setId( final String id ) {
     this.id = id;
@@ -138,7 +139,7 @@ public final class Payment {
 
   /**
    * Sets the used Bank Code.
-   * @param code
+   * @param code The Bank Code
    */
   public void setCode( final String code ) {
     this.code = code;
@@ -395,9 +396,11 @@ public final class Payment {
   }
 
   /**
-   * Sets recurring. <br/>
+   * Sets recurring.
+   *
    * <b>Note:</b> This value cannot be modified.
-   * @param recurring
+   *
+   * @param recurring Whether this Payment is recurring or not
    */
   public void setRecurring( Boolean recurring ) {
     this.recurring = recurring;
@@ -405,6 +408,7 @@ public final class Payment {
 
   /**
    * Shows if the payment is usable for a preauthorization.
+   *
    * @return true if usable for preauthorization, false otherwise.
    */
   public Boolean getUsableForPreauthorization() {
@@ -412,9 +416,11 @@ public final class Payment {
   }
 
   /**
-   * Sets usableForPreauthorization. <br/>
+   * Sets usableForPreauthorization.
+   *
    * <b>Note:</b> This value cannot be modified.
-   * @param usableForPreauthorization
+   *
+   * @param usableForPreauthorization Whether this Payment is usable for Preauthorization or not
    */
   public void setUsableForPreauthorization( Boolean usableForPreauthorization ) {
     this.usableForPreauthorization = usableForPreauthorization;

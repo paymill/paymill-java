@@ -180,7 +180,7 @@ public final class Client {
 
   /**
    * Sets {@link List} of {@link Subscription}s.
-   * @param subscriptions
+   * @param subscriptions The {@link List} of {@link Subscription}s
    */
   public void setSubscriptions( final List<Subscription> subscriptions ) {
     this.subscriptions = subscriptions;

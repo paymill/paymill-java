@@ -33,7 +33,7 @@
     <url>https://github.com/paymill/paymill-java/</url>
     <connection>scm:git:git@github.com:paymill/paymill-java.git</connection>
     <developerConnection>scm:git:git@github.com:paymill/paymill-java.git</developerConnection>
-    <tag>5.1.5</tag>
+    <tag>5.1.4</tag>
   </scm>
 
   <dependencies>

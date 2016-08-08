@@ -12,8 +12,8 @@ import com.paymill.utils.HttpClient;
 import com.paymill.utils.ParameterMap;
 
 /**
- * The {@link ChecksumService} is used to create PAYMILL {@link Checksum}s. In order to create client-side transactions, e.g.
- * PayPal.
+ * The ChecksumService is used to create PAYMILL {@link Checksum}s. In order to create
+ * client-side transactions, e.g. PayPal.
  * 
  * @author Vassil Nikolov
  * @since 5.1.0
@@ -27,7 +27,7 @@ public class ChecksumService extends AbstractService {
   private final static String PATH = "/checksums";
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type Checksum.type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.
@@ -44,7 +44,7 @@ public class ChecksumService extends AbstractService {
   }
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.
@@ -66,7 +66,7 @@ public class ChecksumService extends AbstractService {
   }
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.
@@ -87,7 +87,7 @@ public class ChecksumService extends AbstractService {
   }
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.
@@ -112,7 +112,7 @@ public class ChecksumService extends AbstractService {
   }
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.
@@ -139,7 +139,7 @@ public class ChecksumService extends AbstractService {
   }
 
   /**
-   * Created a {@link Checksum} of {@link Checksum.Type} with amount in the given currency.
+   * Created a {@link Checksum} of {@link Checksum#type} with amount in the given currency.
    * 
    * @param amount
    *          Amount (in cents) which will be charged.

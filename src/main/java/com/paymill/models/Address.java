@@ -34,7 +34,7 @@ public class Address {
   /**
    * Name of recipient, max. 128 characters
    * 
-   * @return
+   * @return The name othe the recipient
    */
   public String getName() {
     return this.name;
@@ -43,7 +43,7 @@ public class Address {
   /**
    * Name of recipient, max. 128 characters
    * 
-   * @param name
+   * @param name The name of the recipient
    */
   public void setName(String name) {
     this.name = name;
@@ -61,7 +61,7 @@ public class Address {
   /**
    * Street address (incl. street number), max. 100 characters
    * 
-   * @param streetAddress
+   * @param streetAddress The stree
    */
   public void setStreetAddress(String streetAddress) {
     this.streetAddress = streetAddress;
@@ -79,7 +79,7 @@ public class Address {
   /**
    * Addition to street address (e.g. building, floor, or c/o), max. 100 characters
    * 
-   * @param streetAddressAddition
+   * @param streetAddressAddition The street address addition
    */
   public void setStreetAddressAddition(String streetAddressAddition) {
     this.streetAddressAddition = streetAddressAddition;
@@ -97,7 +97,7 @@ public class Address {
   /**
    * City, max. 40 characters
    * 
-   * @param city
+   * @param city The city
    */
   public void setCity(String city) {
     this.city = city;
@@ -115,7 +115,7 @@ public class Address {
   /**
    * State or province, max. 40 characters
    * 
-   * @param state
+   * @param state The state
    */
   public void setState(String state) {
     this.state = state;
@@ -133,7 +133,7 @@ public class Address {
   /**
    * Country-specific postal code, max. 20 characters
    * 
-   * @param postalCode
+   * @param postalCode The postal code
    */
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
@@ -151,7 +151,7 @@ public class Address {
   /**
    * 2-letter country code according to ISO 3166-1 alpha-2
    * 
-   * @param country
+   * @param country The country
    */
   public void setCountry(String country) {
     this.country = country;
@@ -169,7 +169,7 @@ public class Address {
   /**
    * Contact phone number, max. 20 characters
    * 
-   * @param phone
+   * @param phone The phone
    */
   public void setPhone(String phone) {
     this.phone = phone;

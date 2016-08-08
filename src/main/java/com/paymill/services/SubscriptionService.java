@@ -15,6 +15,7 @@ import com.paymill.utils.ParameterMap;
 
 /**
  * The {@link SubscriptionService} is used to list, create, edit, delete and update PAYMILL {@link Subscription}s.
+ *
  * @author Vassil Nikolov
  * @since 3.0.0
  */
@@ -28,6 +29,7 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * This function returns a {@link List} of PAYMILL {@link Subscription} objects.
+   *
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list() {
@@ -36,6 +38,7 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * This function returns a {@link List} of PAYMILL {@link Subscription} objects, overriding the default count and offset.
+   *
    * @param count
    *          Max {@link Integer} of returned objects in the {@link PaymillList}
    * @param offset
@@ -47,12 +50,13 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function returns a {@link List} of PAYMILL {@link Subscription} objects. In which order this list is returned depends on
-   * the optional parameters. If <code>null</code> is given, no filter or order will be applied.
-   * @param filter
-   *          {@link com.paymill.models.Subscription.Filter} or <code>null</code>
-   * @param order
-   *          {@link com.paymill.models.Subscription.Order} or <code>null</code>
+   * This function returns a {@link List} of PAYMILL {@link Subscription} objects.<br>
+   * <br>
+   * In which order this list is returned depends on the optional parameters. If <code>null</code> is given, no filter
+   * or order will be applied.
+   *
+   * @param filter {@link com.paymill.models.Subscription.Filter} or <code>null</code>
+   * @param order {@link com.paymill.models.Subscription.Order} or <code>null</code>
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list( Subscription.Filter filter, Subscription.Order order ) {
@@ -60,17 +64,15 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function returns a {@link List} of PAYMILL {@link Subscription} objects. In which order this list is returned depends on
-   * the optional parameters. If <code>null</code> is given, no filter or order will be applied, overriding the default count and
-   * offset.
-   * @param filter
-   *          {@link com.paymill.models.Subscription.Filter} or <code>null</code>
-   * @param order
-   *          {@link com.paymill.models.Subscription.Order} or <code>null</code>
-   * @param count
-   *          Max {@link Integer} of returned objects in the {@link PaymillList}
-   * @param offset
-   *          {@link Integer} to start from.
+   * This function returns a {@link List} of PAYMILL {@link Subscription} objects.<br>
+   * <br>
+   * In which order this list is returned depends on the optional parameters. If <code>null</code> is given, no filter
+   * or order will be applied, overriding the default count and offset.
+   *
+   * @param filter {@link com.paymill.models.Subscription.Filter} or <code>null</code>
+   * @param order {@link com.paymill.models.Subscription.Order} or <code>null</code>
+   * @param count Max {@link Integer} of returned objects in the {@link PaymillList}
+   * @param offset {@link Integer} to start from.
    * @return {@link PaymillList} which contains a {@link List} of PAYMILL {@link Subscription}s and their total count.
    */
   public PaymillList<Subscription> list( Subscription.Filter filter, Subscription.Order order, Integer count, Integer offset ) {
@@ -79,8 +81,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * This function refresh and returns the detailed information of the concrete requested {@link Subscription}.
-   * @param subscription
-   *          A {@link Subscription} with Id.
+   *
+   * @param subscription A {@link Subscription} with Id.
    * @return Refreshed instance of the given {@link Subscription}.
    */
   public Subscription get( Subscription subscription ) {
@@ -89,8 +91,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * This function refresh and returns the detailed information of the concrete requested {@link Subscription}.
-   * @param subscriptionId
-   *          The Id of an existing {@link Subscription}.
+   *
+   * @param subscriptionId The Id of an existing {@link Subscription}.
    * @return Refreshed instance of the given {@link Subscription}.
    */
   public Subscription get( String subscriptionId ) {
@@ -98,19 +100,18 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function creates a {@link Subscription}. Use any of the static create methods in {@link Subscription} and include
-   * additional options.<br />
-   * <strong>Example:</strong><br />
+   * This function creates a {@link Subscription}.<br>
+   * <br>
+   * Use any of the static create methods in {@link Subscription} and include additional options.<br>
+   * <br>
+   * <strong>Example:</strong><br>
    * <blockquote>
-   * 
    * <pre>
    * paymill.getSubscriptionService().create( Subscription.create( "pay_123", "offer_123" ).withClient( "client_123" ))
    * paymill.getSubscriptionService().create( Subscription.create( "pay_123", "offer_123" ).withAmount( 100 )) overrides the amount of "offer_123" and sets it to 100 for this subscription
    * </pre>
-   * 
    * </blockquote>
-   * @param creator
-   *          see {@link com.paymill.models.Subscription.Creator}.
+   * @param creator see {@link com.paymill.models.Subscription.Creator}.
    * @return the subscription.
    */
   public Subscription create( Creator creator ) {
@@ -119,29 +120,23 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}. A {@link Client} can have several
-   * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
-   * {@link Client}s is charged for each billing interval entered. <br />
-   * <strong>NOTE</strong><br />
+   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}.<br>
+   * <br>
+   * A {@link Client} can have several {@link Subscription}s to different {@link Offer}s, but only one
+   * {@link Subscription} to the same {@link Offer}. The {@link Client}s is charged for each billing interval entered.
+   * <br>
+   * <strong>NOTE</strong><br>
    * As the Subscription create method has a lot of options, we recommend you to use a {@link com.paymill.models.Subscription.Creator}.
-   * @param payment
-   *          A {@link Payment} used for charging.
-   * @param client
-   * @param offer
-   *          An {@link Offer} to subscribe to. Mandatory only if amount, curreny and interval are not set
-   * @param amount
-   *          Amount to be charged. Mandatory if offer is null.
-   * @param currency
-   *          Currency in which to be charged. Mandatory if offer is null.
-   * @param interval
-   *          Interval of charging. Mandatory if offer is null.
-   * @param startAt
-   *          The date, when the subscription will start charging. If longer than 10 minutes in the future, a preauthorization
-   *          will occur automatically to verify the payment.
-   * @param name
-   *          A name for this subscription
-   * @param periodOfValidity
-   *          if set, the subscription will expire after this period.
+   * @param payment A {@link Payment} used for charging.
+   * @param client The Client for whom the subscription should be created
+   * @param offer An {@link Offer} to subscribe to. Mandatory only if amount, curreny and interval are not set
+   * @param amount Amount to be charged. Mandatory if offer is null.
+   * @param currency Currency in which to be charged. Mandatory if offer is null.
+   * @param interval Interval of charging. Mandatory if offer is null.
+   * @param startAt The date, when the subscription will start charging. If longer than 10 minutes in the future, a
+   *                preauthorization will occur automatically to verify the payment.
+   * @param name A name for this subscription
+   * @param periodOfValidity if set, the subscription will expire after this period.
    * @return the subscription.
    */
   public Subscription create( Payment payment, Client client, Offer offer, Integer amount, String currency, Interval.PeriodWithChargeDay interval, Date startAt,
@@ -189,29 +184,23 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}. A {@link Client} can have several
-   * {@link Subscription}s to different {@link Offer}s, but only one {@link Subscription} to the same {@link Offer}. The
-   * {@link Client}s is charged for each billing interval entered. <br />
-   * <strong>NOTE</strong><br />
+   * This function creates a {@link Subscription} between a {@link Client} and an {@link Offer}.<br>
+   * <br>
+   * A {@link Client} can have several {@link Subscription}s to different {@link Offer}s, but only one
+   * {@link Subscription} to the same {@link Offer}. The {@link Client}s is charged for each billing interval entered.<br>
+   * <br>
+   * <strong>NOTE</strong><br>
    * As the Subscription create method has a lot of options, we recommend you to use a {@link com.paymill.models.Subscription.Creator}.
-   * @param paymentId
-   *          A {@link Payment} used for charging.
-   * @param clientId
-   * @param offerId
-   *          An {@link Offer} to subscribe to. Mandatory only if amount, curreny and interval are not set
-   * @param amount
-   *          Amount to be charged. Mandatory if offer is null.
-   * @param currency
-   *          Currency in which to be charged. Mandatory if offer is null.
-   * @param interval
-   *          Interval of charging. Mandatory if offer is null.
-   * @param startAt
-   *          The date, when the subscription will start charging. If longer than 10 minutes in the future, a preauthorization
-   *          will occur automatically to verify the payment.
-   * @param name
-   *          A name for this subscription
-   * @param periodOfValidity
-   *          if set, the subscription will expire after this period.
+   * @param paymentId A {@link Payment} used for charging.
+   * @param clientId The {@link Client} for whom the subscription should be made
+   * @param offerId An {@link Offer} to subscribe to. Mandatory only if amount, curreny and interval are not set
+   * @param amount Amount to be charged. Mandatory if offer is null.
+   * @param currency Currency in which to be charged. Mandatory if offer is null.
+   * @param interval Interval of charging. Mandatory if offer is null.
+   * @param startAt The date, when the subscription will start charging. If longer than 10 minutes in the future, a
+   *                preauthorization will occur automatically to verify the payment.
+   * @param name A name for this subscription
+   * @param periodOfValidity if set, the subscription will expire after this period.
    * @return the subscription.
    */
   public Subscription create( String paymentId, String clientId, String offerId, Integer amount, String currency, Interval.PeriodWithChargeDay interval,
@@ -220,8 +209,9 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Temporary pauses a subscription. <br />
-   * <strong>NOTE</strong><br />
+   * Temporary pauses a subscription.<br>
+   * <br>
+   * <strong>NOTE</strong><br>
    * Pausing is permitted until one day (24 hours) before the next charge date.
    * @param subscription
    *          the subscription
@@ -234,8 +224,9 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Temporary pauses a subscription.<br />
-   * <strong>NOTE</strong><br />
+   * Temporary pauses a subscription.<br>
+   * <br>
+   * <strong>NOTE</strong><br>
    * Pausing is permitted until one day (24 hours) before the next charge date.
    * @param subscriptionId
    *          the Id of the subscription
@@ -246,14 +237,15 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Unpauses a subscription. Next charge will occur according to the defined interval.<br />
-   * <strong>NOTE</strong><br />
-   * if the nextCaptureAt is the date of reactivation: a charge will happen<br />
-   * if the next_capture_at is in the past: it will be set to: reactivationdate + interval <br/>
-   * <br />
-   * <strong>IMPORTANT</strong><br />
+   * Unpauses a subscription. Next charge will occur according to the defined interval.<br>
+   * <br>
+   * <strong>NOTE</strong><br>
+   * if the nextCaptureAt is the date of reactivation: a charge will happen if the next_capture_at is in the past:
+   * it will be set to: reactivationdate + interval
+   * <p>
+   * <strong>IMPORTANT</strong><br>
    * An inactive subscription can reactivated within 13 month from the date of pausing. After this period, the subscription will
-   * expire and cannot be re-activated.<br />
+   * expire and cannot be re-activated.
    * @param subscription
    *          the subscription
    * @return the updated subscription
@@ -265,14 +257,15 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Unpauses a subscription. Next charge will occur according to the defined interval.<br />
-   * <strong>NOTE</strong><br />
-   * if the nextCaptureAt is the date of reactivation: a charge will happen<br />
-   * if the next_capture_at is in the past: it will be set to: reactivationdate + interval <br/>
-   * <br />
-   * <strong>IMPORTANT</strong><br />
+   * Unpauses a subscription. Next charge will occur according to the defined interval.<br>
+   * <br>
+   * <strong>NOTE</strong><br>
+   * if the nextCaptureAt is the date of reactivation: a charge will happen if the next_capture_at is in the past:
+   * it will be set to: reactivationdate + interval
+   * <p>
+   * <strong>IMPORTANT</strong><br>
    * An inactive subscription can reactivated within 13 month from the date of pausing. After this period, the subscription will
-   * expire and cannot be re-activated.<br />
+   * expire and cannot be re-activated.<br>
    * @param subscriptionId
    *          the Id of the subscription
    * @return the updated subscription
@@ -282,8 +275,11 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
-   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid until the end of the subscription. If you want to set a temporary one-time amount use
+   * {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   *
    * @param subscriptionId
    *          the Id of the subscription.
    * @param amount
@@ -295,8 +291,11 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
-   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid until the end of the subscription. If you want to set a temporary one-time amount use
+   * {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   *
    * @param subscriptionId
    *          the Id of the subscription.
    * @param amount
@@ -312,12 +311,13 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
-   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
-   * @param subscription
-   *          the subscription.
-   * @param amount
-   *          the new amount.
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid until the end of the subscription. If you want to set a temporary one-time amount use
+   * {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   *
+   * @param subscription the subscription.
+   * @param amount the new amount.
    * @return the updated subscription.
    */
   public Subscription changeAmount( Subscription subscription, Integer amount ) {
@@ -325,16 +325,15 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid until the end of the subscription. If you want to set a
-   * temporary one-time amount use {@link SubscriptionService#changeAmountTemporary(String, Integer)}
-   * @param subscription
-   *          the subscription.
-   * @param amount
-   *          the new amount.
-   * @param currency
-   *          optionally, a new currency or <code>null</code>.
-   * @param interval
-   *          optionally, a new interval or <code>null</code>.
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid until the end of the subscription. If you want to set a temporary one-time amount use
+   * {@link SubscriptionService#changeAmountTemporary(String, Integer)}
+   *
+   * @param subscription the subscription.
+   * @param amount the new amount.
+   * @param currency optionally, a new currency or <code>null</code>.
+   * @param interval optionally, a new interval or <code>null</code>.
    * @return the updated subscription.
    */
   public Subscription changeAmount( Subscription subscription, Integer amount, String currency, Interval.PeriodWithChargeDay interval ) {
@@ -342,13 +341,13 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid one-time only after which the original subscription amount will
-   * be charged again. If you want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid one-time only after which the original subscription amount will be charged again. If you
+   * want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}
    * .
-   * @param subscription
-   *          the subscription.
-   * @param amount
-   *          the new amount.
+   * @param subscription the subscription.
+   * @param amount the new amount.
    * @return the updated subscription.
    */
   public Subscription changeAmountTemporary( Subscription subscription, Integer amount ) {
@@ -356,13 +355,13 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Changes the amount of a subscription. The new amount is valid one-time only after which the original subscription amount will
-   * be charged again. If you want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}
-   * .
-   * @param subscriptionId
-   *          the Id of the subscription.
-   * @param amount
-   *          the new amount.
+   * Changes the amount of a subscription.<br>
+   * <br>
+   * The new amount is valid one-time only after which the original subscription amount will be charged again. If you
+   * want to permanently change the amount use {@link SubscriptionService#changeAmount(String, Integer)}.
+   *
+   * @param subscriptionId the Id of the subscription.
+   * @param amount the new amount.
    * @return the updated subscription.
    */
   public Subscription changeAmountTemporary( String subscriptionId, Integer amount ) {
@@ -385,18 +384,18 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund will be
-   * given if due. <br />
-   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e. the
-   * current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date is immediate
-   * i.e. the current date. <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund
+   * will be given if due.<br>
+   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e.
+   * the current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date
+   * is immediate i.e. the current date.<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferChangeCaptureDateAndRefund( Subscription subscription, Offer offer ) {
@@ -404,18 +403,18 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund will be
-   * given if due. <br />
-   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e. the
-   * current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date is immediate
-   * i.e. the current date. <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * The plan will be changed immediately. The next_capture_at will change to the current date (immediately). A refund
+   * will be given if due.<br>
+   * If the new amount is higher than the old one, a pro-rata charge will occur. The next charge date is immediate i.e.
+   * the current date. If the new amount is less then the old one, a pro-rata refund will occur. The next charge date
+   * is immediate i.e. the current date.<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferChangeCaptureDateAndRefund( String subscription, Offer offer ) {
@@ -423,16 +422,17 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if due. <br />
-   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not change. If
-   * the new amount is less then the old one, a refund happens. The next charge date will not change. <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if
+   * due.<br>
+   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not
+   * change. If the new amount is less then the old one, a refund happens. The next charge date will not change.<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferKeepCaptureDateAndRefund( Subscription subscription, Offer offer ) {
@@ -440,16 +440,17 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if due. <br />
-   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not change. If
-   * the new amount is less then the old one, a refund happens. The next charge date will not change. <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * The plan will be changed immediately.The next_capture_at date will remain unchanged. A refund will be given if
+   * due.<br>
+   * If the new amount is higher than the old one, there will be no additional charge. The next charge date will not
+   * change. If the new amount is less then the old one, a refund happens. The next charge date will not change.<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferKeepCaptureDateAndRefund( String subscription, Offer offer ) {
@@ -457,14 +458,14 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * The plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given.<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferKeepCaptureDateNoRefund( Subscription subscription, Offer offer ) {
@@ -472,14 +473,14 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Change the offer of a subscription. <br />
-   * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given <br />
-   * <strong>IMPORTANT</strong><br />
-   * Permitted up only until one day (24 hours) before the next charge date. <br />
-   * @param subscription
-   *          the subscription
-   * @param offer
-   *          the new offer
+   * Change the offer of a subscription.<br>
+   * <br>
+   * the plan will be changed immediately. The next_capture_at date will remain unchanged. No refund will be given<br>
+   * <strong>IMPORTANT</strong><br>
+   * Permitted up only until one day (24 hours) before the next charge date.<br>
+   *
+   * @param subscription the subscription
+   * @param offer the new offer
    * @return the updated subscription
    */
   public Subscription changeOfferKeepCaptureDateNoRefund( String subscription, Offer offer ) {
@@ -496,8 +497,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Stop the trial period of a subscription and charge immediately.
-   * @param subscription
-   *          the subscription.
+   *
+   * @param subscription the subscription.
    * @return the updated subscription.
    */
   public Subscription endTrial( Subscription subscription ) {
@@ -508,8 +509,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Stop the trial period of a subscription and charge immediately.
-   * @param subscription
-   *          the subscription.
+   *
+   * @param subscription the subscription.
    * @return the updated subscription.
    */
   public Subscription endTrial( String subscription ) {
@@ -518,10 +519,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Stop the trial period of a subscription on a specific date.
-   * @param subscription
-   *          the subscription.
-   * @param date
-   *          the date, on which the subscription should end.
+   *
+   * @param subscription the subscription.
+   * @param date the date, on which the subscription should end.
    * @return the updated subscription.
    */
   public Subscription endTrialAt( Subscription subscription, Date date ) {
@@ -532,10 +532,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Stop the trial period of a subscription on a specific date.
-   * @param subscription
-   *          the subscription.
-   * @param date
-   *          the date, on which the subscription should end.
+   *
+   * @param subscription the subscription.
+   * @param date the date, on which the subscription should end.
    * @return the updated subscription.
    */
   public Subscription endTrialAt( String subscription, Date date ) {
@@ -544,10 +543,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the period of validity for a subscription.
-   * @param subscription
-   *          the subscription.
-   * @param newValidity
-   *          the new validity.
+   *
+   * @param subscription the subscription.
+   * @param newValidity the new validity.
    * @return the updated subscription.
    */
   public Subscription limitValidity( Subscription subscription, Interval.Period newValidity ) {
@@ -559,10 +557,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the period of validity for a subscription.
-   * @param subscription
-   *          the subscription.
-   * @param newValidity
-   *          the new validity.
+   *
+   * @param subscription the subscription.
+   * @param newValidity the new validity.
    * @return the updated subscription.
    */
   public Subscription limitValidity( String subscription, Interval.Period newValidity ) {
@@ -571,10 +568,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the period of validity for a subscription.
-   * @param subscription
-   *          the subscription.
-   * @param newValidity
-   *          the new validity .
+   *
+   * @param subscription the subscription.
+   * @param newValidity the new validity.
    * @return the updated subscription.
    */
   public Subscription limitValidity( Subscription subscription, String newValidity ) {
@@ -583,10 +579,9 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the period of validity for a subscription.
-   * @param subscription
-   *          the subscription.
-   * @param newValidity
-   *          the new validity .
+   *
+   * @param subscription the subscription.
+   * @param newValidity the new validity .
    * @return the updated subscription.
    */
   public Subscription limitValidity( String subscription, String newValidity ) {
@@ -595,8 +590,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the validity of a subscription to unlimited
-   * @param subscription
-   *          the subscription.
+   *
+   * @param subscription the subscription.
    * @return the updated subscription.
    */
   public Subscription unlimitValidity( Subscription subscription ) {
@@ -608,8 +603,8 @@ public class SubscriptionService extends AbstractService {
 
   /**
    * Change the validity of a subscription to unlimited
-   * @param subscription
-   *          the subscription.
+   *
+   * @param subscription the subscription.
    * @return the updated subscription.
    */
   public Subscription unlimitValidity( String subscription ) {
@@ -617,10 +612,12 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function removes an existing subscription. The subscription will be deleted and no pending transactions will be charged.
-   * Deleted subscriptions will not be displayed.
-   * @param subscription
-   *          A {@link Subscription} with Id to be deleted.
+   * This function removes an existing subscription.<br>
+   * <br>
+   * The subscription will be deleted and no pending transactions will be charged. Deleted subscriptions will not be
+   * displayed.
+   *
+   * @param subscription A {@link Subscription} with Id to be deleted.
    * @return the deleted subscription.
    */
   public Subscription delete( Subscription subscription ) {
@@ -628,10 +625,12 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function removes an existing subscription. The subscription will be deleted and no pending transactions will be charged.
-   * Deleted subscriptions will not be displayed.
-   * @param subscriptionId
-   *          Id of the {@link Subscription}, which has to be deleted.
+   * This function removes an existing subscription.<br>
+   * <br>
+   * The subscription will be deleted and no pending transactions will be charged. Deleted subscriptions will not be
+   * displayed.
+   *
+   * @param subscriptionId Id of the {@link Subscription}, which has to be deleted.
    * @return the deleted subscription.
    */
   public Subscription delete( String subscriptionId ) {
@@ -639,10 +638,11 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function cancels an existing subscription. The subscription will be directly terminated and no pending transactions will
-   * be charged.
-   * @param subscription
-   *          A {@link Subscription} with Id to be canceled.
+   * This function cancels an existing subscription.<br>
+   * <br>
+   * The subscription will be directly terminated and no pending transactions will be charged.
+   *
+   * @param subscription A {@link Subscription} with Id to be canceled.
    * @return the canceled subscription.
    */
   public Subscription cancel( Subscription subscription ) {
@@ -650,10 +650,11 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * This function cancels an existing subscription. The subscription will be directly terminated and no pending transactions will
-   * be charged.
-   * @param subscriptionId
-   *          Id of the {@link Subscription}, which has to be canceled.
+   * This function cancels an existing subscription.<br>
+   * <br>
+   * The subscription will be directly terminated and no pending transactions will be charged.
+   *
+   * @param subscriptionId Id of the {@link Subscription}, which has to be canceled.
    * @return the canceled subscription.
    */
   public Subscription cancel( String subscriptionId ) {
@@ -667,17 +668,19 @@ public class SubscriptionService extends AbstractService {
   }
 
   /**
-   * Updates a subscription.Following fields will be updated:<br />
-   * <p>
+   * Updates a subscription.<br>
+   * <br>
+   * Following fields will be updated:<br>
+   * <br>
    * <ul>
    * <li>interval (note, that nextCaptureAt will not change.)
    * <li>currency
    * <li>name
    * <li>payment
-   * <ul>
-   * <p>
-   * To update further properties of a subscription use following methods:<br />
-   * <p>
+   * </ul>
+   * <br>
+   * To update further properties of a subscription use following methods:<br>
+   * <br>
    * <ul>
    * <li>{@link SubscriptionService#cancel(Subscription)} to cancel
    * <li>{@link SubscriptionService#changeAmount(Subscription, Integer)} to change the amount
@@ -689,10 +692,10 @@ public class SubscriptionService extends AbstractService {
    * <li>{@link SubscriptionService#pause(Subscription)} to pause
    * <li>{@link SubscriptionService#unlimitValidity(Subscription)} to change the validity.
    * <li>{@link SubscriptionService#unpause(Subscription)} to unpause.
-   * <ul>
+   * </ul>
    * <p>
-   * @param subscription
-   *          A {@link Subscription} with Id to be updated.
+   *
+   * @param subscription A {@link Subscription} with Id to be updated.
    * @return the updated subscription
    */
   public Subscription update( Subscription subscription ) {
