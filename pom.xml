@@ -11,7 +11,7 @@
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
   <packaging>jar</packaging>
-  <version>5.1.6-SNAPSHOT</version>
+  <version>5.1.5-SNAPSHOT</version>
 
   <name>paymill-java</name>
   <url>http://www.paymill.com</url>
@@ -33,7 +33,7 @@
     <url>https://github.com/paymill/paymill-java/</url>
     <connection>scm:git:git@github.com:paymill/paymill-java.git</connection>
     <developerConnection>scm:git:git@github.com:paymill/paymill-java.git</developerConnection>
-    <tag>5.1.4</tag>
+    <tag>5.1.5-</tag>
   </scm>
 
   <dependencies>
