@@ -11,7 +11,7 @@
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
   <packaging>jar</packaging>
-  <version>5.1.5</version>
+  <version>5.1.5-SNAPSHOT</version>
 
   <name>paymill-java</name>
   <url>http://www.paymill.com</url>
@@ -98,23 +98,6 @@
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.7</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-            <configuration>
-              <keyname>${gpg.keyname}</keyname>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
