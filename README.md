@@ -16,13 +16,13 @@ Java wrapper for PAYMILL API
 
 ## Installation
 
-- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.1.3|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.1.3).
+- Releases are available in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|5.1.7|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v5.1.3).
 
 ```xml
 <dependency>
   <groupId>com.paymill</groupId>
   <artifactId>paymill-java</artifactId>
-  <version>5.1.3</version>
+  <version>5.1.7</version>
 </dependency>
 ```
 
@@ -225,6 +225,12 @@ The wrapper supports only the latest version of the PAYMILL Rest API (v2.1). Lat
 * API v2.0 : 3.2.0 in [maven central](http://search.maven.org/#artifactdetails|com.paymill|paymill-java|3.2.0|jar) and in this [repository](https://github.com/paymill/paymill-java/releases/tag/v3.2.0).
 
 ## Changelog
+
+### 5.1.7
+* fix: Updated README.md
+
+### 5.1.6
+* fix: Smaller issues with Javadoc Comments
 
 ### 5.1.3
 * fix: [#65](https://github.com/paymill/paymill-java/issues/65) pass on parameter 'description' in TransactionService.createWithPaymentAndClient, thanks to [@rethab](https://github.com/rethab)
